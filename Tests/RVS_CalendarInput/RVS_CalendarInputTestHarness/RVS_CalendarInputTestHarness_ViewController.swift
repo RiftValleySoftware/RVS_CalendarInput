@@ -17,21 +17,21 @@
  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
- 
- Version 1.0.0
  */
 
 import UIKit
 
-#if os(iOS) // This prevents the IB errors from showing up, under SPM (From SO Answer: https://stackoverflow.com/a/66334661/879365).
 /* ###################################################################################################################################### */
-// MARK: - Main Class
-// MARK: Special Calendar Input Class -
+// MARK: - The Main Test Harness Screen View Controller -
 /* ###################################################################################################################################### */
 /**
+ The test harness app is a very simple app, with only one screen. This screen presents a "dashboard" to test the control.
  */
-@IBDesignable
-open class RVS_CalendarInput: UIView {
-
+class RVS_CalendarInputTestHarness_ViewController: UIViewController {
+    /* ################################################################## */
+    /**
+     */
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
 }
-#endif

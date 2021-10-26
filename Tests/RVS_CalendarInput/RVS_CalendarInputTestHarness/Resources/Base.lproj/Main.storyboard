@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Calendar Input Test Harness View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="RVS_CalendarInputTestHarness_ViewController" customModule="RVS_CalendarInputTestHarness" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background-gradient" translatesAutoresizingMaskIntoConstraints="NO" id="ccB-F9-IXa">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.14999999999999999" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CenterImage" translatesAutoresizingMaskIntoConstraints="NO" id="vDu-Zf-G82">
+                                <rect key="frame" x="83" y="324" width="248" height="248"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="vDu-Zf-G82" secondAttribute="height" multiplier="1:1" id="ef6-bo-1BQ"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vDu-Zf-G82" firstAttribute="height" secondItem="ccB-F9-IXa" secondAttribute="height" priority="750" id="3DE-2S-kh6"/>
+                            <constraint firstItem="vDu-Zf-G82" firstAttribute="width" relation="lessThanOrEqual" secondItem="ccB-F9-IXa" secondAttribute="width" multiplier="0.6" id="5fX-pf-gbH"/>
+                            <constraint firstItem="ccB-F9-IXa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="7mU-4u-egS"/>
+                            <constraint firstItem="ccB-F9-IXa" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="P1k-28-DfW"/>
+                            <constraint firstItem="vDu-Zf-G82" firstAttribute="width" secondItem="ccB-F9-IXa" secondAttribute="width" priority="750" id="PC8-qt-Okf"/>
+                            <constraint firstItem="vDu-Zf-G82" firstAttribute="height" relation="lessThanOrEqual" secondItem="ccB-F9-IXa" secondAttribute="height" multiplier="0.6" id="Sv1-Re-ppg"/>
+                            <constraint firstAttribute="bottom" secondItem="ccB-F9-IXa" secondAttribute="bottom" id="TSI-9q-t4e"/>
+                            <constraint firstItem="vDu-Zf-G82" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dlj-zN-vrQ"/>
+                            <constraint firstAttribute="trailing" secondItem="ccB-F9-IXa" secondAttribute="trailing" id="jix-Qp-nQm"/>
+                            <constraint firstItem="vDu-Zf-G82" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zGv-lS-Bug"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="131.8840579710145" y="116.51785714285714"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="CenterImage" width="1031" height="1024"/>
+        <image name="background-gradient" width="1" height="1000"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

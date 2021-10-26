@@ -7,23 +7,123 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D407703E2728BC7900F218DE /* RVS_CalendarInputTestHarness_AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D407703D2728BC7900F218DE /* RVS_CalendarInputTestHarness_AppDelegate.swift */; };
+		D40770422728BC7900F218DE /* RVS_CalendarInputTestHarness_ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40770412728BC7900F218DE /* RVS_CalendarInputTestHarness_ViewController.swift */; };
+		D40770452728BC7900F218DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D40770432728BC7900F218DE /* Main.storyboard */; };
+		D407704A2728BC7A00F218DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D40770482728BC7A00F218DE /* LaunchScreen.storyboard */; };
+		D40770502728BCB400F218DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D407704F2728BCB400F218DE /* Assets.xcassets */; };
+		D40770532728BD6C00F218DE /* RVS_CalendarInput.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */; platformFilter = ios; };
+		D40770542728BD6C00F218DE /* RVS_CalendarInput.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D468FE5D2728A5EF00C1CED3 /* RVS_CalendarInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D468FE5C2728A5EF00C1CED3 /* RVS_CalendarInput.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D40770552728BD6C00F218DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D468FE472728A53A00C1CED3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D468FE4F2728A53A00C1CED3;
+			remoteInfo = RVS_CalendarInput;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D40770572728BD6C00F218DE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D40770542728BD6C00F218DE /* RVS_CalendarInput.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		D40770302728BB8300F218DE /* jazzy.command */ = {isa = PBXFileReference; lastKnownFileType = file; path = jazzy.command; sourceTree = SOURCE_ROOT; };
+		D40770312728BB8300F218DE /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
+		D40770322728BB8300F218DE /* CODEOWNERS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CODEOWNERS; sourceTree = SOURCE_ROOT; };
+		D40770332728BB8300F218DE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
+		D40770342728BB8300F218DE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		D407703B2728BC7900F218DE /* RVS_CalendarInputTestHarness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RVS_CalendarInputTestHarness.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D407703D2728BC7900F218DE /* RVS_CalendarInputTestHarness_AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_CalendarInputTestHarness_AppDelegate.swift; sourceTree = "<group>"; };
+		D40770412728BC7900F218DE /* RVS_CalendarInputTestHarness_ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_CalendarInputTestHarness_ViewController.swift; sourceTree = "<group>"; };
+		D40770442728BC7900F218DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D40770492728BC7A00F218DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D407704B2728BC7A00F218DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D407704F2728BCB400F218DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RVS_CalendarInput.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D468FE5C2728A5EF00C1CED3 /* RVS_CalendarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_CalendarInput.swift; sourceTree = "<group>"; };
 		D4BC598A2728A6C00031211D /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		D4BC598F2728A84D0031211D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		D40770382728BC7900F218DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D40770532728BD6C00F218DE /* RVS_CalendarInput.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		D40770352728BC5800F218DE /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D407705D2728C18B00F218DE /* RVS_CalendarInput */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		D407703C2728BC7900F218DE /* RVS_CalendarInputTestHarness */ = {
+			isa = PBXGroup;
+			children = (
+				D407703D2728BC7900F218DE /* RVS_CalendarInputTestHarness_AppDelegate.swift */,
+				D40770412728BC7900F218DE /* RVS_CalendarInputTestHarness_ViewController.swift */,
+				D40770582728BEC600F218DE /* Resources */,
+				D407704B2728BC7A00F218DE /* Info.plist */,
+			);
+			path = RVS_CalendarInputTestHarness;
+			sourceTree = "<group>";
+		};
+		D40770522728BD6C00F218DE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D40770582728BEC600F218DE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D407704F2728BCB400F218DE /* Assets.xcassets */,
+				D40770432728BC7900F218DE /* Main.storyboard */,
+				D40770482728BC7A00F218DE /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D407705D2728C18B00F218DE /* RVS_CalendarInput */ = {
+			isa = PBXGroup;
+			children = (
+				D407703C2728BC7900F218DE /* RVS_CalendarInputTestHarness */,
+			);
+			path = RVS_CalendarInput;
+			sourceTree = "<group>";
+		};
 		D468FE462728A53A00C1CED3 = {
 			isa = PBXGroup;
 			children = (
 				D4BC59892728A6C00031211D /* Meta */,
 				D468FE5A2728A5BA00C1CED3 /* Sources */,
+				D40770352728BC5800F218DE /* Tests */,
 				D468FE512728A53A00C1CED3 /* Products */,
+				D40770522728BD6C00F218DE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -31,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */,
+				D407703B2728BC7900F218DE /* RVS_CalendarInputTestHarness.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -54,7 +155,12 @@
 		D4BC59892728A6C00031211D /* Meta */ = {
 			isa = PBXGroup;
 			children = (
+				D40770342728BB8300F218DE /* README.md */,
+				D40770312728BB8300F218DE /* CHANGELOG.md */,
+				D40770302728BB8300F218DE /* jazzy.command */,
+				D40770332728BB8300F218DE /* Package.swift */,
 				D4BC598F2728A84D0031211D /* .swiftlint.yml */,
+				D40770322728BB8300F218DE /* CODEOWNERS */,
 				D4BC598A2728A6C00031211D /* Warnings.xcconfig */,
 			);
 			path = Meta;
@@ -63,6 +169,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D407703A2728BC7900F218DE /* RVS_CalendarInputTestHarness */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D407704C2728BC7A00F218DE /* Build configuration list for PBXNativeTarget "RVS_CalendarInputTestHarness" */;
+			buildPhases = (
+				D40770512728BD5100F218DE /* SwiftLint */,
+				D40770372728BC7900F218DE /* Sources */,
+				D40770382728BC7900F218DE /* Frameworks */,
+				D40770392728BC7900F218DE /* Resources */,
+				D40770572728BD6C00F218DE /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D40770562728BD6C00F218DE /* PBXTargetDependency */,
+			);
+			name = RVS_CalendarInputTestHarness;
+			productName = RVS_CalendarInputTestHarness;
+			productReference = D407703B2728BC7900F218DE /* RVS_CalendarInputTestHarness.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D468FE4F2728A53A00C1CED3 /* RVS_CalendarInput */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D468FE572728A53A00C1CED3 /* Build configuration list for PBXNativeTarget "RVS_CalendarInput" */;
@@ -75,6 +201,10 @@
 			dependencies = (
 			);
 			name = RVS_CalendarInput;
+			packageProductDependencies = (
+				D407705A2728BF6B00F218DE /* RVS-GeneralObserver */,
+				D407705C2728BFC000F218DE /* RVS-Generic-Swift-Toolbox */,
+			);
 			productName = RVS_CalendarInput;
 			productReference = D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */;
 			productType = "com.apple.product-type.framework";
@@ -86,8 +216,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					D407703A2728BC7900F218DE = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					D468FE4F2728A53A00C1CED3 = {
 						CreatedOnToolsVersion = 13.1;
 						LastSwiftMigration = 1310;
@@ -103,16 +237,52 @@
 				Base,
 			);
 			mainGroup = D468FE462728A53A00C1CED3;
+			packageReferences = (
+				D40770592728BF6B00F218DE /* XCRemoteSwiftPackageReference "RVS_GeneralObserver" */,
+				D407705B2728BFC000F218DE /* XCRemoteSwiftPackageReference "RVS_Generic_Swift_Toolbox" */,
+			);
 			productRefGroup = D468FE512728A53A00C1CED3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				D468FE4F2728A53A00C1CED3 /* RVS_CalendarInput */,
+				D407703A2728BC7900F218DE /* RVS_CalendarInputTestHarness */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		D40770392728BC7900F218DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D407704A2728BC7A00F218DE /* LaunchScreen.storyboard in Resources */,
+				D40770502728BCB400F218DE /* Assets.xcassets in Resources */,
+				D40770452728BC7900F218DE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
+		D40770512728BD5100F218DE /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if command -v swiftlint\nthen\n    swiftlint\nfi\n";
+		};
 		D4BC598D2728A75E0031211D /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -134,6 +304,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D40770372728BC7900F218DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D40770422728BC7900F218DE /* RVS_CalendarInputTestHarness_ViewController.swift in Sources */,
+				D407703E2728BC7900F218DE /* RVS_CalendarInputTestHarness_AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D468FE4C2728A53A00C1CED3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -144,7 +323,93 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		D40770562728BD6C00F218DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = D468FE4F2728A53A00C1CED3 /* RVS_CalendarInput */;
+			targetProxy = D40770552728BD6C00F218DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D40770432728BC7900F218DE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D40770442728BC7900F218DE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D40770482728BC7A00F218DE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D40770492728BC7A00F218DE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		D407704D2728BC7A00F218DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0000;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tests/RVS_CalendarInput/RVS_CalendarInputTestHarness/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-CalendarInputTestHarness";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D407704E2728BC7A00F218DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 0000;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tests/RVS_CalendarInput/RVS_CalendarInputTestHarness/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-CalendarInputTestHarness";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		D468FE552728A53A00C1CED3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -331,6 +596,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D407704C2728BC7A00F218DE /* Build configuration list for PBXNativeTarget "RVS_CalendarInputTestHarness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D407704D2728BC7A00F218DE /* Debug */,
+				D407704E2728BC7A00F218DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D468FE4A2728A53A00C1CED3 /* Build configuration list for PBXProject "RVS_CalendarInput" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -350,6 +624,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D40770592728BF6B00F218DE /* XCRemoteSwiftPackageReference "RVS_GeneralObserver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RiftValleySoftware/RVS_GeneralObserver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+		D407705B2728BFC000F218DE /* XCRemoteSwiftPackageReference "RVS_Generic_Swift_Toolbox" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RiftValleySoftware/RVS_Generic_Swift_Toolbox";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D407705A2728BF6B00F218DE /* RVS-GeneralObserver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D40770592728BF6B00F218DE /* XCRemoteSwiftPackageReference "RVS_GeneralObserver" */;
+			productName = "RVS-GeneralObserver";
+		};
+		D407705C2728BFC000F218DE /* RVS-Generic-Swift-Toolbox */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D407705B2728BFC000F218DE /* XCRemoteSwiftPackageReference "RVS_Generic_Swift_Toolbox" */;
+			productName = "RVS-Generic-Swift-Toolbox";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D468FE472728A53A00C1CED3 /* Project object */;
 }

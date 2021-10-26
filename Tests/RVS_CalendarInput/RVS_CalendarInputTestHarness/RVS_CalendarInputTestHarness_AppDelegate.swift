@@ -17,21 +17,27 @@
  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
- 
- Version 1.0.0
  */
 
 import UIKit
 
-#if os(iOS) // This prevents the IB errors from showing up, under SPM (From SO Answer: https://stackoverflow.com/a/66334661/879365).
 /* ###################################################################################################################################### */
-// MARK: - Main Class
-// MARK: Special Calendar Input Class -
+// MARK: - Main Application Delegate -
 /* ###################################################################################################################################### */
 /**
+ We don't do much, here. Just a framework for a simple, classic, UIKit app.
  */
-@IBDesignable
-open class RVS_CalendarInput: UIView {
-
+@main
+class RVS_CalendarInputTestHarness_AppDelegate: UIResponder, UIApplicationDelegate {
+    /* ################################################################## */
+    /**
+     */
+    var window: UIWindow?
+    
+    /* ################################################################## */
+    /**
+     */
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        return true
+    }
 }
-#endif
