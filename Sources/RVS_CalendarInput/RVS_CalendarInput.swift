@@ -37,63 +37,63 @@ open class RVS_CalendarInput: UIView {
     /**
      This is one element of the data that is provided to, and read from, the view.
      */
-    struct DateItem: Comparable {
+    public struct DateItem: Comparable {
         // MARK: Required Stored Properties
         /* ############################################################## */
         /**
          The year, as an integer. REQUIRED
          */
-        let year: Int
+        public let year: Int
         
         /* ############################################################## */
         /**
          The month, as an integer (1 -> 12). REQUIRED
          */
-        let month: Int
+        public let month: Int
         
         /* ############################################################## */
         /**
          The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
          */
-        let day: Int
+        public let day: Int
         
         /* ############################################################## */
         /**
          True, if the item is enabled for selection. Default is false. OPTIONAL
          */
-        let isEnabled: Bool
+        public let isEnabled: Bool
         
         /* ############################################################## */
         /**
          True, if the item is currently selected. Default is false. OPTIONAL
          */
-        let isSelected: Bool
+        public let isSelected: Bool
 
         // MARK: Optional Stored Properties
         /* ############################################################## */
         /**
          This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          */
-        let calendar: Calendar
+        public let calendar: Calendar
         
         /* ############################################################## */
         /**
          Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        let refCon: Any?
+        public let refCon: Any?
         
         // MARK: Computed Properties
         /* ############################################################## */
         /**
          This returns the instance as a standard Foundation DateComponents instance.
          */
-        var dateComponents: DateComponents { DateComponents(calendar: calendar, year: year, month: month, day: day) }
+        public var dateComponents: DateComponents { DateComponents(calendar: calendar, year: year, month: month, day: day) }
         
         /* ############################################################## */
         /**
          This returns the instance as a standard Foundation Date. It may be nil.
          */
-        var date: Date? { dateComponents.date }
+        public var date: Date? { dateComponents.date }
         
         // MARK: Initializers
         /* ############################################################## */
@@ -108,7 +108,7 @@ open class RVS_CalendarInput: UIView {
          - parameter calendar: This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-       init(day inDay: Int, month inMonth: Int, year inYear: Int, isEnabled inIsEnabled: Bool = false, isSelected inIsSelected: Bool = false, calendar inCalendar: Calendar? = nil, refCon inRefCon: Any? = nil) {
+        public init(day inDay: Int, month inMonth: Int, year inYear: Int, isEnabled inIsEnabled: Bool = false, isSelected inIsSelected: Bool = false, calendar inCalendar: Calendar? = nil, refCon inRefCon: Any? = nil) {
             day = inDay
             month = inMonth
             year = inYear
@@ -128,7 +128,7 @@ open class RVS_CalendarInput: UIView {
          - parameter calendar: This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        init?(dateComponents inDateComponents: DateComponents, isEnabled inIsEnabled: Bool = false, isSelected inIsSelected: Bool = false, calendar inCalendar: Calendar? = nil, refCon inRefCon: Any? = nil) {
+        public init?(dateComponents inDateComponents: DateComponents, isEnabled inIsEnabled: Bool = false, isSelected inIsSelected: Bool = false, calendar inCalendar: Calendar? = nil, refCon inRefCon: Any? = nil) {
             guard let inDay = inDateComponents.day,
                   let inMonth = inDateComponents.month,
                   let inYear = inDateComponents.year
@@ -147,7 +147,7 @@ open class RVS_CalendarInput: UIView {
          - parameter calendar: This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        init?(date inDate: Date, isEnabled inIsEnabled: Bool = false, isSelected inIsSelected: Bool = false, calendar inCalendar: Calendar? = nil, refCon inRefCon: Any? = nil) {
+        public init?(date inDate: Date, isEnabled inIsEnabled: Bool = false, isSelected inIsSelected: Bool = false, calendar inCalendar: Calendar? = nil, refCon inRefCon: Any? = nil) {
             let tempCalendar = inCalendar ?? Calendar.current
             let tempComponents = tempCalendar.dateComponents([.day, .month, .year], from: inDate)
             guard let inDay = tempComponents.day,
@@ -167,7 +167,7 @@ open class RVS_CalendarInput: UIView {
          - parameter rhs: The right-hand side of the comparison.
          - returns: true, if lhs is less than rhs
          */
-        static func < (lhs: DateItem, rhs: DateItem) -> Bool {
+        public static func < (lhs: DateItem, rhs: DateItem) -> Bool {
             guard let lhsDate = lhs.date,
                   let rhsDate = rhs.date
             else { return false }
@@ -184,7 +184,7 @@ open class RVS_CalendarInput: UIView {
          - parameter rhs: The right-hand side of the comparison.
          - returns: true, if lhs is equal to rhs
          */
-        static func == (lhs: DateItem, rhs: DateItem) -> Bool {
+        public static func == (lhs: DateItem, rhs: DateItem) -> Bool {
             guard lhs.date == rhs.date,
                   lhs.isSelected == rhs.isSelected,
                   lhs.isEnabled == rhs.isEnabled
@@ -193,67 +193,38 @@ open class RVS_CalendarInput: UIView {
             return true
         }
     }
-
-    /* ################################################################################################################################## */
-    // MARK: Model
-    /* ################################################################################################################################## */
     
-    /* ################################################################################################################################## */
-    // MARK: Month Struct
-    /* ################################################################################################################################## */
+    /* ################################################################## */
     /**
-     
+     This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
      */
-    struct Month {
-        /* ############################################################################################################################## */
-        // MARK: Day Struct
-        /* ############################################################################################################################## */
-        /**
-         
-         */
-        struct Day {
-            /* ########################################################## */
-            /**
-             */
-            let oneBasedDayOfMonth: Int
+    public private(set) var data: [DateItem] = []
 
-            /* ########################################################## */
-            /**
-             */
-            var isEnabled: Bool
+    /* ################################################################## */
+    /**
+     This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
+     */
+    public var calendar: Calendar = Calendar.current
+}
 
-            /* ########################################################## */
-            /**
-             */
-            var isSelected: Bool
-        }
-        
-        /* ############################################################## */
-        /**
-         */
-        let year: Int
-        
-        /* ############################################################## */
-        /**
-         */
-        let oneBasedMonth: Int
-        
-        /* ############################################################## */
-        /**
-         */
-        var days = [Day]()
-        
-        private func _initializeDays(initialDays inDays: [Day]) -> [Day] {
-            []
-        }
-        
-        /* ############################################################## */
-        /**
-         */
-        init(year inYear: Int, month inOneBasedMonthNumber1Through12: Int, initialDays inDays: [Day]) {
-            year = inYear
-            oneBasedMonth = inOneBasedMonthNumber1Through12
-            days = _initializeDays(initialDays: inDays)
+/* ###################################################################################################################################### */
+// MARK: Computed Properties
+/* ###################################################################################################################################### */
+extension RVS_CalendarInput {
+    /* ################################################################## */
+    /**
+     This is basically a write-only way to set up the control. Read will always return an empty array.
+     This contains the particular dates that you want to affect. The date range of the control will be determined from these data.
+     Setting this value will re-initialize the control.
+     */
+    var setupData: [DateItem] {
+        get { [] }
+        set {
+            let temp = newValue
+            
+            if !temp.isEmpty {
+                
+            }
         }
     }
 }
