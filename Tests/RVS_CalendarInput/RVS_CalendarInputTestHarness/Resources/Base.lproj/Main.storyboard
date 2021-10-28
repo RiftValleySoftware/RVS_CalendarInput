@@ -26,6 +26,10 @@
                                     <constraint firstAttribute="width" secondItem="vDu-Zf-G82" secondAttribute="height" multiplier="1:1" id="ef6-bo-1BQ"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F8Y-t3-PtB" customClass="RVS_CalendarInput" customModule="RVS_CalendarInput">
+                                <rect key="frame" x="20" y="44" width="374" height="818"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -33,15 +37,22 @@
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="height" secondItem="ccB-F9-IXa" secondAttribute="height" priority="750" id="3DE-2S-kh6"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="width" relation="lessThanOrEqual" secondItem="ccB-F9-IXa" secondAttribute="width" multiplier="0.6" id="5fX-pf-gbH"/>
                             <constraint firstItem="ccB-F9-IXa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="7mU-4u-egS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="F8Y-t3-PtB" secondAttribute="trailing" constant="20" id="KMD-dQ-Rr8"/>
                             <constraint firstItem="ccB-F9-IXa" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="P1k-28-DfW"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="width" secondItem="ccB-F9-IXa" secondAttribute="width" priority="750" id="PC8-qt-Okf"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="height" relation="lessThanOrEqual" secondItem="ccB-F9-IXa" secondAttribute="height" multiplier="0.6" id="Sv1-Re-ppg"/>
                             <constraint firstAttribute="bottom" secondItem="ccB-F9-IXa" secondAttribute="bottom" id="TSI-9q-t4e"/>
+                            <constraint firstItem="F8Y-t3-PtB" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="dXq-ix-tUA"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dlj-zN-vrQ"/>
                             <constraint firstAttribute="trailing" secondItem="ccB-F9-IXa" secondAttribute="trailing" id="jix-Qp-nQm"/>
+                            <constraint firstItem="F8Y-t3-PtB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="mOY-yr-sGc"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="F8Y-t3-PtB" secondAttribute="bottom" id="wnv-Ue-sXT"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zGv-lS-Bug"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="calendarWidgetInstance" destination="F8Y-t3-PtB" id="0x2-IG-aKP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

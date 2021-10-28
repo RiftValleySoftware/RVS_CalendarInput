@@ -20,6 +20,7 @@
  */
 
 import UIKit
+import RVS_CalendarInput
 
 /* ###################################################################################################################################### */
 // MARK: - The Main Test Harness Screen View Controller -
@@ -31,7 +32,74 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
     /* ################################################################## */
     /**
      */
+    var selectedWeekday1to7 = 3
+    
+    /* ################################################################## */
+    /**
+     */
+    var seedData: [RVS_CalendarInput.DateItem] = []
+    
+    /* ################################################################## */
+    /**
+     */
+    @IBOutlet weak var calendarWidgetInstance: RVS_CalendarInput!
+}
+
+/* ###################################################################################################################################### */
+// MARK: Base Class Overrides
+/* ###################################################################################################################################### */
+extension RVS_CalendarInputTestHarness_ViewController {
+    /* ################################################################## */
+    /**
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpInitialSeedData()
+        calendarWidgetInstance?.setupData = seedData
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Instance Methods
+/* ###################################################################################################################################### */
+extension RVS_CalendarInputTestHarness_ViewController {
+    /* ################################################################## */
+    /**
+     */
+    func setUpInitialSeedData() {
+        seedData = []
+        let startDate = Date().addingTimeInterval(-7776000)
+        let endDate = Date().addingTimeInterval(7776000)
+        
+        // What we do here, is strip out the days. We are only interested in the month and year of each end. This also translates the data into our view's calendar.
+        let startComponents = Calendar.current.dateComponents([.year, .month], from: startDate)
+        let endComponents = Calendar.current.dateComponents([.year, .month], from: endDate)
+        
+        guard let startYear = startComponents.year,
+              let endYear = endComponents.year,
+              var startMonth = startComponents.month,
+              let endMonth = endComponents.month
+        else { return }
+        // Now, a fairly simple nested loop is used to poulate our data.
+        for year in startYear...endYear {
+            for month in startMonth...12 where year < endYear || month <= endMonth {
+                if let calcDate = Calendar.current.date(from: DateComponents(year: year, month: month)),
+                   let numberOfDaysInThisMonth = Calendar.current.range(of: .day, in: .month, for: calcDate)?.count {
+                    for day in 1...numberOfDaysInThisMonth {
+                        var dateItemForThisDay = RVS_CalendarInput.DateItem(day: day, month: month, year: year)
+                        
+                        if let date = dateItemForThisDay.date,
+                           let weekday = Calendar.current.dateComponents([.weekday], from: date).weekday,
+                           weekday == selectedWeekday1to7 {
+                            dateItemForThisDay.isEnabled = true
+                            dateItemForThisDay.isSelected = true
+                        }
+                        seedData.append(dateItemForThisDay)
+                    }
+                }
+            }
+            
+            startMonth = 1
+        }
     }
 }

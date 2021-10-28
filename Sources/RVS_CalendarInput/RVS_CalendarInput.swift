@@ -61,26 +61,26 @@ open class RVS_CalendarInput: UIView {
         /**
          True, if the item is enabled for selection. Default is false. OPTIONAL
          */
-        public let isEnabled: Bool
+        public var isEnabled: Bool
         
         /* ############################################################## */
         /**
          True, if the item is currently selected. Default is false. OPTIONAL
          */
-        public let isSelected: Bool
+        public var isSelected: Bool
 
         // MARK: Optional Stored Properties
         /* ############################################################## */
         /**
          This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          */
-        public let calendar: Calendar
+        public var calendar: Calendar
         
         /* ############################################################## */
         /**
          Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        public let refCon: Any?
+        public var refCon: Any?
         
         // MARK: Computed Properties
         /* ############################################################## */
@@ -165,7 +165,7 @@ open class RVS_CalendarInput: UIView {
          
          - parameter lhs: The left-hand side of the comparison.
          - parameter rhs: The right-hand side of the comparison.
-         - returns: true, if lhs is less than rhs
+         - returns: true, if lhs is less than rhs. False will be returned, if either has a nil date.
          */
         public static func < (lhs: DateItem, rhs: DateItem) -> Bool {
             guard let lhsDate = lhs.date,
@@ -182,16 +182,9 @@ open class RVS_CalendarInput: UIView {
          
          - parameter lhs: The left-hand side of the comparison.
          - parameter rhs: The right-hand side of the comparison.
-         - returns: true, if lhs is equal to rhs
+         - returns: true, if lhs is equal to rhs. If either one has a nil date, false will be returned; even if both are nil.
          */
-        public static func == (lhs: DateItem, rhs: DateItem) -> Bool {
-            guard lhs.date == rhs.date,
-                  lhs.isSelected == rhs.isSelected,
-                  lhs.isEnabled == rhs.isEnabled
-            else { return false }
-          
-            return true
-        }
+        public static func == (lhs: DateItem, rhs: DateItem) -> Bool { nil != lhs.date && lhs.date == rhs.date }
     }
     
     /* ################################################################## */
@@ -217,14 +210,74 @@ extension RVS_CalendarInput {
      This contains the particular dates that you want to affect. The date range of the control will be determined from these data.
      Setting this value will re-initialize the control.
      */
-    var setupData: [DateItem] {
+    public var setupData: [DateItem] {
         get { [] }
         set {
             let temp = newValue
             
             if !temp.isEmpty {
-                
+                _determineDataSetup(from: temp)
             }
+        }
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Instance Methods
+/* ###################################################################################################################################### */
+extension RVS_CalendarInput {
+    /* ################################################################## */
+    /**
+     This will clear and repopulate the data Array, based on the "seed" data, passed in.
+     It should be noted that this *clears* the current data array, and does not preserve its previous state, so it is incumbent upon the user to "snapshot" the data, if so desired.
+     - parameter from: This is an array of "seed" data.
+     */
+    private func _determineDataSetup(from inSeedData: [DateItem]) {
+        data = []
+        
+        // From the given data, we determine the earliest date, and the latest date.
+        let startDate = inSeedData.reduce(Date.distantFuture) { current, next in
+            guard let nextDate = next.date,
+                  current > nextDate
+            else { return current }
+            return nextDate
+        }
+        
+        let endDate = inSeedData.reduce(Date.distantPast) { current, next in
+            guard let nextDate = next.date,
+                  current < nextDate
+            else { return current }
+            return nextDate
+        }
+        
+        // What we do here, is strip out the days. We are only interested in the month and year of each end. This also translates the data into our view's calendar.
+        let startComponents = calendar.dateComponents([.year, .month], from: startDate)
+        let endComponents = calendar.dateComponents([.year, .month], from: endDate)
+        
+        guard let startYear = startComponents.year,
+              let endYear = endComponents.year,
+              var startMonth = startComponents.month,
+              let endMonth = endComponents.month
+        else { return }
+        // Now, a fairly simple nested loop is used to poulate our data.
+        for year in startYear...endYear {
+            for month in startMonth...12 where year < endYear || month <= endMonth {
+                if let calcDate = calendar.date(from: DateComponents(year: year, month: month)),
+                   let numberOfDaysInThisMonth = calendar.range(of: .day, in: .month, for: calcDate)?.count {
+                    for day in 1...numberOfDaysInThisMonth {
+                        let comparisonInstance = DateItem(day: day, month: month, year: year)
+                        var dateItemForThisDay = comparisonInstance
+                        if inSeedData.contains(comparisonInstance),
+                           let dateItemForThisDayTemp = inSeedData.first(where: { $0 == comparisonInstance }) {
+                            dateItemForThisDay = dateItemForThisDayTemp
+                        }
+                        
+                        data.append(dateItemForThisDay)
+                    }
+                }
+            }
+            
+            startMonth = 1
         }
     }
 }

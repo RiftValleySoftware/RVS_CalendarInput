@@ -33,8 +33,8 @@ line_length:
 - 220 # error
 
 cyclomatic_complexity:
-- 6 # warning
-- 7 # error
+- 9 # warning
+- 10 # error
 
 excluded:
 - Carthage
