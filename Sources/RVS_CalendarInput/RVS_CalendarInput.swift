@@ -383,9 +383,9 @@ extension RVS_CalendarInput {
         let monthHeader = UILabel()
         
         let font = UIFont.boldSystemFont(ofSize: 14)
-        let text = String(calendar.shortMonthSymbols[inMonth - 1])
+        let text = String(calendar.monthSymbols[inMonth - 1])
         let calcString = NSAttributedString(string: text, attributes: [.font: font])
-        let cropRect = calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil)
+        let height = ceil(calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
         monthHeader.font = font
         monthHeader.text = text
         monthHeader.textAlignment = .center
@@ -395,7 +395,7 @@ extension RVS_CalendarInput {
         monthHeader.topAnchor.constraint(equalTo: monthView.topAnchor).isActive = true
         monthHeader.leadingAnchor.constraint(equalTo: monthView.leadingAnchor).isActive = true
         monthHeader.trailingAnchor.constraint(equalTo: monthView.trailingAnchor).isActive = true
-        monthHeader.heightAnchor.constraint(equalToConstant: ceil(cropRect.size.height)).isActive = true
+        monthHeader.heightAnchor.constraint(equalToConstant: height).isActive = true
         monthHeader.bottomAnchor.constraint(equalTo: monthView.bottomAnchor).isActive = true
 
         return monthView.bottomAnchor
@@ -435,7 +435,7 @@ extension RVS_CalendarInput {
             yearHeader.leadingAnchor.constraint(equalTo: yearView.leadingAnchor).isActive = true
             yearHeader.trailingAnchor.constraint(equalTo: yearView.trailingAnchor).isActive = true
             yearHeader.heightAnchor.constraint(equalToConstant: ceil(cropRect.size.height)).isActive = true
-            
+
             var monthBottom = yearHeader.bottomAnchor
             
             let months = data.monthRange(for: inYear)
@@ -481,7 +481,41 @@ extension RVS_CalendarInput {
         containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
         containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         
-        var bottomAnchor = containerView.topAnchor
+        let weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 12)
+        let weekdayCalcString = NSAttributedString(string: "WWWWW", attributes: [.font: weekdayHeaderFont])
+        let weekdayHeight = ceil(weekdayCalcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
+        
+        let weekdayLabelHeader = UIView()
+        containerView.addSubview(weekdayLabelHeader)
+        weekdayLabelHeader.translatesAutoresizingMaskIntoConstraints = false
+        weekdayLabelHeader.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        weekdayLabelHeader.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        weekdayLabelHeader.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        weekdayLabelHeader.heightAnchor.constraint(equalToConstant: weekdayHeight).isActive = true
+
+        let startingWeekday = calendar.firstWeekday
+        var leadingAnchor = weekdayLabelHeader.leadingAnchor
+        var indexAnchor: NSLayoutDimension?
+        for weekday in startingWeekday..<(startingWeekday + 7) {
+            let weekDayIndex = weekday < 8 ? weekday - 1 : weekday - 8
+            let thisWeekdayHeader = UILabel()
+            let text = String(calendar.shortWeekdaySymbols[weekDayIndex])
+            thisWeekdayHeader.text = text
+            thisWeekdayHeader.font = weekdayHeaderFont
+            thisWeekdayHeader.textAlignment = .center
+            weekdayLabelHeader.addSubview(thisWeekdayHeader)
+            thisWeekdayHeader.translatesAutoresizingMaskIntoConstraints = false
+            thisWeekdayHeader.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+            indexAnchor?.constraint(equalTo: thisWeekdayHeader.widthAnchor).isActive = true
+            thisWeekdayHeader.topAnchor.constraint(equalTo: weekdayLabelHeader.topAnchor).isActive = true
+            thisWeekdayHeader.bottomAnchor.constraint(equalTo: weekdayLabelHeader.bottomAnchor).isActive = true
+            leadingAnchor = thisWeekdayHeader.trailingAnchor
+            indexAnchor = thisWeekdayHeader.widthAnchor
+        }
+        
+        leadingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+
+        var bottomAnchor = weekdayLabelHeader.bottomAnchor
         
         let years = data.yearRange
         
