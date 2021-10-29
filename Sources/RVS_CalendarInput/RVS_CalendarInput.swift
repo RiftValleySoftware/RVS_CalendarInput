@@ -114,12 +114,11 @@ public extension Array where Element: RVS_CalendarInput.DateItem {
     /* ################################################################## */
     /**
      */
-    func dayRange(year inYear: Int, month inMonth: Int, calendar inCalendar: Calendar? = nil) -> Range<Int> {
-        let calendar = inCalendar ?? Calendar.current
-        
-        guard let calcDate = calendar.date(from: DateComponents(year: inYear, month: inMonth)),
-           let dayRange = calendar.range(of: .day, in: .month, for: calcDate),
-           !dayRange.isEmpty
+    func dayRange(year inYear: Int, month inMonth: Int, calendar inCalendar: Calendar? = Calendar.current) -> Range<Int> {
+        guard let calendar = inCalendar,
+              let calcDate = calendar.date(from: DateComponents(year: inYear, month: inMonth)),
+              let dayRange = calendar.range(of: .day, in: .month, for: calcDate),
+              !dayRange.isEmpty
         else { return 0..<0 }
     
         return dayRange
