@@ -35,7 +35,7 @@ extension UIView {
     /**
      This gives us access to the corner radius, so we can give the view rounded corners.
      
-     > **NOTE:** This requires that `clipsToBounds` be set, which will be done, if the value is nonzero.
+    **NOTE:** This requires that `clipsToBounds` be set, which will be done, if the value is greater than zero.*
      */
     @IBInspectable var cornerRadius: CGFloat {
         get { layer.cornerRadius }
@@ -46,38 +46,6 @@ extension UIView {
             }
             setNeedsDisplay()
         }
-    }
-    
-    /* ################################################################## */
-    /**
-     This allows us to add a subview, and set it up with auto-layout constraints to fill the superview.
-     
-     - parameter inSubview: The subview we want to add.
-     - parameter underThis: If supplied, this is a Y-axis anchor to use as the attachment of the top anchor. Default is nil (can be omitted, which will simply attach to the top of the container).
-     - parameter andGiveMeABottomHook: If this is true, then the bottom anchor of the subview will not be attached to anything, and will simply be returned.
-                                       Default is false, which means that the bottom anchor will simply be attached to the bottom of the view.
-     - returns: The bottom hook, if requested. Can be ignored.
-     */
-    @discardableResult
-    func addContainedView(_ inSubView: UIView, underThis inUpperConstraint: NSLayoutYAxisAnchor? = nil, andGiveMeABottomHook inBottomLoose: Bool = false) -> NSLayoutYAxisAnchor? {
-        addSubview(inSubView)
-        
-        inSubView.translatesAutoresizingMaskIntoConstraints = false
-        if let underConstraint = inUpperConstraint {
-            inSubView.topAnchor.constraint(equalTo: underConstraint, constant: 0).isActive = true
-        } else {
-            inSubView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-        }
-        inSubView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
-        inSubView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
-        
-        if inBottomLoose {
-            return inSubView.bottomAnchor
-        } else {
-            inSubView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
-        }
-        
-        return nil
     }
 }
 
@@ -387,7 +355,11 @@ extension RVS_CalendarInput {
         _containerView = nil
         let scrollView = UIScrollView()
         _scrollView = scrollView
-        addContainedView(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         let containerView = UIView()
         _containerView = containerView
         scrollView.addSubview(containerView)
