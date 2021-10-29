@@ -77,7 +77,7 @@ public extension Array where Element: RVS_CalendarInput.DateItem {
         let lowerBound = reduce(13) { current, next in (next.year == inYear) && current > next.month ? next.month : current }
         let upperBound = reduce(0) { current, next in (next.year == inYear) && current < next.month ? next.month : current }
         
-        return upperBound <= lowerBound ? 0..<0 : lowerBound..<(upperBound + 1)
+        return upperBound < lowerBound ? 0..<0 : lowerBound..<(upperBound + 1)
     }
     
     /* ################################################################## */
@@ -369,6 +369,40 @@ extension RVS_CalendarInput {
 extension RVS_CalendarInput {
     /* ################################################################## */
     /**
+     */
+    private func _addMonth(_ inMonth: Int, year inYear: Int, to inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
+        guard (1..<13).contains(inMonth) else { return inTopAnchor }
+        
+        let monthView = UIView()
+        inContainer.addSubview(monthView)
+        monthView.translatesAutoresizingMaskIntoConstraints = false
+        monthView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
+        monthView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
+        monthView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
+        
+        let monthHeader = UILabel()
+        
+        let font = UIFont.boldSystemFont(ofSize: 14)
+        let text = String(calendar.shortMonthSymbols[inMonth - 1])
+        let calcString = NSAttributedString(string: text, attributes: [.font: font])
+        let cropRect = calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil)
+        monthHeader.font = font
+        monthHeader.text = text
+        monthHeader.textAlignment = .center
+        
+        monthView.addSubview(monthHeader)
+        monthHeader.translatesAutoresizingMaskIntoConstraints = false
+        monthHeader.topAnchor.constraint(equalTo: monthView.topAnchor).isActive = true
+        monthHeader.leadingAnchor.constraint(equalTo: monthView.leadingAnchor).isActive = true
+        monthHeader.trailingAnchor.constraint(equalTo: monthView.trailingAnchor).isActive = true
+        monthHeader.heightAnchor.constraint(equalToConstant: ceil(cropRect.size.height)).isActive = true
+        monthHeader.bottomAnchor.constraint(equalTo: monthView.bottomAnchor).isActive = true
+
+        return monthView.bottomAnchor
+    }
+    
+    /* ################################################################## */
+    /**
      This adds a year container, with a header that displays the given year.
      
      - parameter inYear: The year, as an Int. If the Int is 0 (or less), the year header will not be displayed.
@@ -401,9 +435,19 @@ extension RVS_CalendarInput {
             yearHeader.leadingAnchor.constraint(equalTo: yearView.leadingAnchor).isActive = true
             yearHeader.trailingAnchor.constraint(equalTo: yearView.trailingAnchor).isActive = true
             yearHeader.heightAnchor.constraint(equalToConstant: ceil(cropRect.size.height)).isActive = true
-            yearHeader.bottomAnchor.constraint(equalTo: yearView.bottomAnchor).isActive = true
+            
+            var monthBottom = yearHeader.bottomAnchor
+            
+            let months = data.monthRange(for: inYear)
+            
+            // The months, and days
+            months.forEach {
+                monthBottom = _addMonth($0, year: inYear, to: yearView, topAnchor: monthBottom)
+            }
 
             bottomAnchor = yearView.bottomAnchor
+
+            monthBottom.constraint(equalTo: bottomAnchor).isActive = true
         }
         
         return bottomAnchor

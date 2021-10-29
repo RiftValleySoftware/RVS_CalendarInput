@@ -63,7 +63,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
      */
     func setUpInitialSeedData() {
         seedData = []
-        // Four month window. 30 days before today, and 90 days after.
+        // Four or five month window. 30 days before today, and 90 days after.
         if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())),
            let thisWeekday = Calendar.current.dateComponents([.weekday], from: today).weekday {
             let startDate = today.addingTimeInterval(-2592000)
