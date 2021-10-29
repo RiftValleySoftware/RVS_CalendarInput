@@ -329,6 +329,24 @@ open class RVS_CalendarInput: UIView {
 
     /* ################################################################## */
     /**
+     The font to be used for the weekday header, at the top.
+     */
+    var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 14)
+
+    /* ################################################################## */
+    /**
+     The font to be used for the year header.
+     */
+    var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20)
+
+    /* ################################################################## */
+    /**
+     The font to be used for the month header.
+     */
+    var monthHeaderFont = UIFont.boldSystemFont(ofSize: 14)
+
+    /* ################################################################## */
+    /**
      This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
      */
     public private(set) var data: [DateItem] = []
@@ -370,6 +388,103 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      */
+    private func _populateMonth(_ inMonth: Int, year inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) {
+        let dataForThisMonth = data.allResults(forThisYear: inYear, forThisMonth: inMonth)
+        
+        if !dataForThisMonth.isEmpty,
+           let firstDay = dataForThisMonth.first?.date,
+           let firstDataWeekday = calendar.dateComponents([.weekday], from: firstDay).weekday {
+            let allDays = dataForThisMonth.count
+            var currentLocalIndex = 0
+
+            let monthWeekContainerView = UIView()
+            inContainer.addSubview(monthWeekContainerView)
+            monthWeekContainerView.backgroundColor = .red
+            monthWeekContainerView.translatesAutoresizingMaskIntoConstraints = false
+            monthWeekContainerView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
+            monthWeekContainerView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
+            monthWeekContainerView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
+            monthWeekContainerView.bottomAnchor.constraint(equalTo: inContainer.bottomAnchor).isActive = true
+
+            let zeroBasedCalendarFirstDay = calendar.firstWeekday - 1
+
+            let adjustedFirstDayWeekday = firstDataWeekday + zeroBasedCalendarFirstDay
+            let zeroBasedWeekdayIndex = adjustedFirstDayWeekday < 8 ? adjustedFirstDayWeekday - 1 : adjustedFirstDayWeekday - 8
+
+            var leadingAnchor = monthWeekContainerView.leadingAnchor
+            var topAnchor = monthWeekContainerView.topAnchor
+            var newAnchor: NSLayoutYAxisAnchor?
+            var indexAnchor: NSLayoutDimension?
+            
+            for _ in (0..<zeroBasedWeekdayIndex) {
+                let thisFillerView = UIView()
+                monthWeekContainerView.addSubview(thisFillerView)
+                thisFillerView.backgroundColor = .gray
+                thisFillerView.translatesAutoresizingMaskIntoConstraints = false
+                thisFillerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+                thisFillerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                indexAnchor?.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
+                thisFillerView.heightAnchor.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
+                leadingAnchor = thisFillerView.trailingAnchor
+                indexAnchor = thisFillerView.widthAnchor
+                newAnchor = thisFillerView.bottomAnchor
+            }
+            
+            guard let newTop = newAnchor else { return }
+            
+            topAnchor = newTop
+            
+            var trailer: Int = zeroBasedWeekdayIndex
+            
+            while currentLocalIndex < allDays {
+                for index in trailer..<7 where currentLocalIndex < allDays {
+                    let thisFillerView = UIView()
+                    trailer = index
+                    monthWeekContainerView.addSubview(thisFillerView)
+                    thisFillerView.backgroundColor = .yellow
+                    thisFillerView.translatesAutoresizingMaskIntoConstraints = false
+                    thisFillerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+                    thisFillerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                    indexAnchor?.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
+                    thisFillerView.heightAnchor.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
+                    leadingAnchor = thisFillerView.trailingAnchor
+                    currentLocalIndex += 1
+                    newAnchor = thisFillerView.bottomAnchor
+                }
+                
+                trailer = 0
+                leadingAnchor.constraint(equalTo: monthWeekContainerView.trailingAnchor).isActive = true
+                leadingAnchor = monthWeekContainerView.leadingAnchor
+                guard let newTop = newAnchor else { return }
+                topAnchor = newTop
+            }
+            
+            for _ in (trailer..<7) {
+                let thisFillerView = UIView()
+                monthWeekContainerView.addSubview(thisFillerView)
+                thisFillerView.backgroundColor = .gray
+                thisFillerView.translatesAutoresizingMaskIntoConstraints = false
+                thisFillerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+                thisFillerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                thisFillerView.heightAnchor.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
+                indexAnchor?.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
+                leadingAnchor = thisFillerView.trailingAnchor
+                indexAnchor = thisFillerView.widthAnchor
+                newAnchor = thisFillerView.bottomAnchor
+            }
+            
+            guard let newTop = newAnchor else { return }
+            
+            topAnchor = newTop
+
+            leadingAnchor.constraint(equalTo: monthWeekContainerView.trailingAnchor).isActive = true
+            topAnchor.constraint(equalTo: monthWeekContainerView.bottomAnchor).isActive = true
+        }
+    }
+    
+    /* ################################################################## */
+    /**
+     */
     private func _addMonth(_ inMonth: Int, year inYear: Int, to inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
         guard (1..<13).contains(inMonth) else { return inTopAnchor }
         
@@ -382,11 +497,10 @@ extension RVS_CalendarInput {
         
         let monthHeader = UILabel()
         
-        let font = UIFont.boldSystemFont(ofSize: 14)
         let text = String(calendar.monthSymbols[inMonth - 1])
-        let calcString = NSAttributedString(string: text, attributes: [.font: font])
+        let calcString = NSAttributedString(string: text, attributes: [.font: monthHeaderFont])
         let height = ceil(calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
-        monthHeader.font = font
+        monthHeader.font = monthHeaderFont
         monthHeader.text = text
         monthHeader.textAlignment = .center
         
@@ -396,8 +510,9 @@ extension RVS_CalendarInput {
         monthHeader.leadingAnchor.constraint(equalTo: monthView.leadingAnchor).isActive = true
         monthHeader.trailingAnchor.constraint(equalTo: monthView.trailingAnchor).isActive = true
         monthHeader.heightAnchor.constraint(equalToConstant: height).isActive = true
-        monthHeader.bottomAnchor.constraint(equalTo: monthView.bottomAnchor).isActive = true
 
+        _populateMonth(inMonth, year: inYear, in: monthView, topAnchor: monthHeader.bottomAnchor)
+        
         return monthView.bottomAnchor
     }
     
@@ -421,11 +536,10 @@ extension RVS_CalendarInput {
             
             let yearHeader = UILabel()
             
-            let font = UIFont.boldSystemFont(ofSize: 20)
             let text = String(inYear)
-            let calcString = NSAttributedString(string: text, attributes: [.font: font])
+            let calcString = NSAttributedString(string: text, attributes: [.font: yearHeaderFont])
             let cropRect = calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil)
-            yearHeader.font = font
+            yearHeader.font = yearHeaderFont
             yearHeader.text = text
             yearHeader.textAlignment = .center
             
@@ -481,7 +595,6 @@ extension RVS_CalendarInput {
         containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
         containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         
-        let weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 12)
         let weekdayCalcString = NSAttributedString(string: "WWWWW", attributes: [.font: weekdayHeaderFont])
         let weekdayHeight = ceil(weekdayCalcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
         
