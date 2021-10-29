@@ -55,6 +55,7 @@ extension UIView {
 public extension Array where Element: RVS_CalendarInput.DateItem {
     /* ################################################################## */
     /**
+     This returns the range of years. It uses the calendar system for the data.
      */
     var yearRange: Range<Int> {
         let lowerBound = reduce(Int.max) { current, next in current > next.year ? next.year : current }
@@ -67,30 +68,60 @@ public extension Array where Element: RVS_CalendarInput.DateItem {
     
     /* ################################################################## */
     /**
+     This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
+     - parameter for: The year, as an integer. This needs to be in the calendar system used by the data.
+     - returns: The integer range (1-based) of the months available in this year.
      */
     func monthRange(for inYear: Int) -> Range<Int> {
+        // What we do here, is look for the range of months, that are available in the
         let lowerBound = reduce(13) { current, next in (next.year == inYear) && current > next.month ? next.month : current }
         let upperBound = reduce(0) { current, next in (next.year == inYear) && current < next.month ? next.month : current }
         
-        guard 13 < lowerBound,
-              0 > upperBound,
-              lowerBound <= upperBound else { return 0..<0 }
-        
-        return lowerBound..<(upperBound + 1)
+        return upperBound <= lowerBound ? 0..<0 : lowerBound..<(upperBound + 1)
     }
     
     /* ################################################################## */
     /**
+     This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
+     - parameter year: The year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
+     - parameter month: The month of the year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
+     - parameter calendar: This is the calendar to use, for determining the month range.
+                           The year needs to be in this calendar system.
+                           It is optional. If not specified, the current calendar is used.
      */
-    func dayRange(year inYear: Int, month inMonth: Int, calendar inCalendar: Calendar? = Calendar.current) -> Range<Int> {
-        guard monthRange(for: inYear).contains(inMonth),
-              let calendar = inCalendar,
+    func dayRange(year inYear: Int,
+                  month inMonth: Int,
+                  calendar inCalendar: Calendar? = Calendar.current) -> Range<Int> {
+        guard let calendar = inCalendar,
               let calcDate = calendar.date(from: DateComponents(year: inYear, month: inMonth)),
               let dayRange = calendar.range(of: .day, in: .month, for: calcDate),
               !dayRange.isEmpty
         else { return 0..<0 }
     
         return dayRange
+    }
+    
+    /* ################################################################## */
+    /**
+     This returns a filtered array of the data, depending on the criteria provided. If no criteria are provided, the the entire array is returned. All responses are sorted from earliest date, to the latest date.
+     - parameter forThisYear: The year, as an integer. If not specified, then all years are returned.
+     - parameter forThisMonth: The month of the year, as an integer. If not specified, then all months are returned.
+     - parameter forThisDayOfTheMonth: The day of the month of the year, as an integer. If not specified, then all days of the month are returned.
+     - parameter enabled: If true, then only items that are enabled will be returned. If false, the only items that are not enabled will be returned. Default is nil (all items returned, ignoring enabled status).
+     - parameter selected: If true, then only items that are selected will be returned. If false, the only items that are not selected will be returned. Default is nil (all items returned, ignoring selected status).
+     */
+    func allResults(forThisYear inYear: Int = 0,
+                    forThisMonth inMonth: Int = 0,
+                    forThisDayOfTheMonth inDay: Int = 0,
+                    enabled inIsEnabled: Bool? = nil,
+                    selected inIsSelected: Bool? = nil) -> [Element] {
+        filter {
+                    (0 == inYear || inYear == $0.year)
+                &&  (0 == inMonth || inMonth == $0.month)
+                &&  (0 == inDay || inDay == $0.day)
+                &&  (nil == inIsEnabled || inIsEnabled == $0.isEnabled)
+                &&  (nil == inIsSelected || inIsSelected == $0.isSelected)
+        }.sorted()
     }
 }
 
@@ -109,7 +140,15 @@ open class RVS_CalendarInput: UIView {
      Each day is represented by a button. This allows us to associate a DateItem with the button, and customize its display
      */
     private class _DayButton: UIButton {
+        /* ############################################################## */
+        /**
+         */
+        var dateItem: DateItem?
         
+        /* ############################################################## */
+        /**
+         */
+        weak var myHandler: RVS_CalendarInput?
     }
     
     /* ################################################################################################################################## */
@@ -155,12 +194,6 @@ open class RVS_CalendarInput: UIView {
         // MARK: Optional Stored Properties
         /* ############################################################## */
         /**
-         This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
-         */
-        public var calendar: Calendar
-        
-        /* ############################################################## */
-        /**
          Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public var refCon: Any?
@@ -168,27 +201,26 @@ open class RVS_CalendarInput: UIView {
         // MARK: Computed Properties
         /* ############################################################## */
         /**
-         This returns the instance as a standard Foundation DateComponents instance.
+         This returns the instance as a standard Foundation DateComponents instance. The calendar used, will be the current one.
          */
-        public var dateComponents: DateComponents { DateComponents(calendar: calendar, year: year, month: month, day: day) }
+        public var dateComponents: DateComponents { DateComponents(calendar: Calendar.current, year: year, month: month, day: day) }
         
         /* ############################################################## */
         /**
-         This returns the instance as a standard Foundation Date. It may be nil.
+         This returns the instance as a standard Foundation Date. It may be nil. The calendar used, will be the current one.
          */
         public var date: Date? { dateComponents.date }
         
         // MARK: Initializers
         /* ############################################################## */
         /**
-         Default Initializer
+         Default Initializer. The calendar used, will be the current one.
          
          - parameter day: The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
          - parameter month: The month, as an integer (1 -> 12). REQUIRED
          - parameter year: The year, as an integer. REQUIRED
          - parameter isEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
          - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
-         - parameter calendar: This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public init(day inDay: Int,
@@ -196,7 +228,6 @@ open class RVS_CalendarInput: UIView {
                     year inYear: Int,
                     isEnabled inIsEnabled: Bool = false,
                     isSelected inIsSelected: Bool = false,
-                    calendar inCalendar: Calendar? = nil,
                     refCon inRefCon: Any? = nil
         ) {
             day = inDay
@@ -204,7 +235,6 @@ open class RVS_CalendarInput: UIView {
             year = inYear
             isEnabled = inIsEnabled
             isSelected = inIsSelected
-            calendar = inCalendar ?? Calendar.current
             refCon = inRefCon
         }
 
@@ -212,10 +242,9 @@ open class RVS_CalendarInput: UIView {
         /**
          DateComponents Initializer (can return nil)
          
-         - parameter dateComponents: The day/month/year, as DateComponents. REQUIRED
+         - parameter dateComponents: The day/month/year, as DateComponents. The calendar used, will be the current one. REQUIRED
          - parameter isEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
          - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
-         - parameter calendar: This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public convenience init?(dateComponents inDateComponents: DateComponents,
@@ -229,17 +258,16 @@ open class RVS_CalendarInput: UIView {
                   let inYear = inDateComponents.year
             else { return nil }
             
-            self.init(day: inDay, month: inMonth, year: inYear, isEnabled: inIsEnabled, isSelected: inIsSelected, calendar: inCalendar, refCon: inRefCon)
+            self.init(day: inDay, month: inMonth, year: inYear, isEnabled: inIsEnabled, isSelected: inIsSelected, refCon: inRefCon)
         }
 
         /* ############################################################## */
         /**
          Date Initializer (can return nil)
          
-         - parameter date: The day/month/year, as a Date instance. REQUIRED
+         - parameter date: The day/month/year, as a Date instance. The calendar used, will be the current one. REQUIRED
          - parameter isEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
          - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
-         - parameter calendar: This is the calendar to use for our component. If ignored, the current calendar will be used. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public convenience init?(date inDate: Date,
@@ -255,7 +283,7 @@ open class RVS_CalendarInput: UIView {
                   let inYear = tempComponents.year
             else { return nil }
             
-            self.init(day: inDay, month: inMonth, year: inYear, isEnabled: inIsEnabled, isSelected: inIsSelected, calendar: inCalendar, refCon: inRefCon)
+            self.init(day: inDay, month: inMonth, year: inYear, isEnabled: inIsEnabled, isSelected: inIsSelected, refCon: inRefCon)
         }
 
         // MARK: Comparable Conformance
@@ -329,6 +357,7 @@ extension RVS_CalendarInput {
             
             if !temp.isEmpty {
                 _determineDataSetup(from: temp)
+                setNeedsLayout()
             }
         }
     }
@@ -344,7 +373,40 @@ extension RVS_CalendarInput {
      
      - parameter inYear: The year, as an Int. If the Int is 0 (or less), the year header will not be displayed.
      */
-    private func _addYear(_ inYear: Int) {
+    private func _addYear(_ inYear: Int, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
+        var bottomAnchor = inTopAnchor
+        
+        if let containerView = _containerView,
+           0 < inYear {
+            let yearView = UIView()
+            containerView.addSubview(yearView)
+            yearView.translatesAutoresizingMaskIntoConstraints = false
+            yearView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
+            yearView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+            yearView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+            
+            let yearHeader = UILabel()
+            
+            let font = UIFont.boldSystemFont(ofSize: 20)
+            let text = String(inYear)
+            let calcString = NSAttributedString(string: text, attributes: [.font: font])
+            let cropRect = calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil)
+            yearHeader.font = font
+            yearHeader.text = text
+            yearHeader.textAlignment = .center
+            
+            yearView.addSubview(yearHeader)
+            yearHeader.translatesAutoresizingMaskIntoConstraints = false
+            yearHeader.topAnchor.constraint(equalTo: yearView.topAnchor).isActive = true
+            yearHeader.leadingAnchor.constraint(equalTo: yearView.leadingAnchor).isActive = true
+            yearHeader.trailingAnchor.constraint(equalTo: yearView.trailingAnchor).isActive = true
+            yearHeader.heightAnchor.constraint(equalToConstant: ceil(cropRect.size.height)).isActive = true
+            yearHeader.bottomAnchor.constraint(equalTo: yearView.bottomAnchor).isActive = true
+
+            bottomAnchor = yearView.bottomAnchor
+        }
+        
+        return bottomAnchor
     }
     
     /* ################################################################## */
@@ -353,13 +415,18 @@ extension RVS_CalendarInput {
     private func _setUpGrid() {
         _scrollView?.removeFromSuperview() // Clean the surface with an alcohol swab, before beginning...
         _containerView = nil
+        
+        // Set up the main scroller
         let scrollView = UIScrollView()
         _scrollView = scrollView
+        addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        // Set up the scolled container
         let containerView = UIView()
         _containerView = containerView
         scrollView.addSubview(containerView)
@@ -369,6 +436,17 @@ extension RVS_CalendarInput {
         containerView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor).isActive = true
         containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
         containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        
+        var bottomAnchor = containerView.topAnchor
+        
+        let years = data.yearRange
+        
+        // The years, months, and days
+        years.forEach {
+            bottomAnchor = _addYear($0, topAnchor: bottomAnchor)
+        }
+        
+        bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
     }
     
     /* ################################################################## */
@@ -438,6 +516,17 @@ extension RVS_CalendarInput {
     open override func layoutSubviews() {
         super.layoutSubviews()
         _setUpGrid()
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Callbacks
+/* ###################################################################################################################################### */
+extension RVS_CalendarInput {
+    /* ################################################################## */
+    /**
+     */
+    private func _buttonHit(_ inButton: _DayButton) {
     }
 }
 #endif
