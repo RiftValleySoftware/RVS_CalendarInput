@@ -115,7 +115,8 @@ public extension Array where Element: RVS_CalendarInput.DateItem {
     /**
      */
     func dayRange(year inYear: Int, month inMonth: Int, calendar inCalendar: Calendar? = Calendar.current) -> Range<Int> {
-        guard let calendar = inCalendar,
+        guard monthRange(for: inYear).contains(inMonth),
+              let calendar = inCalendar,
               let calcDate = calendar.date(from: DateComponents(year: inYear, month: inMonth)),
               let dayRange = calendar.range(of: .day, in: .month, for: calcDate),
               !dayRange.isEmpty
