@@ -84,7 +84,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
                     if let calcDate = Calendar.current.date(from: DateComponents(year: year, month: month)),
                        let numberOfDaysInThisMonth = Calendar.current.range(of: .day, in: .month, for: calcDate)?.count {
                         for day in 1...numberOfDaysInThisMonth {
-                            var dateItemForThisDay = RVS_CalendarInput.DateItem(day: day, month: month, year: year)
+                            let dateItemForThisDay = RVS_CalendarInput.DateItem(day: day, month: month, year: year)
                             
                             if let date = dateItemForThisDay.date,
                                let weekday = Calendar.current.dateComponents([.weekday], from: date).weekday,
