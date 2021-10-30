@@ -35,7 +35,7 @@ extension UIView {
     /**
      This gives us access to the corner radius, so we can give the view rounded corners.
      
-    **NOTE:** This requires that `clipsToBounds` be set, which will be done, if the value is greater than zero.*
+    ***NOTE:** This requires that `clipsToBounds` be set, which will be done, if the value is greater than zero.*
      */
     @IBInspectable var cornerRadius: CGFloat {
         get { layer.cornerRadius }
@@ -152,12 +152,16 @@ open class RVS_CalendarInput: UIView {
         
         override func layoutSubviews() {
             super.layoutSubviews()
-            backgroundColor = dateItem?.isEnabled  ?? false ? myHandler?.tintColor : .systemGray2
+            backgroundColor = (dateItem?.isEnabled  ?? false)
+                ? ((dateItem?.isSelected ?? false)
+                   ? myHandler?.weekdayBackgroundColorSelected : myHandler?.weekdayBackgroundColorDeselected)
+                : myHandler?.weekdayBackgroundColorDisabled
             tintColor = .white
-            titleLabel?.font = .boldSystemFont(ofSize: 24)
+            titleLabel?.font = myHandler?.weekdayFont
             cornerRadius = 8
             titleLabel?.textAlignment = .center
             setTitle(String(dateItem?.day ?? 0), for: .normal)
+            addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
         }
     }
 
@@ -329,7 +333,7 @@ open class RVS_CalendarInput: UIView {
     /**
      The font to be used for the weekday header, at the top.
      */
-    var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 14)
+    var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18)
 
     /* ################################################################## */
     /**
@@ -342,6 +346,68 @@ open class RVS_CalendarInput: UIView {
      The font to be used for the month header.
      */
     var monthHeaderFont = UIFont.boldSystemFont(ofSize: 14)
+
+    /* ################################################################## */
+    /**
+     The font to be used for each of the days.
+     */
+    var weekdayFont = UIFont.boldSystemFont(ofSize: 24)
+
+    /* ################################################################## */
+    /**
+     The font to be used for the weekday header, at the top.
+     */
+    var weekdayHeaderFontColor = UIColor.label
+
+    /* ################################################################## */
+    /**
+     The font color to be used for the year header.
+     */
+    var yearHeaderFontColor = UIColor.white
+
+    /* ################################################################## */
+    /**
+     The font color to be used for the month header.
+     */
+    var monthHeaderFontColor = UIColor.white
+
+    /* ################################################################## */
+    /**
+     The font color to be used for each of the days.
+     */
+    var weekdayFontColor = UIColor.white
+
+    /* ################################################################## */
+    /**
+     The background color to be used for the year header.
+     */
+    var yearHeaderBackgroundColor = UIColor.systemGray
+
+    /* ################################################################## */
+    /**
+     The background color to be used for the month header.
+     */
+    var monthHeaderBackgroundColor = UIColor.systemGray2
+
+    /* ################################################################## */
+    /**
+     The background color to be used for each of the days.
+     */
+    var weekdayBackgroundColorDisabled = UIColor.systemGray3
+
+    /* ################################################################## */
+    /**
+     The background color to be used for each of the days, when enabled and selected.
+     This will be replaced in the layout handler. The tint will be used.
+     */
+    var weekdayBackgroundColorSelected = UIColor.gray
+
+    /* ################################################################## */
+    /**
+     The background color to be used for each of the days, when enabled and selected.
+     This will be replaced in the layout handler. A 0.5 alpha tint will be used.
+     */
+    var weekdayBackgroundColorDeselected = UIColor.gray
 
     /* ################################################################## */
     /**
@@ -482,7 +548,7 @@ extension RVS_CalendarInput {
         let monthView = UIView()
         inContainer.addSubview(monthView)
         monthView.translatesAutoresizingMaskIntoConstraints = false
-        monthView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
+        monthView.topAnchor.constraint(equalTo: inTopAnchor, constant: 8).isActive = true
         monthView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
         monthView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
         
@@ -493,8 +559,11 @@ extension RVS_CalendarInput {
         let height = ceil(calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
         monthHeader.font = monthHeaderFont
         monthHeader.text = text
+        monthHeader.textColor = monthHeaderFontColor
         monthHeader.textAlignment = .center
-        
+        monthHeader.backgroundColor = monthHeaderBackgroundColor
+        monthHeader.cornerRadius = height / 2
+
         monthView.addSubview(monthHeader)
         monthHeader.translatesAutoresizingMaskIntoConstraints = false
         monthHeader.topAnchor.constraint(equalTo: monthView.topAnchor).isActive = true
@@ -516,43 +585,46 @@ extension RVS_CalendarInput {
     private func _addYear(_ inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
         var bottomAnchor = inTopAnchor
         
-        if 0 < inYear {
-            let yearView = UIView()
-            inContainer.addSubview(yearView)
-            yearView.translatesAutoresizingMaskIntoConstraints = false
-            yearView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
-            yearView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
-            yearView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
-            
-            let yearHeader = UILabel()
-            
-            let text = String(inYear)
-            let calcString = NSAttributedString(string: text, attributes: [.font: yearHeaderFont])
-            let cropRect = calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil)
-            yearHeader.font = yearHeaderFont
-            yearHeader.text = text
-            yearHeader.textAlignment = .center
-            
-            yearView.addSubview(yearHeader)
-            yearHeader.translatesAutoresizingMaskIntoConstraints = false
-            yearHeader.topAnchor.constraint(equalTo: yearView.topAnchor).isActive = true
-            yearHeader.leadingAnchor.constraint(equalTo: yearView.leadingAnchor).isActive = true
-            yearHeader.trailingAnchor.constraint(equalTo: yearView.trailingAnchor).isActive = true
-            yearHeader.heightAnchor.constraint(equalToConstant: ceil(cropRect.size.height)).isActive = true
+        let yearView = UIView()
+        inContainer.addSubview(yearView)
+        yearView.translatesAutoresizingMaskIntoConstraints = false
+        yearView.topAnchor.constraint(equalTo: inTopAnchor, constant: 8).isActive = true
+        yearView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
+        yearView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
+        
+        let yearHeader = UILabel()
+        
+        let text = String(inYear)
+        let calcString = NSAttributedString(string: text, attributes: [.font: yearHeaderFont])
+        let cropRect = calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil)
+        let height = ceil(cropRect.size.height)
+        
+        yearHeader.font = yearHeaderFont
+        yearHeader.text = text
+        yearHeader.textAlignment = .center
+        yearHeader.textColor = yearHeaderFontColor
+        yearHeader.backgroundColor = yearHeaderBackgroundColor
+        yearHeader.cornerRadius = height / 4
+        
+        yearView.addSubview(yearHeader)
+        yearHeader.translatesAutoresizingMaskIntoConstraints = false
+        yearHeader.topAnchor.constraint(equalTo: yearView.topAnchor).isActive = true
+        yearHeader.leadingAnchor.constraint(equalTo: yearView.leadingAnchor).isActive = true
+        yearHeader.trailingAnchor.constraint(equalTo: yearView.trailingAnchor).isActive = true
+        yearHeader.heightAnchor.constraint(equalToConstant: height).isActive = true
 
-            var monthBottom = yearHeader.bottomAnchor
-            
-            let months = data.monthRange(for: inYear)
-            
-            // The months, and days
-            months.forEach {
-                monthBottom = _addMonth($0, year: inYear, to: yearView, topAnchor: monthBottom)
-            }
-
-            bottomAnchor = yearView.bottomAnchor
-
-            monthBottom.constraint(equalTo: bottomAnchor).isActive = true
+        var monthBottom = yearHeader.bottomAnchor
+        
+        let months = data.monthRange(for: inYear)
+        
+        // The months, and days
+        months.forEach {
+            monthBottom = _addMonth($0, year: inYear, to: yearView, topAnchor: monthBottom)
         }
+
+        bottomAnchor = yearView.bottomAnchor
+
+        monthBottom.constraint(equalTo: bottomAnchor).isActive = true
         
         return bottomAnchor
     }
@@ -571,6 +643,7 @@ extension RVS_CalendarInput {
         addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        // Adding the weekday header height as an offset, allows us to keep the weekdays over the actual grid.
         scrollView.topAnchor.constraint(equalTo: topAnchor, constant: weekdayHeight).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -587,14 +660,12 @@ extension RVS_CalendarInput {
 
         var bottomAnchor = containerView.topAnchor
         
-        let years = data.yearRange
-        
         // The years, months, and days
-        years.forEach {
-            bottomAnchor = _addYear($0, in: containerView, topAnchor: bottomAnchor)
-        }
+        data.yearRange.forEach { bottomAnchor = _addYear($0, in: containerView, topAnchor: bottomAnchor) }
         
         bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
+        
+        // This displays a fixed header, containing the weekday column headers, over the grid.
         
         let weekdayLabelHeader = UIView()
         addSubview(weekdayLabelHeader)
@@ -693,6 +764,8 @@ extension RVS_CalendarInput {
      */
     open override func layoutSubviews() {
         super.layoutSubviews()
+        weekdayBackgroundColorSelected = tintColor
+        weekdayBackgroundColorDeselected = tintColor.withAlphaComponent(0.5)
         _setUpGrid()
     }
 }
@@ -705,6 +778,11 @@ extension RVS_CalendarInput {
     /**
      */
     @objc private func _buttonHit(_ inButton: _DayButton) {
+        #if DEBUG
+            if let date = inButton.dateItem?.date {
+                print("Button for \(date) hit")
+            }
+        #endif
     }
 }
 #endif
