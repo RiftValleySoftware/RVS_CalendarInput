@@ -388,12 +388,31 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      */
+    private func _makeMyDay(_ inDay: DateItem, in inContainer: UIView) {
+        let dayButton = UIButton()
+        inContainer.addSubview(dayButton)
+        dayButton.backgroundColor = inDay.isEnabled ? inContainer.tintColor : .gray
+        dayButton.tintColor = .white
+        dayButton.titleLabel?.font = .boldSystemFont(ofSize: 24)
+        dayButton.cornerRadius = 8
+        dayButton.titleLabel?.textAlignment = .center
+        dayButton.setTitle(String(inDay.day), for: .normal)
+        dayButton.translatesAutoresizingMaskIntoConstraints = false
+        dayButton.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor, constant: 2).isActive = true
+        dayButton.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor, constant: -2).isActive = true
+        dayButton.topAnchor.constraint(equalTo: inContainer.topAnchor, constant: 2).isActive = true
+        dayButton.bottomAnchor.constraint(equalTo: inContainer.bottomAnchor, constant: -2).isActive = true
+    }
+    
+    /* ################################################################## */
+    /**
+     */
     private func _populateWeek(_ inAllDays: [DateItem], index inCurrentIndex: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> (topAnchor: NSLayoutYAxisAnchor, endIndex: Int) {
         var index = inCurrentIndex
         
         let weekContainerView = UIView()
         inContainer.addSubview(weekContainerView)
-        weekContainerView.backgroundColor = .yellow
+        weekContainerView.backgroundColor = .clear
         weekContainerView.translatesAutoresizingMaskIntoConstraints = false
         weekContainerView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
         weekContainerView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
@@ -403,15 +422,15 @@ extension RVS_CalendarInput {
         
         if let firstDay = inAllDays[index].date,
            let firstDataWeekday = calendar.dateComponents([.weekday], from: firstDay).weekday {
-            let offsetWeekday = startingWeekday + (firstDataWeekday - 1)
-            let startingWeekdayIndex = offsetWeekday < 7 ? offsetWeekday : offsetWeekday - 7
+            let offsetWeekday = (firstDataWeekday - 1) - startingWeekday
+            let startingWeekdayIndex = 0 > offsetWeekday ? offsetWeekday + 7 : offsetWeekday
 
             var leadingAnchor = weekContainerView.leadingAnchor
             var measurement: NSLayoutDimension?
             for weekday in (0..<7) {
                 let dayContainerView = UIView()
                 weekContainerView.addSubview(dayContainerView)
-                dayContainerView.backgroundColor = .gray
+                dayContainerView.backgroundColor = .clear
                 dayContainerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
                 dayContainerView.translatesAutoresizingMaskIntoConstraints = false
                 dayContainerView.topAnchor.constraint(equalTo: weekContainerView.topAnchor).isActive = true
@@ -420,7 +439,8 @@ extension RVS_CalendarInput {
                 dayContainerView.heightAnchor.constraint(equalTo: dayContainerView.widthAnchor).isActive = true
                 if weekday >= startingWeekdayIndex,
                    index < inAllDays.count {
-                    dayContainerView.backgroundColor = .green
+                    dayContainerView.backgroundColor = .clear
+                    _makeMyDay(inAllDays[index], in: dayContainerView)
                     index += 1
                 }
                 measurement = dayContainerView.widthAnchor
@@ -442,7 +462,7 @@ extension RVS_CalendarInput {
         if !dataForThisMonth.isEmpty {
             let monthWeekContainerView = UIView()
             inContainer.addSubview(monthWeekContainerView)
-            monthWeekContainerView.backgroundColor = .red
+            monthWeekContainerView.backgroundColor = .clear
             monthWeekContainerView.translatesAutoresizingMaskIntoConstraints = false
             monthWeekContainerView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
             monthWeekContainerView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true

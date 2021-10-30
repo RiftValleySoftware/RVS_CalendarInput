@@ -78,6 +78,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
                   var startMonth = startComponents.month,
                   let endMonth = endComponents.month
             else { return }
+            
             // Now, a fairly simple nested loop is used to poulate our data.
             for year in startYear...endYear {
                 for month in startMonth...12 where year < endYear || month <= endMonth {
