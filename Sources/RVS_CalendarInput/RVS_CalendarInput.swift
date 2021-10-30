@@ -388,15 +388,58 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      */
+    private func _populateWeek(_ inAllDays: [DateItem], index inCurrentIndex: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> (topAnchor: NSLayoutYAxisAnchor, endIndex: Int) {
+        var index = inCurrentIndex
+        
+        let weekContainerView = UIView()
+        inContainer.addSubview(weekContainerView)
+        weekContainerView.backgroundColor = .yellow
+        weekContainerView.translatesAutoresizingMaskIntoConstraints = false
+        weekContainerView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
+        weekContainerView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
+        weekContainerView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
+
+        let startingWeekday = calendar.firstWeekday - 1
+        
+        if let firstDay = inAllDays[index].date,
+           let firstDataWeekday = calendar.dateComponents([.weekday], from: firstDay).weekday {
+            let offsetWeekday = startingWeekday + (firstDataWeekday - 1)
+            let startingWeekdayIndex = offsetWeekday < 7 ? offsetWeekday : offsetWeekday - 7
+
+            var leadingAnchor = weekContainerView.leadingAnchor
+            var measurement: NSLayoutDimension?
+            for weekday in (0..<7) {
+                let dayContainerView = UIView()
+                weekContainerView.addSubview(dayContainerView)
+                dayContainerView.backgroundColor = .gray
+                dayContainerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                dayContainerView.translatesAutoresizingMaskIntoConstraints = false
+                dayContainerView.topAnchor.constraint(equalTo: weekContainerView.topAnchor).isActive = true
+                dayContainerView.bottomAnchor.constraint(equalTo: weekContainerView.bottomAnchor).isActive = true
+                measurement?.constraint(equalTo: dayContainerView.widthAnchor).isActive = true
+                dayContainerView.heightAnchor.constraint(equalTo: dayContainerView.widthAnchor).isActive = true
+                if weekday >= startingWeekdayIndex,
+                   index < inAllDays.count {
+                    dayContainerView.backgroundColor = .green
+                    index += 1
+                }
+                measurement = dayContainerView.widthAnchor
+                leadingAnchor = dayContainerView.trailingAnchor
+            }
+            
+            leadingAnchor.constraint(equalTo: weekContainerView.trailingAnchor).isActive = true
+        }
+
+        return (topAnchor: weekContainerView.bottomAnchor, endIndex: index)
+    }
+    
+    /* ################################################################## */
+    /**
+     */
     private func _populateMonth(_ inMonth: Int, year inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) {
         let dataForThisMonth = data.allResults(forThisYear: inYear, forThisMonth: inMonth)
         
-        if !dataForThisMonth.isEmpty,
-           let firstDay = dataForThisMonth.first?.date,
-           let firstDataWeekday = calendar.dateComponents([.weekday], from: firstDay).weekday {
-            let allDays = dataForThisMonth.count
-            var currentLocalIndex = 0
-
+        if !dataForThisMonth.isEmpty {
             let monthWeekContainerView = UIView()
             inContainer.addSubview(monthWeekContainerView)
             monthWeekContainerView.backgroundColor = .red
@@ -405,79 +448,13 @@ extension RVS_CalendarInput {
             monthWeekContainerView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
             monthWeekContainerView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
             monthWeekContainerView.bottomAnchor.constraint(equalTo: inContainer.bottomAnchor).isActive = true
-
-            let zeroBasedCalendarFirstDay = calendar.firstWeekday - 1
-
-            let adjustedFirstDayWeekday = firstDataWeekday + zeroBasedCalendarFirstDay
-            let zeroBasedWeekdayIndex = adjustedFirstDayWeekday < 8 ? adjustedFirstDayWeekday - 1 : adjustedFirstDayWeekday - 8
-
-            var leadingAnchor = monthWeekContainerView.leadingAnchor
+            
             var topAnchor = monthWeekContainerView.topAnchor
-            var newAnchor: NSLayoutYAxisAnchor?
-            var indexAnchor: NSLayoutDimension?
-            
-            for _ in (0..<zeroBasedWeekdayIndex) {
-                let thisFillerView = UIView()
-                monthWeekContainerView.addSubview(thisFillerView)
-                thisFillerView.backgroundColor = .gray
-                thisFillerView.translatesAutoresizingMaskIntoConstraints = false
-                thisFillerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-                thisFillerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-                indexAnchor?.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
-                thisFillerView.heightAnchor.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
-                leadingAnchor = thisFillerView.trailingAnchor
-                indexAnchor = thisFillerView.widthAnchor
-                newAnchor = thisFillerView.bottomAnchor
+            var index = 0
+            while index < dataForThisMonth.count {
+                (topAnchor, index) = _populateWeek(dataForThisMonth, index: index, in: monthWeekContainerView, topAnchor: topAnchor)
             }
             
-            guard let newTop = newAnchor else { return }
-            
-            topAnchor = newTop
-            
-            var trailer: Int = zeroBasedWeekdayIndex
-            
-            while currentLocalIndex < allDays {
-                for index in trailer..<7 where currentLocalIndex < allDays {
-                    let thisFillerView = UIView()
-                    trailer = index
-                    monthWeekContainerView.addSubview(thisFillerView)
-                    thisFillerView.backgroundColor = .yellow
-                    thisFillerView.translatesAutoresizingMaskIntoConstraints = false
-                    thisFillerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-                    thisFillerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-                    indexAnchor?.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
-                    thisFillerView.heightAnchor.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
-                    leadingAnchor = thisFillerView.trailingAnchor
-                    currentLocalIndex += 1
-                    newAnchor = thisFillerView.bottomAnchor
-                }
-                
-                trailer = 0
-                leadingAnchor.constraint(equalTo: monthWeekContainerView.trailingAnchor).isActive = true
-                leadingAnchor = monthWeekContainerView.leadingAnchor
-                guard let newTop = newAnchor else { return }
-                topAnchor = newTop
-            }
-            
-            for _ in (trailer..<7) {
-                let thisFillerView = UIView()
-                monthWeekContainerView.addSubview(thisFillerView)
-                thisFillerView.backgroundColor = .gray
-                thisFillerView.translatesAutoresizingMaskIntoConstraints = false
-                thisFillerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-                thisFillerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-                thisFillerView.heightAnchor.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
-                indexAnchor?.constraint(equalTo: thisFillerView.widthAnchor).isActive = true
-                leadingAnchor = thisFillerView.trailingAnchor
-                indexAnchor = thisFillerView.widthAnchor
-                newAnchor = thisFillerView.bottomAnchor
-            }
-            
-            guard let newTop = newAnchor else { return }
-            
-            topAnchor = newTop
-
-            leadingAnchor.constraint(equalTo: monthWeekContainerView.trailingAnchor).isActive = true
             topAnchor.constraint(equalTo: monthWeekContainerView.bottomAnchor).isActive = true
         }
     }
