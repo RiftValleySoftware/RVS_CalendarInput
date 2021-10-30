@@ -149,8 +149,18 @@ open class RVS_CalendarInput: UIView {
         /**
          */
         weak var myHandler: RVS_CalendarInput?
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            backgroundColor = dateItem?.isEnabled  ?? false ? myHandler?.tintColor : .systemGray2
+            tintColor = .white
+            titleLabel?.font = .boldSystemFont(ofSize: 24)
+            cornerRadius = 8
+            titleLabel?.textAlignment = .center
+            setTitle(String(dateItem?.day ?? 0), for: .normal)
+        }
     }
-    
+
     /* ################################################################################################################################## */
     // MARK: Data Item Class
     /* ################################################################################################################################## */
@@ -314,18 +324,6 @@ open class RVS_CalendarInput: UIView {
          */
         public static func == (lhs: DateItem, rhs: DateItem) -> Bool { nil != lhs.date && lhs.date == rhs.date }
     }
-    
-    /* ################################################################## */
-    /**
-     This is a scroll view that wraps the grid. It is created dynamically.
-     */
-    private var _scrollView: UIScrollView?
-    
-    /* ################################################################## */
-    /**
-     This contains the "wrapper" view for the grid.
-     */
-    private var _containerView: UIView?
 
     /* ################################################################## */
     /**
@@ -389,14 +387,10 @@ extension RVS_CalendarInput {
     /**
      */
     private func _makeMyDay(_ inDay: DateItem, in inContainer: UIView) {
-        let dayButton = UIButton()
+        let dayButton = _DayButton()
         inContainer.addSubview(dayButton)
-        dayButton.backgroundColor = inDay.isEnabled ? inContainer.tintColor : .gray
-        dayButton.tintColor = .white
-        dayButton.titleLabel?.font = .boldSystemFont(ofSize: 24)
-        dayButton.cornerRadius = 8
-        dayButton.titleLabel?.textAlignment = .center
-        dayButton.setTitle(String(inDay.day), for: .normal)
+        dayButton.dateItem = inDay
+        dayButton.myHandler = self
         dayButton.translatesAutoresizingMaskIntoConstraints = false
         dayButton.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor, constant: 2).isActive = true
         dayButton.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor, constant: -2).isActive = true
@@ -519,17 +513,16 @@ extension RVS_CalendarInput {
      
      - parameter inYear: The year, as an Int. If the Int is 0 (or less), the year header will not be displayed.
      */
-    private func _addYear(_ inYear: Int, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
+    private func _addYear(_ inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
         var bottomAnchor = inTopAnchor
         
-        if let containerView = _containerView,
-           0 < inYear {
+        if 0 < inYear {
             let yearView = UIView()
-            containerView.addSubview(yearView)
+            inContainer.addSubview(yearView)
             yearView.translatesAutoresizingMaskIntoConstraints = false
             yearView.topAnchor.constraint(equalTo: inTopAnchor).isActive = true
-            yearView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            yearView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+            yearView.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor).isActive = true
+            yearView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
             
             let yearHeader = UILabel()
             
@@ -568,22 +561,22 @@ extension RVS_CalendarInput {
     /**
      */
     private func _setUpGrid() {
-        _scrollView?.removeFromSuperview() // Clean the surface with an alcohol swab, before beginning...
-        _containerView = nil
+        subviews.forEach { $0.removeFromSuperview() } // Clean the surface with an alcohol swab, before beginning...
         
+        let weekdayCalcString = NSAttributedString(string: "WWWWW", attributes: [.font: weekdayHeaderFont])
+        let weekdayHeight = ceil(weekdayCalcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
+
         // Set up the main scroller
         let scrollView = UIScrollView()
-        _scrollView = scrollView
         addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: topAnchor, constant: weekdayHeight).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
         // Set up the scolled container
         let containerView = UIView()
-        _containerView = containerView
         scrollView.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor).isActive = true
@@ -591,16 +584,24 @@ extension RVS_CalendarInput {
         containerView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor).isActive = true
         containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
         containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+
+        var bottomAnchor = containerView.topAnchor
         
-        let weekdayCalcString = NSAttributedString(string: "WWWWW", attributes: [.font: weekdayHeaderFont])
-        let weekdayHeight = ceil(weekdayCalcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
+        let years = data.yearRange
+        
+        // The years, months, and days
+        years.forEach {
+            bottomAnchor = _addYear($0, in: containerView, topAnchor: bottomAnchor)
+        }
+        
+        bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
         
         let weekdayLabelHeader = UIView()
-        containerView.addSubview(weekdayLabelHeader)
+        addSubview(weekdayLabelHeader)
         weekdayLabelHeader.translatesAutoresizingMaskIntoConstraints = false
-        weekdayLabelHeader.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        weekdayLabelHeader.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        weekdayLabelHeader.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        weekdayLabelHeader.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        weekdayLabelHeader.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        weekdayLabelHeader.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         weekdayLabelHeader.heightAnchor.constraint(equalToConstant: weekdayHeight).isActive = true
 
         let startingWeekday = calendar.firstWeekday
@@ -623,18 +624,7 @@ extension RVS_CalendarInput {
             indexAnchor = thisWeekdayHeader.widthAnchor
         }
         
-        leadingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-
-        var bottomAnchor = weekdayLabelHeader.bottomAnchor
-        
-        let years = data.yearRange
-        
-        // The years, months, and days
-        years.forEach {
-            bottomAnchor = _addYear($0, topAnchor: bottomAnchor)
-        }
-        
-        bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
+        leadingAnchor.constraint(equalTo: trailingAnchor).isActive = true
     }
     
     /* ################################################################## */
@@ -714,7 +704,7 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      */
-    private func _buttonHit(_ inButton: _DayButton) {
+    @objc private func _buttonHit(_ inButton: _DayButton) {
     }
 }
 #endif
