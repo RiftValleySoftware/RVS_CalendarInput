@@ -25,12 +25,12 @@ import UIKit
 
 #if os(iOS) // This prevents the IB errors from showing up, under SPM (From SO Answer: https://stackoverflow.com/a/66334661/879365).
 /* ###################################################################################################################################### */
-// MARK: - UIView Extension -
+// MARK: - Fileprivate UIView Extension -
 /* ###################################################################################################################################### */
 /**
  Add a corner radius
  */
-extension UIView {
+fileprivate extension UIView {
     /* ################################################################## */
     /**
      This gives us access to the corner radius, so we can give the view rounded corners.
@@ -50,7 +50,40 @@ extension UIView {
 }
 
 /* ###################################################################################################################################### */
-// MARK: - Sepecial Array Extension Functions for Date Items -
+// MARK: - Fileprivate UIColor Extension -
+/* ###################################################################################################################################### */
+/**
+ Allow inversion
+ */
+fileprivate extension UIColor {
+    /* ################################################################## */
+    /**
+     Returns a "blunt instrument" inversion of the color. It may not always be what we want.
+     */
+    var inverse: UIColor {
+        var alpha: CGFloat = 1.0
+
+        var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0
+        if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return UIColor(red: 1.0 - red, green: 1.0 - green, blue: 1.0 - blue, alpha: alpha)
+        }
+
+        var hue: CGFloat = 0.0, saturation: CGFloat = 0.0, brightness: CGFloat = 0.0
+        if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+            return UIColor(hue: 1.0 - hue, saturation: 1.0 - saturation, brightness: 1.0 - brightness, alpha: alpha)
+        }
+
+        var white: CGFloat = 0.0
+        if self.getWhite(&white, alpha: &alpha) {
+            return UIColor(white: 1.0 - white, alpha: alpha)
+        }
+
+        return self
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: - Special Public Array Extension Functions for Date Items -
 /* ###################################################################################################################################### */
 public extension Array where Element: RVS_CalendarInput.DateItem {
     /* ################################################################## */
@@ -126,15 +159,40 @@ public extension Array where Element: RVS_CalendarInput.DateItem {
 }
 
 /* ###################################################################################################################################### */
-// MARK: - Main Class
-// MARK: Special Calendar Input Class -
+// MARK: - Special Calendar Input Class Delegate -
+/* ###################################################################################################################################### */
+/**
+ This is used to send change notifications out.
+ */
+public protocol RVS_CalendarInputDelegate: AnyObject {
+    /* ################################################################## */
+    /**
+     This is called when a data item changes (user selects the item).
+     - parameter inCalendarInput: The calendar input instance
+     - parameter dateItemChanged: The date item that changed selection state.
+     */
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput.DateItem)
+}
+
+/* ###################################################################################################################################### */
+// MARK: Defaults
+/* ###################################################################################################################################### */
+extension RVS_CalendarInputDelegate {
+    /* ################################################################## */
+    /**
+     */
+    public func calendarInput(_: RVS_CalendarInput, dateItemChanged: RVS_CalendarInput.DateItem) { }
+}
+
+/* ###################################################################################################################################### */
+// MARK: - Special Calendar Input Class -
 /* ###################################################################################################################################### */
 /**
  */
 @IBDesignable
 open class RVS_CalendarInput: UIView {
     /* ################################################################################################################################## */
-    // MARK: Individual Day Button
+    // MARK: Individual Day Button Class
     /* ################################################################################################################################## */
     /**
      Each day is represented by a button. This allows us to associate a DateItem with the button, and customize its display
@@ -142,26 +200,41 @@ open class RVS_CalendarInput: UIView {
     private class _DayButton: UIButton {
         /* ############################################################## */
         /**
+         The date item associated with this instance. Remember that we are using reference emantics for the date items.
          */
-        var dateItem: DateItem?
+        var dateItem: DateItem? { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
         
         /* ############################################################## */
         /**
+         The control that "owns" these buttons.
          */
         weak var myHandler: RVS_CalendarInput?
         
+        /* ############################################################## */
+        /**
+         Called when the views are being laid out.
+         */
         override func layoutSubviews() {
-            super.layoutSubviews()
-            backgroundColor = (dateItem?.isEnabled  ?? false)
-                ? ((dateItem?.isSelected ?? false)
-                   ? myHandler?.weekdayBackgroundColorSelected : myHandler?.weekdayBackgroundColorDeselected)
-                : myHandler?.weekdayBackgroundColorDisabled
-            tintColor = .white
-            titleLabel?.font = myHandler?.weekdayFont
             cornerRadius = 8
+            titleLabel?.font = myHandler?.weekdayFont
             titleLabel?.textAlignment = .center
             setTitle(String(dateItem?.day ?? 0), for: .normal)
-            addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
+            setTitleColor(.label, for: .disabled)
+
+            if dateItem?.isEnabled ?? false {
+                isEnabled = true
+                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : .label.inverse
+                setTitleColor((dateItem?.isSelected ?? false) ? .label.inverse : myHandler?.tintColor, for: .normal)
+                addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
+                alpha = 1.0
+            } else {
+                isEnabled = false
+                backgroundColor = .systemBackground
+                removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
+                alpha = 0.5
+            }
+
+            super.layoutSubviews()
         }
     }
 
@@ -331,83 +404,63 @@ open class RVS_CalendarInput: UIView {
 
     /* ################################################################## */
     /**
+     The background color to be used for each of the days.
+     */
+    private var _weekdayBackgroundColorDisabled = UIColor.systemGray3
+
+    /* ################################################################## */
+    /**
      The font to be used for the weekday header, at the top.
      */
-    var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18)
+    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18)
 
     /* ################################################################## */
     /**
      The font to be used for the year header.
      */
-    var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20)
+    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20)
 
     /* ################################################################## */
     /**
      The font to be used for the month header.
      */
-    var monthHeaderFont = UIFont.boldSystemFont(ofSize: 14)
+    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18)
 
     /* ################################################################## */
     /**
      The font to be used for each of the days.
      */
-    var weekdayFont = UIFont.boldSystemFont(ofSize: 24)
+    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24)
 
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    var weekdayHeaderFontColor = UIColor.label
+    public var weekdayHeaderFontColor = UIColor.label
 
     /* ################################################################## */
     /**
      The font color to be used for the year header.
      */
-    var yearHeaderFontColor = UIColor.white
+    public var yearHeaderFontColor = UIColor.white
 
     /* ################################################################## */
     /**
      The font color to be used for the month header.
      */
-    var monthHeaderFontColor = UIColor.white
-
-    /* ################################################################## */
-    /**
-     The font color to be used for each of the days.
-     */
-    var weekdayFontColor = UIColor.white
+    public var monthHeaderFontColor = UIColor.white
 
     /* ################################################################## */
     /**
      The background color to be used for the year header.
      */
-    var yearHeaderBackgroundColor = UIColor.systemGray
+    public var yearHeaderBackgroundColor = UIColor.systemGray
 
     /* ################################################################## */
     /**
      The background color to be used for the month header.
      */
-    var monthHeaderBackgroundColor = UIColor.systemGray2
-
-    /* ################################################################## */
-    /**
-     The background color to be used for each of the days.
-     */
-    var weekdayBackgroundColorDisabled = UIColor.systemGray3
-
-    /* ################################################################## */
-    /**
-     The background color to be used for each of the days, when enabled and selected.
-     This will be replaced in the layout handler. The tint will be used.
-     */
-    var weekdayBackgroundColorSelected = UIColor.gray
-
-    /* ################################################################## */
-    /**
-     The background color to be used for each of the days, when enabled and selected.
-     This will be replaced in the layout handler. A 0.5 alpha tint will be used.
-     */
-    var weekdayBackgroundColorDeselected = UIColor.gray
+    public var monthHeaderBackgroundColor = UIColor.systemGray2
 
     /* ################################################################## */
     /**
@@ -420,37 +473,50 @@ open class RVS_CalendarInput: UIView {
      This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
      */
     public var calendar: Calendar = Calendar.current
+    
+    /* ################################################################## */
+    /**
+     This is the delegate that is used to receive noitifications of date items changing.
+     */
+    public weak var delegate: RVS_CalendarInputDelegate?
+    
 }
 
 /* ###################################################################################################################################### */
-// MARK: Computed Properties
+// MARK: Convenience Initializer
 /* ###################################################################################################################################### */
 extension RVS_CalendarInput {
     /* ################################################################## */
     /**
-     This is basically a write-only way to set up the control. Read will always return an empty array.
-     This contains the particular dates that you want to affect. The date range of the control will be determined from these data.
-     Setting this value will re-initialize the control.
+     This allows the instance to be instantiated with an initial frame and/or initial data and/or a delegate.
+     - parameter frame: An initial frame. OPTIONAL
+     - parameter setUpData: This is an array of initial date objects that will be used. OPTIONAL
+     - parameter delegate: A delegate for this instance. OPTIONAL
      */
-    public var setupData: [DateItem] {
-        get { [] }
-        set {
-            let temp = newValue
-            
-            if !temp.isEmpty {
-                _determineDataSetup(from: temp)
-                setNeedsLayout()
-            }
+    public convenience init(frame inFrame: CGRect = .zero, setUpData inSetupData: [DateItem] = [], delegate inDelegate: RVS_CalendarInputDelegate? = nil) {
+        if inFrame.isEmpty {
+            self.init()
+        } else {
+            self.init(frame: inFrame)
         }
+        
+        if !inSetupData.isEmpty {
+            setupData = inSetupData
+        }
+        
+        delegate = inDelegate
     }
 }
 
 /* ###################################################################################################################################### */
-// MARK: Instance Methods
+// MARK: Private Instance Methods
 /* ###################################################################################################################################### */
 extension RVS_CalendarInput {
     /* ################################################################## */
     /**
+     This creates a single day button.
+     - parameter inDay: The date item associated with this button.
+     - parameter in: The container for this button.
      */
     private func _makeMyDay(_ inDay: DateItem, in inContainer: UIView) {
         let dayButton = _DayButton()
@@ -466,6 +532,12 @@ extension RVS_CalendarInput {
     
     /* ################################################################## */
     /**
+     This creates a week of buttons, accounting for offest days (month start), as well as weeks that begin on different days.
+     - parameter inAllDays: This is an array of DateItem, containing all the days for the month (usually). It does not need to be just the month, but it should have at least one date in this week.
+     - parameter index: The current index into the date item array.
+     - parameter in: The container for this week.
+     - parameter topAnchor: This is the item immediately above this week, and the week will be attached to it.
+     - returns: A tuple, containing the new index (incremented past the items needed for this week), and the new top anchor (which is the bottom of the week conrtainer).
      */
     private func _populateWeek(_ inAllDays: [DateItem], index inCurrentIndex: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> (topAnchor: NSLayoutYAxisAnchor, endIndex: Int) {
         var index = inCurrentIndex
@@ -515,6 +587,11 @@ extension RVS_CalendarInput {
     
     /* ################################################################## */
     /**
+     This populates the actual weeks inside the month, under the header.
+     - parameter inMonth: The numerical value of the month, in the calendar used for the data.
+     - parameter inYear: The numerical year, in the calendar used for the data.
+     - parameter in: The container for this month.
+     - parameter topAnchor: This is the item immediately above this month of weeks (the header).
      */
     private func _populateMonth(_ inMonth: Int, year inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) {
         let dataForThisMonth = data.allResults(forThisYear: inYear, forThisMonth: inMonth)
@@ -541,6 +618,11 @@ extension RVS_CalendarInput {
     
     /* ################################################################## */
     /**
+     - parameter inMonth: The numerical value of the month, in the calendar used for the data.
+     - parameter inYear: The numerical year, in the calendar used for the data.
+     - parameter to: The container for this month.
+     - parameter topAnchor: This is the item immediately above this month, and the month will be attached to it.
+     - returns: The Y-axis anchor to be used as the top of the next month/year, or attached to the bottom of the control.
      */
     private func _addMonth(_ inMonth: Int, year inYear: Int, to inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
         guard (1..<13).contains(inMonth) else { return inTopAnchor }
@@ -581,6 +663,9 @@ extension RVS_CalendarInput {
      This adds a year container, with a header that displays the given year.
      
      - parameter inYear: The year, as an Int. If the Int is 0 (or less), the year header will not be displayed.
+     - parameter in: The container for this year.
+     - parameter topAnchor: This is the item immediately above this year of months (the header).
+     - returns: The Y-axis anchor to be used as the top of the next year, or attached to the bottom of the control.
      */
     private func _addYear(_ inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
         var bottomAnchor = inTopAnchor
@@ -614,13 +699,8 @@ extension RVS_CalendarInput {
         yearHeader.heightAnchor.constraint(equalToConstant: height).isActive = true
 
         var monthBottom = yearHeader.bottomAnchor
-        
-        let months = data.monthRange(for: inYear)
-        
-        // The months, and days
-        months.forEach {
-            monthBottom = _addMonth($0, year: inYear, to: yearView, topAnchor: monthBottom)
-        }
+
+        data.monthRange(for: inYear).forEach { monthBottom = _addMonth($0, year: inYear, to: yearView, topAnchor: monthBottom) }
 
         bottomAnchor = yearView.bottomAnchor
 
@@ -631,6 +711,7 @@ extension RVS_CalendarInput {
     
     /* ################################################################## */
     /**
+     This sets up the entire control, creating the views necessary, and relating all the various anchors and constraints.
      */
     private func _setUpGrid() {
         subviews.forEach { $0.removeFromSuperview() } // Clean the surface with an alcohol swab, before beginning...
@@ -755,7 +836,47 @@ extension RVS_CalendarInput {
 }
 
 /* ###################################################################################################################################### */
-// MARK: Base Class Overrides
+// MARK: Private Callbacks
+/* ###################################################################################################################################### */
+extension RVS_CalendarInput {
+    /* ################################################################## */
+    /**
+     This is called by buttons for days. It toggles the state of the day, and notifies the delegate.
+     */
+    @objc private func _buttonHit(_ inButton: _DayButton) {
+        if let dateItem = inButton.dateItem,
+           dateItem.isEnabled {
+            dateItem.isSelected = !dateItem.isSelected
+            delegate?.calendarInput(self, dateItemChanged: dateItem)
+        }
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Public Computed Properties
+/* ###################################################################################################################################### */
+extension RVS_CalendarInput {
+    /* ################################################################## */
+    /**
+     This is basically a write-only way to set up the control. Read will always return an empty array.
+     This contains the particular dates that you want to affect. The date range of the control will be determined from these data.
+     Setting this value will re-initialize the control.
+     */
+    public var setupData: [DateItem] {
+        get { [] }
+        set {
+            let temp = newValue
+            
+            if !temp.isEmpty {
+                _determineDataSetup(from: temp)
+                setNeedsLayout()
+            }
+        }
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Open Base Class Overrides
 /* ###################################################################################################################################### */
 extension RVS_CalendarInput {
     /* ################################################################## */
@@ -764,25 +885,7 @@ extension RVS_CalendarInput {
      */
     open override func layoutSubviews() {
         super.layoutSubviews()
-        weekdayBackgroundColorSelected = tintColor
-        weekdayBackgroundColorDeselected = tintColor.withAlphaComponent(0.5)
         _setUpGrid()
-    }
-}
-
-/* ###################################################################################################################################### */
-// MARK: Callbacks
-/* ###################################################################################################################################### */
-extension RVS_CalendarInput {
-    /* ################################################################## */
-    /**
-     */
-    @objc private func _buttonHit(_ inButton: _DayButton) {
-        #if DEBUG
-            if let date = inButton.dateItem?.date {
-                print("Button for \(date) hit")
-            }
-        #endif
     }
 }
 #endif

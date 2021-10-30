@@ -31,15 +31,7 @@ let package = Package(
             name: "RVS-CalendarInput",
             targets: ["RVS_CalendarInput"]
         )],
-    dependencies: [
-        .package(name: "RVS_Generic_Swift_Toolbox", url: "git@github.com:RiftValleySoftware/RVS_Generic_Swift_Toolbox.git", from: "1.6.3"),
-        .package(name: "RVS_GeneralObserver", url: "git@github.com:RiftValleySoftware/RVS_GeneralObserver.git", from: "1.0.5")
-    ],
     targets: [
-        .target(name: "RVS_CalendarInput",
-                dependencies: [
-                    .product(name: "RVS-Generic-Swift-Toolbox", package: "RVS_Generic_Swift_Toolbox"),
-                    .product(name: "RVS-GeneralObserver", package: "RVS_GeneralObserver")]
-                )
+        .target(name: "RVS_CalendarInput")
     ]
 )

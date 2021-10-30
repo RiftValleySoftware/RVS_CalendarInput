@@ -91,7 +91,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
                                let weekday = Calendar.current.dateComponents([.weekday], from: date).weekday,
                                weekday == thisWeekday {
                                 dateItemForThisDay.isEnabled = date >= today
-                                dateItemForThisDay.isSelected = date < today
+                                dateItemForThisDay.isSelected = date == today
                             }
                             seedData.append(dateItemForThisDay)
                         }

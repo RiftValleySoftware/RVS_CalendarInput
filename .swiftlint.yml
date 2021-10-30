@@ -1,13 +1,6 @@
 disabled_rules:
-- identifier_name
-- nesting
-- function_parameter_count
 - trailing_whitespace
 - type_name
-- todo
-- inert_defer
-- reduce_boolean
-- syntactic_sugar
 
 opt_in_rules:
 - control_statement
@@ -21,8 +14,8 @@ function_body_length:
 - 100 #error
 
 file_length:
-- 849 # warning
-- 850 # error
+- 999 # warning
+- 1000 # error
 
 type_body_length:
 - 99 # warning

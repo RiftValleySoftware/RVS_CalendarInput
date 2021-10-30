@@ -42,7 +42,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D40770302728BB8300F218DE /* jazzy.command */ = {isa = PBXFileReference; lastKnownFileType = file; path = jazzy.command; sourceTree = SOURCE_ROOT; };
+		D40770302728BB8300F218DE /* jazzy.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = jazzy.command; sourceTree = SOURCE_ROOT; };
 		D40770312728BB8300F218DE /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		D40770322728BB8300F218DE /* CODEOWNERS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CODEOWNERS; sourceTree = SOURCE_ROOT; };
 		D40770332728BB8300F218DE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
@@ -56,6 +56,7 @@
 		D407704F2728BCB400F218DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RVS_CalendarInput.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D468FE5C2728A5EF00C1CED3 /* RVS_CalendarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_CalendarInput.swift; sourceTree = "<group>"; };
+		D49359E4272DD99C002A92C5 /* RVS_GeneralObserver */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RVS_GeneralObserver; path = "/Users/chrismarshall/Development/Developer/Xcode/DerivedData/RVS_CalendarInput-dnjyknozdwccvceiwqdkblhyipyb/SourcePackages/checkouts/RVS_GeneralObserver"; sourceTree = "<absolute>"; };
 		D4BC598A2728A6C00031211D /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		D4BC598F2728A84D0031211D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -66,6 +67,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D40770532728BD6C00F218DE /* RVS_CalendarInput.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D49359E3272DD98F002A92C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +102,7 @@
 		D40770522728BD6C00F218DE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D49359E4272DD99C002A92C5 /* RVS_GeneralObserver */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -195,6 +204,7 @@
 			buildPhases = (
 				D4BC598D2728A75E0031211D /* SwiftLint */,
 				D468FE4C2728A53A00C1CED3 /* Sources */,
+				D49359E3272DD98F002A92C5 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -202,8 +212,6 @@
 			);
 			name = RVS_CalendarInput;
 			packageProductDependencies = (
-				D407705A2728BF6B00F218DE /* RVS-GeneralObserver */,
-				D407705C2728BFC000F218DE /* RVS-Generic-Swift-Toolbox */,
 			);
 			productName = RVS_CalendarInput;
 			productReference = D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */;
@@ -238,8 +246,6 @@
 			);
 			mainGroup = D468FE462728A53A00C1CED3;
 			packageReferences = (
-				D40770592728BF6B00F218DE /* XCRemoteSwiftPackageReference "RVS_GeneralObserver" */,
-				D407705B2728BFC000F218DE /* XCRemoteSwiftPackageReference "RVS_Generic_Swift_Toolbox" */,
 			);
 			productRefGroup = D468FE512728A53A00C1CED3 /* Products */;
 			projectDirPath = "";
@@ -624,38 +630,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		D40770592728BF6B00F218DE /* XCRemoteSwiftPackageReference "RVS_GeneralObserver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RiftValleySoftware/RVS_GeneralObserver";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.5;
-			};
-		};
-		D407705B2728BFC000F218DE /* XCRemoteSwiftPackageReference "RVS_Generic_Swift_Toolbox" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RiftValleySoftware/RVS_Generic_Swift_Toolbox";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.6.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D407705A2728BF6B00F218DE /* RVS-GeneralObserver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D40770592728BF6B00F218DE /* XCRemoteSwiftPackageReference "RVS_GeneralObserver" */;
-			productName = "RVS-GeneralObserver";
-		};
-		D407705C2728BFC000F218DE /* RVS-Generic-Swift-Toolbox */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D407705B2728BFC000F218DE /* XCRemoteSwiftPackageReference "RVS_Generic_Swift_Toolbox" */;
-			productName = "RVS-Generic-Swift-Toolbox";
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D468FE472728A53A00C1CED3 /* Project object */;
 }
