@@ -24,7 +24,9 @@ In our application, we are adding a workflow, that allows the user of the app to
 ## HOW DOES IT WORK?
 The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency. The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates. When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.
 
-The widget is completely localized, respecting the user's calendar and week start. It also adapts well to various layouts, and can have its headers and other items customized.
+There are headers for wekdays, years and months. They can all be individually hidden. The weekdays header is "fixed." The scroller will scroll underneath it.
+
+The widget is completely localized, respecting the user's calendar and week start. All weekdays and months are displayed in the localized form. It also adapts well to various layouts, and can have its headers and other items customized.
 
 ## REQUIREMENTS
 
@@ -96,9 +98,56 @@ The data is kept in an array of [`RVS_CalendarInput.DateItem`](https://github.co
 
 The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, position it in the layout, and supply it with an initial dataset. The widget, itself, uses autolayout to maintain its internal layout. All the user needs to worry about, is positioning the widget as a rectangle, in their own layout.
 
-The colors for most of the control can be customized, but the disabled colors will be based on the system background color (and the days will be slightly transparent).
+The colors for most of the control can be customized, but the disabled colors will always be based on the system background color (and the days will be slightly transparent). You cannot change the color of the disabled days.
+
+The widget class is also declared as [`open`](https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html#ID5), so it can be subclassed, and completely modified.
 
 ## THE TEST HARNESS APP
+The test harness app is a simple, 1-screen iOS app that presents the widget under a "dashboard." The default date range goes from one (or, occasionally, two) month[s] prior to today, to up to four subsequent months. The same weekday as today, is highlighted in all the displayed days (that fall within the date range).
+
+### THE BASICS
+
+"Today" is enabled and selected (note October 31, in Figure 1). Subsequent instances of the same weekday as "today," are enabled, but not highlighted (note November 7 - January 22, in Figure 1 and Figure 2) The enabled days end at the end date, specified in the date picker. Even if there are more displayed days in the widget, after the end date, they will not be enabled or selected (note January 30 in Figure 2).
+
+Past days are always disabled. Past days of the same weekday, after the start date, are also selected (note October 3-24, in Figure 1).
+
+| ![Figure 1: The Test Harness Default Screen](img/Figure-01.png) | ![Figure 2: The Test Harness Default Screen (Scrolled)](img/Figure-02.png) |
+| - | - |
+| Figure 1: The Test Harness Default Screen | Figure 2: The Test Harness Default Screen (Scrolled) |
+
+### HIDING HEADERS
+
+The three switches in the dashboard will hide the widget headers. Figures 3-6 will show how this happens:
+
+| ![Figure 3: Hiding the Year Header](img/Figure-03.png) | ![Figure 4: Hiding the Month Header](img/Figure-04.png) |
+| - | - |
+| Figure 3: Hiding the Year Header | Figure 4: Hiding the Month Header |
+
+| ![Figure 5: Hiding the Weekday Header](img/Figure-05.png) | ![Figure 6: Hiding All Headers](img/Figure-06.png) |
+| - | - |
+| Figure 5: Hiding the Weekday Header | Figure 6: Hiding All Headers |
+
+### CHANGING DATE RANGES
+
+Use the date pickers to choose a range. Note that any days before today (this file was authored on October 31, 2021 -Happy Halloween!) will be disabled. The same weekday as today, will be highlighted.
+
+| ![Figure 7: Selecting the Month of October, 2021](img/Figure-07.png) | ![Figure 8: Leaving Out Today (October 31)](img/Figure-08.png) |
+| - | - |
+| Figure 7: Selecting the Month of October, 2021 | Figure 8: Leaving Out Today (October 31) |
+
+In Figure 8, we restrict the range, so that today is not included, so we do not get October 31 selected and enabled, even though it is displayed.
+
+### "CLOWN MODE"
+
+If you hit the little "clown" button, the colors of the widget will be customized to some truly ghastly colors (Not to worry. Hit the button again, and you'll get the defaults back):
+
+| ![Figure 9: Clown Mode On](img/Figure-09.png) | ![Figure 10: Clown Mode Off](img/Figure-01.png) |
+| - | - |
+| Figure 9: Clown Mode On | Figure 10: Clown Mode Off |
+
+### BROWSE THE CODE
+
+[The source code for the test harness](https://github.com/RiftValleySoftware/RVS_CalendarInput/tree/master/Tests/RVS_CalendarInput/RVS_CalendarInputTestHarness) should give a good example of how to use the app.
 
 ## LICENSE
 

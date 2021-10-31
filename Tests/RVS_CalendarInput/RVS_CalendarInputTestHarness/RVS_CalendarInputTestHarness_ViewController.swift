@@ -125,6 +125,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
+        calendarWidgetInstance?.delegate = self
         initialWeekdayHeaderFontColor = calendarWidgetInstance?.weekdayHeaderFontColor ?? .clear
         initialYearHeaderFontColor = calendarWidgetInstance?.yearHeaderFontColor ?? .clear
         initialYearHeaderBackgroundColor = calendarWidgetInstance?.yearHeaderBackgroundColor ?? .clear
@@ -284,5 +285,21 @@ extension RVS_CalendarInputTestHarness_ViewController {
             inButton.setImage(highlightedImage, for: .normal)
             inButton.setImage(normalImage, for: .highlighted)
         }
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: RVS_CalendarInputDelegate Conformance
+/* ###################################################################################################################################### */
+extension RVS_CalendarInputTestHarness_ViewController: RVS_CalendarInputDelegate {
+    /* ################################################################## */
+    /**
+     This is called when the user selects an enabled calendar date.
+     Currently, only a console message is sent.
+     - parameter inCalendarInput: The calendar input widget instance. It is ignored in this handler.
+     - parameter dateItemChanged: The date item that was changed.
+     */
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput.DateItem) {
+        print("The date \(String(describing: inDateItem.date)) was selected by the user. It is currently \(inDateItem.isSelected ? "" : "not ")selected.")
     }
 }

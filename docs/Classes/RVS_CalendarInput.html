@@ -96,16 +96,9 @@
                 </div>
               </div>
             <p>This is a customized <a href="https://developer.apple.com/documentation/uikit/uiview">UIView</a> implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.
-The idea is to present a simple, intuitive interface, much like the classic &ldquo;booking&rdquo; interfaces, presented by Web sites.
-The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency.
-The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates.
-Allowance is made for localization, with localized month and weekday names, as well as week start options.
-Implementors can register as delegates, to receive notifications, when the user selects a day, or they can examine an array of data objects, representing the state of the control.
-The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, and supply it with an initial dataset.
-The control will develop the range of months, depending on the provided dataset.
-The minimal unit is a month. The dataset&rsquo;s earliest date will determine the starting month; including dates before the dataset start (from the first of the month), to the final month of the dataset.
-When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.
-The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol">UIControl</a>, as the event targeting system would not be useful for the types of interactions
+The idea is to present a simple, intuitive interface, much like the classic &ldquo;booking&rdquo; interfaces, presented by Web sites.</p>
+
+<p>The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol">UIControl</a>, as the event targeting system would not be useful for the types of interactions
 that can occur with this control. Instead, the implementor should register as a delegate (<code><a href="../Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code>), and receive messages, when the control is used.
 The implementor can always examine the <code>data</code> array, and detrmine the control state. That array is updated in realtime.</p>
 
@@ -228,7 +221,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">calendar</span><span class="p">:</span> <span class="kt">Calendar</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">calendar</span><span class="p">:</span> <span class="kt">Calendar</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -255,7 +248,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">weekdayHeaderFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">weekdayHeaderFont</span><span class="p">:</span> <span class="kt">UIFont</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -282,7 +275,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">yearHeaderFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">yearHeaderFont</span><span class="p">:</span> <span class="kt">UIFont</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -309,7 +302,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">monthHeaderFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">monthHeaderFont</span><span class="p">:</span> <span class="kt">UIFont</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -336,7 +329,35 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">weekdayFont</span><span class="p">:</span> <span class="kt">UIFont</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">weekdayFont</span><span class="p">:</span> <span class="kt">UIFont</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_CalendarInputAAC26enabledItemBackgroundColorSo7UIColorCvp"></a>
+                    <a name="//apple_ref/swift/Property/enabledItemBackgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_CalendarInputAAC26enabledItemBackgroundColorSo7UIColorCvp">enabledItemBackgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This is the color for the background of unselected and enabled days.
+If the day is selected, this becomes the font color.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">enabledItemBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -363,7 +384,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">weekdayHeaderFontColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">weekdayHeaderFontColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -390,7 +411,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">yearHeaderFontColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">yearHeaderFontColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -417,7 +438,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">monthHeaderFontColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">monthHeaderFontColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -444,7 +465,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">yearHeaderBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">yearHeaderBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -471,7 +492,91 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">monthHeaderBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">monthHeaderBackgroundColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showMonthHeaders"></a>
+                    <a name="//apple_ref/swift/Property/showMonthHeaders" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showMonthHeaders">showMonthHeaders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If this is false (default is true), then the month headers will not be shown.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@IBInspectable</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">showMonthHeaders</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showYearHeaders"></a>
+                    <a name="//apple_ref/swift/Property/showYearHeaders" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showYearHeaders">showYearHeaders</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If this is false (default is true), then the year headers will not be shown.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@IBInspectable</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">showYearHeaders</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showWeekdayHeader"></a>
+                    <a name="//apple_ref/swift/Property/showWeekdayHeader" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showWeekdayHeader">showWeekdayHeader</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If this is false (default is true), then the weekday header will not be shown.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@IBInspectable</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">showWeekdayHeader</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>

@@ -99,6 +99,172 @@
 
 <hr>
 <h2 id='introduction' class='heading'>INTRODUCTION</h2>
+
+<p>RVS_CalendarInput is a customized <a href="https://developer.apple.com/documentation/uikit/uiview">UIView</a> implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.</p>
+
+<p>The workflow may be familiar to people that have used Web-based &ldquo;booking&rdquo; systems. A date grid is presented, in calendar form, with certain dates higlighted as toggle buttons. The user can select these dates.</p>
+<h2 id='what-problem-does-it-solve' class='heading'>WHAT PROBLEM DOES IT SOLVE?</h2>
+
+<p>Unlike some of the other open-source widgets that we&rsquo;ve produced, this widget is being designed for a single application and workflow, so it will be less &ldquo;general purpose&rdquo; than other Great Rift Valley Software Company widgets.</p>
+
+<p>In our application, we are adding a workflow, that allows the user of the app to declare that they will be attending events on certain dates. This widget is how they will do that.</p>
+<h2 id='how-does-it-work' class='heading'>HOW DOES IT WORK?</h2>
+
+<p>The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency. The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates. When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.</p>
+
+<p>There are headers for wekdays, years and months. They can all be individually hidden. The weekdays header is &ldquo;fixed.&rdquo; The scroller will scroll underneath it.</p>
+
+<p>The widget is completely localized, respecting the user&rsquo;s calendar and week start. All weekdays and months are displayed in the localized form. It also adapts well to various layouts, and can have its headers and other items customized.</p>
+<h2 id='requirements' class='heading'>REQUIREMENTS</h2>
+
+<p>This is a <a href="https://apple.com/swift">Swift</a>-only module. It is based on <a href="https://developer.apple.com/documentation/uikit">standard UIKit</a>, for <a href="https://apple.com/ios">iOS</a>/<a href="https://apple.com/ipados">iPadOS</a>.</p>
+
+<p>There are no dependencies for the widget, or the test harness app.</p>
+<h2 id='how-do-we-use-it' class='heading'>HOW DO WE USE IT?</h2>
+<h3 id='installation' class='heading'>INSTALLATION</h3>
+<h4 id='where-to-get-the-package' class='heading'>Where to Get the Package</h4>
+
+<p>You can get this package as a <a href="https://swift.org/package-manager/">Swift Package Manager</a> (SPM) package, or you can include it, using <a href="https://github.com/Carthage/Carthage">GitHub&rsquo;s Carthage Package Manager</a>. Finally, you can also <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput">directly access the GitHub repository</a>, and simply include <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift">the single source file</a> into your app.</p>
+<h5 id='the-swift-package-manager' class='heading'>The Swift Package Manager</h5>
+
+<p>In order to use the SPM, add the package to your project with its GitHub repo location:</p>
+<pre class="highlight plaintext"><code>git@github.com:RiftValleySoftware/RVS_CalendarInput.git (SSH),
+</code></pre>
+
+<p>or</p>
+<pre class="highlight plaintext"><code>https://github.com/RiftValleySoftware/RVS_CalendarInput.git (HTTPS).
+</code></pre>
+
+<p>Add the static <code><a href="Classes/RVS_CalendarInput.html">RVS_CalendarInput</a></code> library to your project, and add the following <code>import</code> line to the top of the files that will use the widget:</p>
+<pre class="highlight plaintext"><code>import RVS_CalendarInput
+</code></pre>
+<h5 id='carthage' class='heading'>Carthage</h5>
+
+<p>Add the following line to your <a href="https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile">Cartfile</a>:</p>
+<pre class="highlight plaintext"><code>github "RiftValleySoftware/RVS_CalendarInput.git"
+</code></pre>
+
+<p>Then, run <code>carthage update</code> in the main project directory.</p>
+
+<p>This will create a directory, called &ldquo;Carthage&rdquo;. Inside of that, will be another directory, called <code>Checkins</code>. Inside of that, will be <code>RVS_CalendarInput/Sources/RVS_CalendarInput/RVS_CalendarInput.swift</code>.</p>
+
+<p>I recommend that you include this file directly into your app, as opposed to building the library, and adding that. If you do this, there will be no need to import a module. Additionally, the IBDesignables stuff should work (these are the previews in the storyboard file).</p>
+<h5 id='directly-from-github' class='heading'>Directly From GitHub</h5>
+
+<p>The above Carthage instructions will also basically apply to getting the file from GitHub. You can use the following GitHub URLs to access the repository:</p>
+<pre class="highlight plaintext"><code>git@github.com:RiftValleySoftware/RVS_CalendarInput.git (SSH),
+</code></pre>
+
+<p>or</p>
+<pre class="highlight plaintext"><code>https://github.com/RiftValleySoftware/RVS_CalendarInput.git (HTTPS).
+</code></pre>
+
+<p>You can add the repo as a <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">Git Submodule</a>, or even as a separate repo, that you use as a source for the physical file.</p>
+
+<p>Get the same file, as indicated by Carthage, and add it to your project.</p>
+<h3 id='implementation' class='heading'>IMPLEMENTATION</h3>
+
+<p>The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of date objects to the widget, and the widget will configure itself around that array.</p>
+
+<p>The minimal unit is a month. The dataset&rsquo;s earliest date will determine the starting month; including dates before the dataset start (from the first of the month), to the final month of the dataset.</p>
+
+<p>There must be at least one date in the array presented. Any additional dates will be synthesized within the widget (for example, if one date is the twentieth of a month, the entire month, including all the other days that were not provided, will be created).</p>
+
+<p>Implementors can register as <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L897">delegates</a>, to <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L904">receive notifications</a>, when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.</p>
+<h2 id='more-information' class='heading'>MORE INFORMATION</h2>
+
+<p>The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol">UIControl</a>, as the event targeting system would not be useful for the types of interactions
+that can occur with this control. Instead, the implementor should register as a delegate (<a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L897"><code><a href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code></a>), and receive messages, when the control is used.
+The implementor can always examine the <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315"><code>data</code> array</a>, and detrmine the control state. That array is updated in realtime.
+The data is kept in an array of <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L153"><code><a href="Classes/RVS_CalendarInput/DateItem.html">RVS_CalendarInput.DateItem</a></code></a> instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.</p>
+
+<p>The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, position it in the layout, and supply it with an initial dataset. The widget, itself, uses autolayout to maintain its internal layout. All the user needs to worry about, is positioning the widget as a rectangle, in their own layout.</p>
+
+<p>The colors for most of the control can be customized, but the disabled colors will always be based on the system background color (and the days will be slightly transparent). You cannot change the color of the disabled days.</p>
+
+<p>The widget class is also declared as <a href="https://docs.swift.org/swift-book/LanguageGuide/AccessControl.html#ID5"><code>open</code></a>, so it can be subclassed, and completely modified.</p>
+<h2 id='the-test-harness-app' class='heading'>THE TEST HARNESS APP</h2>
+
+<p>The test harness app is a simple, 1-screen iOS app that presents the widget under a &ldquo;dashboard.&rdquo; The default date range goes from one (or, occasionally, two) month[s] prior to today, to up to four subsequent months. The same weekday as today, is highlighted in all the displayed days (that fall within the date range).</p>
+<h3 id='the-basics' class='heading'>THE BASICS</h3>
+
+<p>&ldquo;Today&rdquo; is enabled and selected (note October 31, in Figure 1). Subsequent instances of the same weekday as &ldquo;today,&rdquo; are enabled, but not highlighted (note November 7 - January 22, in Figure 1 and Figure 2) The enabled days end at the end date, specified in the date picker. Even if there are more displayed days in the widget, after the end date, they will not be enabled or selected (note January 30 in Figure 2).</p>
+
+<p>Past days are always disabled. Past days of the same weekday, after the start date, are also selected (note October 3-24, in Figure 1).</p>
+
+<table><thead>
+<tr>
+<th><img src="img/Figure-01.png" alt="Figure 1: The Test Harness Default Screen"></th>
+<th><img src="img/Figure-02.png" alt="Figure 2: The Test Harness Default Screen (Scrolled)"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Figure 1: The Test Harness Default Screen</td>
+<td>Figure 2: The Test Harness Default Screen (Scrolled)</td>
+</tr>
+</tbody></table>
+<h3 id='hiding-headers' class='heading'>HIDING HEADERS</h3>
+
+<p>The three switches in the dashboard will hide the widget headers. Figures 3-6 will show how this happens:</p>
+
+<table><thead>
+<tr>
+<th><img src="img/Figure-03.png" alt="Figure 3: Hiding the Year Header"></th>
+<th><img src="img/Figure-04.png" alt="Figure 4: Hiding the Month Header"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Figure 3: Hiding the Year Header</td>
+<td>Figure 4: Hiding the Month Header</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th><img src="img/Figure-05.png" alt="Figure 5: Hiding the Weekday Header"></th>
+<th><img src="img/Figure-06.png" alt="Figure 6: Hiding All Headers"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Figure 5: Hiding the Weekday Header</td>
+<td>Figure 6: Hiding All Headers</td>
+</tr>
+</tbody></table>
+<h3 id='changing-date-ranges' class='heading'>CHANGING DATE RANGES</h3>
+
+<p>Use the date pickers to choose a range. Note that any days before today (this file was authored on October 31, 2021 -Happy Halloween!) will be disabled. The same weekday as today, will be highlighted.</p>
+
+<table><thead>
+<tr>
+<th><img src="img/Figure-07.png" alt="Figure 7: Selecting the Month of October, 2021"></th>
+<th><img src="img/Figure-08.png" alt="Figure 8: Leaving Out Today (October 31)"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Figure 7: Selecting the Month of October, 2021</td>
+<td>Figure 8: Leaving Out Today (October 31)</td>
+</tr>
+</tbody></table>
+
+<p>In Figure 8, we restrict the range, so that today is not included, so we do not get October 31 selected and enabled, even though it is displayed.</p>
+<h3 id='quot-clown-mode-quot' class='heading'>&ldquo;CLOWN MODE&rdquo;</h3>
+
+<p>If you hit the little &ldquo;clown&rdquo; button, the colors of the widget will be customized to some truly ghastly colors (Not to worry. Hit the button again, and you&rsquo;ll get the defaults back):</p>
+
+<table><thead>
+<tr>
+<th><img src="img/Figure-09.png" alt="Figure 9: Clown Mode On"></th>
+<th><img src="img/Figure-01.png" alt="Figure 10: Clown Mode Off"></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Figure 9: Clown Mode On</td>
+<td>Figure 10: Clown Mode Off</td>
+</tr>
+</tbody></table>
+<h3 id='browse-the-code' class='heading'>BROWSE THE CODE</h3>
+
+<p><a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/tree/master/Tests/RVS_CalendarInput/RVS_CalendarInputTestHarness">The source code for the test harness</a> should give a good example of how to use the app.</p>
 <h2 id='license' class='heading'>LICENSE</h2>
 
 <p>MIT License</p>
