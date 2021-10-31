@@ -83,63 +83,6 @@ fileprivate extension UIColor {
 }
 
 /* ###################################################################################################################################### */
-// MARK: Date Item Protocol (One element of the `data` array)
-/* ###################################################################################################################################### */
-/**
- This protocol defines the basic structure of one item of the stored data.
- All properties are required.
- */
-public protocol DateItemProtocol: Comparable {
-    /* ################################################################## */
-    /**
-     The year, as an integer.
-     */
-    var year: Int { get set }
-    
-    /* ################################################################## */
-    /**
-     The month, as an integer (1 -> 12).
-     */
-    var month: Int { get set }
-    
-    /* ################################################################## */
-    /**
-     The day of the month (1 -> [28|29|30|31]), as an integer.
-     */
-    var day: Int { get set }
-    
-    /* ################################################################## */
-    /**
-     True, if the item is enabled for selection. Default is false.
-     */
-    var isEnabled: Bool { get set }
-    
-    /* ################################################################## */
-    /**
-     True, if the item is currently selected. Default is false.
-     */
-    var isSelected: Bool { get set }
-
-    /* ################################################################## */
-    /**
-     Reference context. This is how we attach arbitrary data to the item.
-     */
-    var refCon: Any? { get set }
-    
-    /* ################################################################## */
-    /**
-     Return the date item state as a date.
-     */
-    var date: Date? { get }
-    
-    /* ################################################################## */
-    /**
-     Return the date item state as date components.
-     */
-    var dateComponents: DateComponents? { get }
-}
-
-/* ###################################################################################################################################### */
 // MARK: - Special Calendar Input Class -
 /* ###################################################################################################################################### */
 /**
@@ -857,6 +800,63 @@ public extension RVS_CalendarInput {
         super.layoutSubviews()
         _setUpGrid()
     }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Date Item Protocol (One element of the `data` array)
+/* ###################################################################################################################################### */
+/**
+ This protocol defines the basic structure of one item of the stored data.
+ All properties are required.
+ */
+public protocol DateItemProtocol: Comparable {
+    /* ################################################################## */
+    /**
+     The year, as an integer.
+     */
+    var year: Int { get set }
+    
+    /* ################################################################## */
+    /**
+     The month, as an integer (1 -> 12).
+     */
+    var month: Int { get set }
+    
+    /* ################################################################## */
+    /**
+     The day of the month (1 -> [28|29|30|31]), as an integer.
+     */
+    var day: Int { get set }
+    
+    /* ################################################################## */
+    /**
+     True, if the item is enabled for selection.
+     */
+    var isEnabled: Bool { get set }
+    
+    /* ################################################################## */
+    /**
+     True, if the item is currently selected.
+     */
+    var isSelected: Bool { get set }
+
+    /* ################################################################## */
+    /**
+     Reference context. This is how we attach arbitrary data to the item.
+     */
+    var refCon: Any? { get set }
+    
+    /* ################################################################## */
+    /**
+     Return the date item state as a date.
+     */
+    var date: Date? { get }
+    
+    /* ################################################################## */
+    /**
+     Return the date item state as date components.
+     */
+    var dateComponents: DateComponents? { get }
 }
 
 /* ###################################################################################################################################### */
