@@ -12,6 +12,35 @@
 ---
 
 ## INTRODUCTION
+RVS_CalendarInput is a customized [UIView](https://developer.apple.com/documentation/uikit/uiview) implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.
+
+The workflow may be familiar to people that have used Web-based "booking" systems. A date grid is presented, in calendar form, with certain dates higlighted as toggle buttons. The user can select these dates.
+ 
+## WHAT PROBLEM DOES IT SOLVE?
+Unlike some of the other open-source widgets that we've produced, this widget is being designed for a single application and workflow, so it will be less "general purpose" than other Great Rift Valley Software Company widgets.
+
+In our application, we are adding a workflow, that allows the user of the app to declare that they will be attending events on certain dates. This widget is how they will do that.
+
+## HOW DOES IT WORK?
+The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency. The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates. When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.
+
+The widget is completely localized, respecting the user's calendar and week start. It also adapts well to various layouts, and can have its headers and other items customized.
+
+## HOW DO WE USE IT?
+The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of date objects to the widget, and the widget will configure itself around that array.
+
+The minimal unit is a month. The dataset's earliest date will determine the starting month; including dates before the dataset start (from the first of the month), to the final month of the dataset.
+
+There must be at least one date in the array presented. Any additional dates will be synthesized within the widget (for example, if one date is the twentieth of a month, the entire month, including all the other days that were not provided, will be created).
+
+Implementors can register as delegates, to receive notifications, when the user selects a day, or they can examine an array of data objects, representing the state of the control.
+
+## MORE INFORMATION
+The control does not derive from [UIControl](https://developer.apple.com/documentation/uikit/uicontrol), as the event targeting system would not be useful for the types of interactions
+that can occur with this control. Instead, the implementor should register as a delegate (`RVS_CalendarInputDelegate`), and receive messages, when the control is used.
+The implementor can always examine the `data` array, and detrmine the control state. That array is updated in realtime.
+
+The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, position it in the layout, and supply it with an initial dataset.
 
 ## LICENSE
 

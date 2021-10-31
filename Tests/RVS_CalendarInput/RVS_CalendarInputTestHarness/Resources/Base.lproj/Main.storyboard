@@ -28,7 +28,7 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WwT-E6-EhK">
-                                <rect key="frame" x="20" y="44" width="374" height="214"/>
+                                <rect key="frame" x="20" y="44" width="374" height="254"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S3f-yf-5XW">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="64"/>
@@ -65,41 +65,75 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KMA-Sy-wd3">
-                                        <rect key="frame" x="0.0" y="144" width="374" height="31"/>
+                                        <rect key="frame" x="0.0" y="144" width="374" height="32"/>
                                         <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XgQ-mg-iNi">
+                                                <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="32" id="HoE-KE-uND"/>
+                                                    <constraint firstAttribute="width" secondItem="XgQ-mg-iNi" secondAttribute="height" multiplier="1:1" id="Oh3-ah-Gel"/>
+                                                    <constraint firstAttribute="width" secondItem="XgQ-mg-iNi" secondAttribute="height" multiplier="1:1" id="dBr-gr-Z3v"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="clown-grayscale"/>
+                                                <state key="highlighted" image="clown-color"/>
+                                                <connections>
+                                                    <action selector="clownButtonHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NG6-9A-uRd"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9q5-qZ-RzT">
+                                                <rect key="frame" x="36" y="0.0" width="285" height="32"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Show Year Header:"/>
+                                                <connections>
+                                                    <action selector="showYearHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MPL-qq-17t"/>
+                                                </connections>
+                                            </button>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UQd-dB-817" userLabel="Show Year Header Switch">
+                                                <rect key="frame" x="325" y="0.0" width="51" height="32"/>
+                                                <connections>
+                                                    <action selector="showYearHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="valueChanged" id="aKH-Gs-iuw"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="IND-ob-ym9">
+                                        <rect key="frame" x="0.0" y="184" width="374" height="31"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i16-5D-r2V">
                                                 <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Show Date Headers:"/>
+                                                <state key="normal" title="Show Month Header:"/>
                                                 <connections>
-                                                    <action selector="showDateHeadersSwitchHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Yay-va-1hP"/>
+                                                    <action selector="showMonthHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vrp-GP-awL"/>
                                                 </connections>
                                             </button>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UQd-dB-817">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WJF-Us-QQu">
                                                 <rect key="frame" x="325" y="0.0" width="51" height="31"/>
                                                 <connections>
-                                                    <action selector="showDateHeadersSwitchHit:" destination="BYZ-38-t0r" eventType="valueChanged" id="CP9-Bj-LeI"/>
+                                                    <action selector="showMonthHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="valueChanged" id="wo9-qM-nGG"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="2WJ-BO-9mW">
-                                        <rect key="frame" x="0.0" y="183" width="374" height="31"/>
+                                        <rect key="frame" x="0.0" y="223" width="374" height="31"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdz-p2-4kB">
                                                 <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Show Day Header:"/>
+                                                <state key="normal" title="Show Weekday Header:"/>
                                                 <connections>
-                                                    <action selector="showDayHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BaK-uK-1gm"/>
+                                                    <action selector="showWeekdayHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kD0-04-4jP"/>
                                                 </connections>
                                             </button>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18n-W6-A6g">
                                                 <rect key="frame" x="325" y="0.0" width="51" height="31"/>
                                                 <connections>
-                                                    <action selector="showDayHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="valueChanged" id="T4J-ul-flR"/>
+                                                    <action selector="showWeekdayHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="valueChanged" id="y3M-fL-S7C"/>
                                                 </connections>
                                             </switch>
                                         </subviews>
@@ -107,7 +141,7 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F8Y-t3-PtB" customClass="RVS_CalendarInput" customModule="RVS_CalendarInput">
-                                <rect key="frame" x="47" y="266" width="320" height="596"/>
+                                <rect key="frame" x="47" y="306" width="320" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" name="AccentColor"/>
                                 <constraints>
@@ -139,9 +173,11 @@
                     </view>
                     <connections>
                         <outlet property="calendarWidgetInstance" destination="F8Y-t3-PtB" id="0x2-IG-aKP"/>
+                        <outlet property="clownButton" destination="XgQ-mg-iNi" id="wlD-fy-DCO"/>
                         <outlet property="endDatePicker" destination="pSo-p6-dFB" id="SpE-NC-x1S"/>
-                        <outlet property="showDateHeadersSwitch" destination="UQd-dB-817" id="SII-a8-uZt"/>
-                        <outlet property="showDayHeaderSwitch" destination="18n-W6-A6g" id="Cd6-fP-ic2"/>
+                        <outlet property="showMonthHeaderSwitch" destination="WJF-Us-QQu" id="ypI-o7-jCe"/>
+                        <outlet property="showWeekdayHeaderSwitch" destination="18n-W6-A6g" id="mmc-tC-hWg"/>
+                        <outlet property="showYearHeaderSwitch" destination="UQd-dB-817" id="Bzz-vp-SMl"/>
                         <outlet property="startDatePicker" destination="chW-V5-dpv" id="mjY-eb-oKG"/>
                     </connections>
                 </viewController>
@@ -153,6 +189,8 @@
     <resources>
         <image name="CenterImage" width="1031" height="1024"/>
         <image name="background-gradient" width="1" height="1000"/>
+        <image name="clown-color" width="341.5" height="341.5"/>
+        <image name="clown-grayscale" width="341.5" height="341.5"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.51800000667572021" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

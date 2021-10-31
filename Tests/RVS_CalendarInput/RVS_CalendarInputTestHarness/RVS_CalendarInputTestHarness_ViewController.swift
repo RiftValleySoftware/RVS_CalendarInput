@@ -32,6 +32,41 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
     /* ################################################################## */
     /**
      */
+    var initialWeekdayHeaderFontColor: UIColor = .clear
+    
+    /* ################################################################## */
+    /**
+     */
+    var initialYearHeaderFontColor: UIColor = .clear
+    
+    /* ################################################################## */
+    /**
+     */
+    var initialYearHeaderBackgroundColor: UIColor = .clear
+
+    /* ################################################################## */
+    /**
+     */
+    var initialMonthHeaderFontColor: UIColor = .clear
+    
+    /* ################################################################## */
+    /**
+     */
+    var initialMonthHeaderBackgroundColor: UIColor = .clear
+
+    /* ################################################################## */
+    /**
+     */
+    var initialDayFontColor: UIColor = .clear
+    
+    /* ################################################################## */
+    /**
+     */
+    var initialDayBackgroundColor: UIColor = .clear
+
+    /* ################################################################## */
+    /**
+     */
     var seedData: [RVS_CalendarInput.DateItem] = []
     
     /* ################################################################## */
@@ -52,12 +87,22 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
     /* ################################################################## */
     /**
      */
-    @IBOutlet weak var showDateHeadersSwitch: UISwitch!
+    @IBOutlet weak var showYearHeaderSwitch: UISwitch!
     
     /* ################################################################## */
     /**
      */
-    @IBOutlet weak var showDayHeaderSwitch: UISwitch!
+    @IBOutlet weak var showMonthHeaderSwitch: UISwitch!
+
+    /* ################################################################## */
+    /**
+     */
+    @IBOutlet weak var showWeekdayHeaderSwitch: UISwitch!
+
+    /* ################################################################## */
+    /**
+     */
+    @IBOutlet weak var clownButton: UIButton!
 }
 
 /* ###################################################################################################################################### */
@@ -69,6 +114,13 @@ extension RVS_CalendarInputTestHarness_ViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
+        initialWeekdayHeaderFontColor = calendarWidgetInstance?.weekdayHeaderFontColor ?? .clear
+        initialYearHeaderFontColor = calendarWidgetInstance?.yearHeaderFontColor ?? .clear
+        initialYearHeaderBackgroundColor = calendarWidgetInstance?.yearHeaderBackgroundColor ?? .clear
+        initialMonthHeaderFontColor = calendarWidgetInstance?.monthHeaderFontColor ?? .clear
+        initialMonthHeaderBackgroundColor = calendarWidgetInstance?.monthHeaderBackgroundColor ?? .clear
+        initialDayFontColor = calendarWidgetInstance?.tintColor ?? .clear
+        initialDayBackgroundColor = calendarWidgetInstance?.enabledItemBackgroundColor ?? .clear
         setUpInitialSeedData()
     }
 }
@@ -121,8 +173,9 @@ extension RVS_CalendarInputTestHarness_ViewController {
                 }
                 
                 calendarWidgetInstance?.setupData = seedData
-                calendarWidgetInstance?.showHeaders = showDateHeadersSwitch?.isOn ?? true
-                calendarWidgetInstance?.showWeekdayHeader = showDayHeaderSwitch?.isOn ?? true
+                calendarWidgetInstance?.showMonthHeaders = showMonthHeaderSwitch?.isOn ?? true
+                calendarWidgetInstance?.showYearHeaders = showYearHeaderSwitch?.isOn ?? true
+                calendarWidgetInstance?.showWeekdayHeader = showWeekdayHeaderSwitch?.isOn ?? true
             }
         }
     }
@@ -154,24 +207,65 @@ extension RVS_CalendarInputTestHarness_ViewController {
     /* ################################################################## */
     /**
      */
-    @IBAction func showDateHeadersSwitchHit(_ inControl: Any) {
+    @IBAction func showYearHeaderSwitchHit(_ inControl: Any) {
         if inControl is UIButton {
-            showDateHeadersSwitch?.isOn = !(showDateHeadersSwitch?.isOn ?? true)
-            showDateHeadersSwitch?.sendActions(for: .valueChanged)
+            showYearHeaderSwitch?.isOn = !(showYearHeaderSwitch?.isOn ?? true)
+            showYearHeaderSwitch?.sendActions(for: .valueChanged)
         } else {
-            calendarWidgetInstance?.showHeaders = showDateHeadersSwitch?.isOn ?? true
+            calendarWidgetInstance?.showYearHeaders = showYearHeaderSwitch?.isOn ?? true
         }
     }
     
     /* ################################################################## */
     /**
      */
-    @IBAction func showDayHeaderSwitchHit(_ inControl: Any) {
+    @IBAction func showMonthHeaderSwitchHit(_ inControl: Any) {
         if inControl is UIButton {
-            showDayHeaderSwitch?.isOn = !(showDayHeaderSwitch?.isOn ?? true)
-            showDayHeaderSwitch?.sendActions(for: .valueChanged)
+            showMonthHeaderSwitch?.isOn = !(showMonthHeaderSwitch?.isOn ?? true)
+            showMonthHeaderSwitch?.sendActions(for: .valueChanged)
         } else {
-            calendarWidgetInstance?.showWeekdayHeader = showDayHeaderSwitch?.isOn ?? true
+            calendarWidgetInstance?.showMonthHeaders = showMonthHeaderSwitch?.isOn ?? true
+        }
+    }
+
+    /* ################################################################## */
+    /**
+     */
+    @IBAction func showWeekdayHeaderSwitchHit(_ inControl: Any) {
+        if inControl is UIButton {
+            showWeekdayHeaderSwitch?.isOn = !(showWeekdayHeaderSwitch?.isOn ?? true)
+            showWeekdayHeaderSwitch?.sendActions(for: .valueChanged)
+        } else {
+            calendarWidgetInstance?.showWeekdayHeader = showWeekdayHeaderSwitch?.isOn ?? true
+        }
+    }
+
+    /* ################################################################## */
+    /**
+     */
+    @IBAction func clownButtonHit(_ inButton: UIButton) {
+        if initialWeekdayHeaderFontColor == calendarWidgetInstance?.weekdayHeaderFontColor {
+            calendarWidgetInstance?.weekdayHeaderFontColor = .red
+            calendarWidgetInstance?.yearHeaderFontColor = .yellow
+            calendarWidgetInstance?.yearHeaderBackgroundColor = .blue
+            calendarWidgetInstance?.monthHeaderFontColor = .orange
+            calendarWidgetInstance?.monthHeaderBackgroundColor = .purple
+            calendarWidgetInstance?.tintColor = .green
+            calendarWidgetInstance?.enabledItemBackgroundColor = .red
+        } else {
+            calendarWidgetInstance?.weekdayHeaderFontColor = initialWeekdayHeaderFontColor
+            calendarWidgetInstance?.yearHeaderFontColor = initialYearHeaderFontColor
+            calendarWidgetInstance?.yearHeaderBackgroundColor = initialYearHeaderBackgroundColor
+            calendarWidgetInstance?.monthHeaderFontColor = initialMonthHeaderFontColor
+            calendarWidgetInstance?.monthHeaderBackgroundColor = initialMonthHeaderBackgroundColor
+            calendarWidgetInstance?.tintColor = initialDayFontColor
+            calendarWidgetInstance?.enabledItemBackgroundColor = initialDayBackgroundColor
+        }
+        
+        if let highlightedImage = inButton.image(for: .highlighted),
+           let normalImage = inButton.image(for: .normal) {
+            inButton.setImage(highlightedImage, for: .normal)
+            inButton.setImage(normalImage, for: .highlighted)
         }
     }
 }

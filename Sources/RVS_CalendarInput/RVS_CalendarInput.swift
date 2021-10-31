@@ -88,14 +88,7 @@ fileprivate extension UIColor {
 /**
  This is a customized [UIView](https://developer.apple.com/documentation/uikit/uiview) implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.
  The idea is to present a simple, intuitive interface, much like the classic "booking" interfaces, presented by Web sites.
- The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency.
- The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates.
- Allowance is made for localization, with localized month and weekday names, as well as week start options.
- Implementors can register as delegates, to receive notifications, when the user selects a day, or they can examine an array of data objects, representing the state of the control.
- The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, and supply it with an initial dataset.
- The control will develop the range of months, depending on the provided dataset.
- The minimal unit is a month. The dataset's earliest date will determine the starting month; including dates before the dataset start (from the first of the month), to the final month of the dataset.
- When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.
+ 
  The control does not derive from [UIControl](https://developer.apple.com/documentation/uikit/uicontrol), as the event targeting system would not be useful for the types of interactions
  that can occur with this control. Instead, the implementor should register as a delegate (`RVS_CalendarInputDelegate`), and receive messages, when the control is used.
  The implementor can always examine the `data` array, and detrmine the control state. That array is updated in realtime.
@@ -133,8 +126,8 @@ open class RVS_CalendarInput: UIView {
 
             if dateItem?.isEnabled ?? false {
                 isEnabled = true
-                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : .white
-                setTitleColor((dateItem?.isSelected ?? false) ? .white : myHandler?.tintColor, for: .normal)
+                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : myHandler?.enabledItemBackgroundColor
+                setTitleColor((dateItem?.isSelected ?? false) ? myHandler?.enabledItemBackgroundColor : myHandler?.tintColor, for: .normal)
                 addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
                 alpha = 1.0
             } else {
@@ -354,6 +347,13 @@ open class RVS_CalendarInput: UIView {
 
     /* ################################################################## */
     /**
+     This is the color for the background of unselected and enabled days.
+     If the day is selected, this becomes the font color.
+     */
+    public var enabledItemBackgroundColor = UIColor.white { didSet { setNeedsLayout() }}
+
+    /* ################################################################## */
+    /**
      The font to be used for the weekday header, at the top.
      */
     public var weekdayHeaderFontColor = UIColor.label { didSet { setNeedsLayout() }}
@@ -384,9 +384,15 @@ open class RVS_CalendarInput: UIView {
 
     /* ################################################################## */
     /**
-     If this is false (default is true), then the year and month headers will not be shown.
+     If this is false (default is true), then the month headers will not be shown.
      */
-    @IBInspectable public var showHeaders: Bool = true { didSet { setNeedsLayout() }}
+    @IBInspectable public var showMonthHeaders: Bool = true { didSet { setNeedsLayout() }}
+
+    /* ################################################################## */
+    /**
+     If this is false (default is true), then the year headers will not be shown.
+     */
+    @IBInspectable public var showYearHeaders: Bool = true { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
@@ -556,7 +562,7 @@ extension RVS_CalendarInput {
         monthView.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor).isActive = true
         
         var monthBottom = monthView.topAnchor
-        if showHeaders {
+        if showMonthHeaders {
             let monthHeader = UILabel()
             
             let text = String(calendar.monthSymbols[inMonth - 1])
@@ -605,7 +611,7 @@ extension RVS_CalendarInput {
         
         var monthBottom = yearView.topAnchor
 
-        if showHeaders {
+        if showYearHeaders {
             let yearHeader = UILabel()
             
             let text = String(inYear)
@@ -695,6 +701,7 @@ extension RVS_CalendarInput {
                 let text = String(calendar.shortWeekdaySymbols[weekDayIndex])
                 thisWeekdayHeader.text = text
                 thisWeekdayHeader.font = weekdayHeaderFont
+                thisWeekdayHeader.textColor = weekdayHeaderFontColor
                 thisWeekdayHeader.textAlignment = .center
                 weekdayLabelHeader.addSubview(thisWeekdayHeader)
                 thisWeekdayHeader.translatesAutoresizingMaskIntoConstraints = false
