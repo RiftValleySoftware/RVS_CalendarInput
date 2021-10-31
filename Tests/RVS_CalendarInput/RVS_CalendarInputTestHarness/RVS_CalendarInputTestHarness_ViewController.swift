@@ -159,7 +159,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
             showDateHeadersSwitch?.isOn = !(showDateHeadersSwitch?.isOn ?? true)
             showDateHeadersSwitch?.sendActions(for: .valueChanged)
         } else {
-            setUpWidgetFromDates()
+            calendarWidgetInstance?.showHeaders = showDateHeadersSwitch?.isOn ?? true
         }
     }
     
@@ -171,7 +171,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
             showDayHeaderSwitch?.isOn = !(showDayHeaderSwitch?.isOn ?? true)
             showDayHeaderSwitch?.sendActions(for: .valueChanged)
         } else {
-            setUpWidgetFromDates()
+            calendarWidgetInstance?.showWeekdayHeader = showDayHeaderSwitch?.isOn ?? true
         }
     }
 }

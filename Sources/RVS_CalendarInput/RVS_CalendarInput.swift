@@ -326,73 +326,73 @@ open class RVS_CalendarInput: UIView {
     /**
      This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
      */
-    public var calendar: Calendar = Calendar.current
+    public var calendar: Calendar = Calendar.current { didSet { setNeedsLayout() }}
     
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18)
+    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The font to be used for the year header.
      */
-    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20)
+    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20) { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The font to be used for the month header.
      */
-    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18)
+    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The font to be used for each of the days.
      */
-    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24)
+    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24) { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFontColor = UIColor.label
+    public var weekdayHeaderFontColor = UIColor.label { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The font color to be used for the year header.
      */
-    public var yearHeaderFontColor = UIColor.white
+    public var yearHeaderFontColor = UIColor.white { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The font color to be used for the month header.
      */
-    public var monthHeaderFontColor = UIColor.white
+    public var monthHeaderFontColor = UIColor.white { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The background color to be used for the year header.
      */
-    public var yearHeaderBackgroundColor = UIColor.systemGray
+    public var yearHeaderBackgroundColor = UIColor.systemGray { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      The background color to be used for the month header.
      */
-    public var monthHeaderBackgroundColor = UIColor.systemGray2
+    public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the year and month headers will not be shown.
      */
-    @IBInspectable public var showHeaders: Bool = true
+    @IBInspectable public var showHeaders: Bool = true { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the weekday header will not be shown.
      */
-    @IBInspectable public var showWeekdayHeader: Bool = true
+    @IBInspectable public var showWeekdayHeader: Bool = true { didSet { setNeedsLayout() }}
 
     // MARK: Delegate
     /* ################################################################## */
