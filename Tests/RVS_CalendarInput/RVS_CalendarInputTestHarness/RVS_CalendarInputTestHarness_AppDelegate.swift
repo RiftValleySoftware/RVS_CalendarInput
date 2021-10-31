@@ -31,13 +31,16 @@ import UIKit
 class RVS_CalendarInputTestHarness_AppDelegate: UIResponder, UIApplicationDelegate {
     /* ################################################################## */
     /**
+     This is the window instance that is required for a simple iOS app.
      */
     var window: UIWindow?
     
     /* ################################################################## */
     /**
+     Called when the application has initialized, and is preparing to run.
+     - parameter: The application instance (ignored).
+     - parameter didFinishLaunchingWithOptions: An options array (also ignored).
+     - returns: true (always).
      */
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        return true
-    }
+    func application(_: UIApplication, didFinishLaunchingWithOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { true }
 }

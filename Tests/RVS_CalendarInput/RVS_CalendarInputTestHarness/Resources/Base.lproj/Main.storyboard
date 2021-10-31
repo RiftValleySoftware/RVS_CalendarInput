@@ -75,8 +75,8 @@
                                                     <constraint firstAttribute="width" secondItem="XgQ-mg-iNi" secondAttribute="height" multiplier="1:1" id="dBr-gr-Z3v"/>
                                                 </constraints>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" image="clown-grayscale"/>
-                                                <state key="highlighted" image="clown-color"/>
+                                                <state key="normal" image="clown-color"/>
+                                                <state key="highlighted" image="clown-grayscale"/>
                                                 <connections>
                                                     <action selector="clownButtonHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NG6-9A-uRd"/>
                                                 </connections>

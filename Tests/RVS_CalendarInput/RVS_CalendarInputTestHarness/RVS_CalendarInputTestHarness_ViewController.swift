@@ -31,76 +31,85 @@ import RVS_CalendarInput
 class RVS_CalendarInputTestHarness_ViewController: UIViewController {
     /* ################################################################## */
     /**
+     The initial (default) color for the widget's weekday header font.
      */
     var initialWeekdayHeaderFontColor: UIColor = .clear
     
     /* ################################################################## */
     /**
+     The initial (default) color for the widget's year header font.
      */
     var initialYearHeaderFontColor: UIColor = .clear
     
     /* ################################################################## */
     /**
+     The initial (default) color for the widget's year header.
      */
     var initialYearHeaderBackgroundColor: UIColor = .clear
 
     /* ################################################################## */
     /**
+     The initial (default) color for the widget's month header font.
      */
     var initialMonthHeaderFontColor: UIColor = .clear
     
     /* ################################################################## */
     /**
+     The initial (default) color for the widget's month header.
      */
     var initialMonthHeaderBackgroundColor: UIColor = .clear
 
     /* ################################################################## */
     /**
+     The initial (default) color for the widget's day header font. If the day is selected, then this will be the background color.
      */
     var initialDayFontColor: UIColor = .clear
     
     /* ################################################################## */
     /**
+     The initial (default) color for the widget's day header background. If the day is selected, then this will be the font color.
      */
     var initialDayBackgroundColor: UIColor = .clear
-
-    /* ################################################################## */
-    /**
-     */
-    var seedData: [RVS_CalendarInput.DateItem] = []
     
     /* ################################################################## */
     /**
+     This is the actual widget, in our layout.
      */
     @IBOutlet weak var calendarWidgetInstance: RVS_CalendarInput!
     
     /* ################################################################## */
     /**
+     This is the date picker for the start date.
      */
     @IBOutlet weak var startDatePicker: UIDatePicker!
     
     /* ################################################################## */
     /**
+     This is the date picker for the end date.
      */
     @IBOutlet weak var endDatePicker: UIDatePicker!
     
     /* ################################################################## */
     /**
+     The switch to show/hide the year headers.
      */
     @IBOutlet weak var showYearHeaderSwitch: UISwitch!
     
     /* ################################################################## */
     /**
+     The switch to show/hide the month headers.
      */
     @IBOutlet weak var showMonthHeaderSwitch: UISwitch!
 
     /* ################################################################## */
     /**
+     The switch to show/hide the weekday header.
      */
     @IBOutlet weak var showWeekdayHeaderSwitch: UISwitch!
 
     /* ################################################################## */
     /**
+     This is a button that initiates "clown mode," with disgusting colors.
      */
     @IBOutlet weak var clownButton: UIButton!
 }
@@ -111,6 +120,8 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
 extension RVS_CalendarInputTestHarness_ViewController {
     /* ################################################################## */
     /**
+     Called when the view hierarchy has been initialized.
+     We basically use this to set our stored default colors, and initialize the control with our "starter" set.
      */
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +132,12 @@ extension RVS_CalendarInputTestHarness_ViewController {
         initialMonthHeaderBackgroundColor = calendarWidgetInstance?.monthHeaderBackgroundColor ?? .clear
         initialDayFontColor = calendarWidgetInstance?.tintColor ?? .clear
         initialDayBackgroundColor = calendarWidgetInstance?.enabledItemBackgroundColor ?? .clear
-        setUpInitialSeedData()
+        // Four or five month window. 30 days before today, and 90 days after.
+        if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())) {
+            startDatePicker?.date = today.addingTimeInterval(-2592000)
+            endDatePicker?.date = today.addingTimeInterval(7776000)
+            datePickerChanged()
+        }
     }
 }
 
@@ -131,12 +147,14 @@ extension RVS_CalendarInputTestHarness_ViewController {
 extension RVS_CalendarInputTestHarness_ViewController {
     /* ################################################################## */
     /**
+     This creates a new array of date items, and sets them to the widget.
      */
     func setUpWidgetFromDates() {
         if let startDate = startDatePicker?.date,
            let endDate = endDatePicker?.date,
            startDate < endDate {
-            seedData = []
+            var seedData = [RVS_CalendarInput.DateItem]()
+
             // Four or five month window. 30 days before today, and 90 days after.
             if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())),
                let thisWeekday = Calendar.current.dateComponents([.weekday], from: today).weekday {
@@ -179,18 +197,6 @@ extension RVS_CalendarInputTestHarness_ViewController {
             }
         }
     }
-    
-    /* ################################################################## */
-    /**
-     */
-    func setUpInitialSeedData() {
-        // Four or five month window. 30 days before today, and 90 days after.
-        if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())) {
-            startDatePicker?.date = today.addingTimeInterval(-2592000)
-            endDatePicker?.date = today.addingTimeInterval(7776000)
-            datePickerChanged()
-        }
-    }
 }
 
 /* ###################################################################################################################################### */
@@ -199,6 +205,8 @@ extension RVS_CalendarInputTestHarness_ViewController {
 extension RVS_CalendarInputTestHarness_ViewController {
     /* ################################################################## */
     /**
+     This is called whenever either of the date pickers are called.
+     - parameter: ignored.
      */
     @IBAction func datePickerChanged(_: UIDatePicker! = nil) {
         setUpWidgetFromDates()
@@ -206,6 +214,8 @@ extension RVS_CalendarInputTestHarness_ViewController {
     
     /* ################################################################## */
     /**
+     This is called whenever the show year header switch, or its label button, are hit.
+     - parameter inControl: The control. It is used to determine the behavior of the callback (button only toggles the switch).
      */
     @IBAction func showYearHeaderSwitchHit(_ inControl: Any) {
         if inControl is UIButton {
@@ -218,7 +228,9 @@ extension RVS_CalendarInputTestHarness_ViewController {
     
     /* ################################################################## */
     /**
-     */
+     This is called whenever the show month header switch, or its label button, are hit.
+     - parameter inControl: The control. It is used to determine the behavior of the callback (button only toggles the switch).
+    */
     @IBAction func showMonthHeaderSwitchHit(_ inControl: Any) {
         if inControl is UIButton {
             showMonthHeaderSwitch?.isOn = !(showMonthHeaderSwitch?.isOn ?? true)
@@ -230,6 +242,8 @@ extension RVS_CalendarInputTestHarness_ViewController {
 
     /* ################################################################## */
     /**
+     This is called whenever the show the weekday header switch, or its label button, are hit.
+     - parameter inControl: The control. It is used to determine the behavior of the callback (button only toggles the switch).
      */
     @IBAction func showWeekdayHeaderSwitchHit(_ inControl: Any) {
         if inControl is UIButton {
@@ -242,6 +256,9 @@ extension RVS_CalendarInputTestHarness_ViewController {
 
     /* ################################################################## */
     /**
+     This is called when the "clown mode" button is hit.
+     The color state is toggled, as is the button image placement.
+     - parameter inButton: The control. It is used to toggle the images.
      */
     @IBAction func clownButtonHit(_ inButton: UIButton) {
         if initialWeekdayHeaderFontColor == calendarWidgetInstance?.weekdayHeaderFontColor {
