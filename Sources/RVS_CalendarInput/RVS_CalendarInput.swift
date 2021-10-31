@@ -657,8 +657,8 @@ extension RVS_CalendarInput {
         monthView.addSubview(monthHeader)
         monthHeader.translatesAutoresizingMaskIntoConstraints = false
         monthHeader.topAnchor.constraint(equalTo: monthView.topAnchor).isActive = true
-        monthHeader.leadingAnchor.constraint(equalTo: monthView.leadingAnchor).isActive = true
-        monthHeader.trailingAnchor.constraint(equalTo: monthView.trailingAnchor).isActive = true
+        monthHeader.leadingAnchor.constraint(equalTo: monthView.leadingAnchor, constant: 20).isActive = true
+        monthHeader.trailingAnchor.constraint(equalTo: monthView.trailingAnchor, constant: -20).isActive = true
         monthHeader.heightAnchor.constraint(equalToConstant: height).isActive = true
 
         _populateMonth(inMonth, year: inYear, in: monthView, topAnchor: monthHeader.bottomAnchor)
