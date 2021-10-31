@@ -61,127 +61,82 @@ fileprivate extension UIColor {
      Returns a "blunt instrument" inversion of the color. It may not always be what we want.
      */
     var inverse: UIColor {
+        var ret = self
         var alpha: CGFloat = 1.0
-
         var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0
         if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
-            return UIColor(red: 1.0 - red, green: 1.0 - green, blue: 1.0 - blue, alpha: alpha)
+            ret = UIColor(red: 1.0 - red, green: 1.0 - green, blue: 1.0 - blue, alpha: alpha)
+        } else {
+            var hue: CGFloat = 0.0, saturation: CGFloat = 0.0, brightness: CGFloat = 0.0
+            if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+                ret = UIColor(hue: 1.0 - hue, saturation: 1.0 - saturation, brightness: 1.0 - brightness, alpha: alpha)
+            } else {
+                var white: CGFloat = 0.0
+                if self.getWhite(&white, alpha: &alpha) {
+                    ret = UIColor(white: 1.0 - white, alpha: alpha)
+                }
+            }
         }
 
-        var hue: CGFloat = 0.0, saturation: CGFloat = 0.0, brightness: CGFloat = 0.0
-        if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
-            return UIColor(hue: 1.0 - hue, saturation: 1.0 - saturation, brightness: 1.0 - brightness, alpha: alpha)
-        }
-
-        var white: CGFloat = 0.0
-        if self.getWhite(&white, alpha: &alpha) {
-            return UIColor(white: 1.0 - white, alpha: alpha)
-        }
-
-        return self
+        return ret
     }
 }
 
 /* ###################################################################################################################################### */
-// MARK: - Special Public Array Extension Functions for Date Items -
-/* ###################################################################################################################################### */
-public extension Array where Element: RVS_CalendarInput.DateItem {
-    /* ################################################################## */
-    /**
-     This returns the range of years. It uses the calendar system for the data.
-     */
-    var yearRange: Range<Int> {
-        let lowerBound = reduce(Int.max) { current, next in current > next.year ? next.year : current }
-        let upperBound = reduce(Int.min) { current, next in current < next.year ? next.year : current }
-        
-        guard lowerBound <= upperBound else { return 0..<0 }
-        
-        return lowerBound..<(upperBound + 1)
-    }
-    
-    /* ################################################################## */
-    /**
-     This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
-     - parameter for: The year, as an integer. This needs to be in the calendar system used by the data.
-     - returns: The integer range (1-based) of the months available in this year.
-     */
-    func monthRange(for inYear: Int) -> Range<Int> {
-        // What we do here, is look for the range of months, that are available in the
-        let lowerBound = reduce(13) { current, next in (next.year == inYear) && current > next.month ? next.month : current }
-        let upperBound = reduce(0) { current, next in (next.year == inYear) && current < next.month ? next.month : current }
-        
-        return upperBound < lowerBound ? 0..<0 : lowerBound..<(upperBound + 1)
-    }
-    
-    /* ################################################################## */
-    /**
-     This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
-     - parameter year: The year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
-     - parameter month: The month of the year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
-     - parameter calendar: This is the calendar to use, for determining the month range.
-                           The year needs to be in this calendar system.
-                           It is optional. If not specified, the current calendar is used.
-     */
-    func dayRange(year inYear: Int,
-                  month inMonth: Int,
-                  calendar inCalendar: Calendar? = Calendar.current) -> Range<Int> {
-        guard let calendar = inCalendar,
-              let calcDate = calendar.date(from: DateComponents(year: inYear, month: inMonth)),
-              let dayRange = calendar.range(of: .day, in: .month, for: calcDate),
-              !dayRange.isEmpty
-        else { return 0..<0 }
-    
-        return dayRange
-    }
-    
-    /* ################################################################## */
-    /**
-     This returns a filtered array of the data, depending on the criteria provided. If no criteria are provided, the the entire array is returned. All responses are sorted from earliest date, to the latest date.
-     - parameter forThisYear: The year, as an integer. If not specified, then all years are returned.
-     - parameter forThisMonth: The month of the year, as an integer. If not specified, then all months are returned.
-     - parameter forThisDayOfTheMonth: The day of the month of the year, as an integer. If not specified, then all days of the month are returned.
-     - parameter enabled: If true, then only items that are enabled will be returned. If false, the only items that are not enabled will be returned. Default is nil (all items returned, ignoring enabled status).
-     - parameter selected: If true, then only items that are selected will be returned. If false, the only items that are not selected will be returned. Default is nil (all items returned, ignoring selected status).
-     */
-    func allResults(forThisYear inYear: Int = 0,
-                    forThisMonth inMonth: Int = 0,
-                    forThisDayOfTheMonth inDay: Int = 0,
-                    enabled inIsEnabled: Bool? = nil,
-                    selected inIsSelected: Bool? = nil) -> [Element] {
-        filter {
-                    (0 == inYear || inYear == $0.year)
-                &&  (0 == inMonth || inMonth == $0.month)
-                &&  (0 == inDay || inDay == $0.day)
-                &&  (nil == inIsEnabled || inIsEnabled == $0.isEnabled)
-                &&  (nil == inIsSelected || inIsSelected == $0.isSelected)
-        }.sorted()
-    }
-}
-
-/* ###################################################################################################################################### */
-// MARK: - Special Calendar Input Class Delegate -
+// MARK: Date Item Protocol (One element of the `data` array)
 /* ###################################################################################################################################### */
 /**
- This is used to send change notifications out.
+ This protocol defines the basic structure of one item of the stored data.
+ All properties are required.
  */
-public protocol RVS_CalendarInputDelegate: AnyObject {
+public protocol DateItemProtocol: Comparable {
     /* ################################################################## */
     /**
-     This is called when a data item changes (user selects the item).
-     - parameter inCalendarInput: The calendar input instance
-     - parameter dateItemChanged: The date item that changed selection state.
+     The year, as an integer.
      */
-    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput.DateItem)
-}
+    var year: Int { get set }
+    
+    /* ################################################################## */
+    /**
+     The month, as an integer (1 -> 12).
+     */
+    var month: Int { get set }
+    
+    /* ################################################################## */
+    /**
+     The day of the month (1 -> [28|29|30|31]), as an integer.
+     */
+    var day: Int { get set }
+    
+    /* ################################################################## */
+    /**
+     True, if the item is enabled for selection. Default is false.
+     */
+    var isEnabled: Bool { get set }
+    
+    /* ################################################################## */
+    /**
+     True, if the item is currently selected. Default is false.
+     */
+    var isSelected: Bool { get set }
 
-/* ###################################################################################################################################### */
-// MARK: Defaults
-/* ###################################################################################################################################### */
-extension RVS_CalendarInputDelegate {
     /* ################################################################## */
     /**
+     Reference context. This is how we attach arbitrary data to the item.
      */
-    public func calendarInput(_: RVS_CalendarInput, dateItemChanged: RVS_CalendarInput.DateItem) { }
+    var refCon: Any? { get set }
+    
+    /* ################################################################## */
+    /**
+     Return the date item state as a date.
+     */
+    var date: Date? { get }
+    
+    /* ################################################################## */
+    /**
+     Return the date item state as date components.
+     */
+    var dateComponents: DateComponents? { get }
 }
 
 /* ###################################################################################################################################### */
@@ -232,7 +187,6 @@ open class RVS_CalendarInput: UIView {
             titleLabel?.font = myHandler?.weekdayFont
             titleLabel?.textAlignment = .center
             setTitle(String(dateItem?.day ?? 0), for: .normal)
-            setTitleColor(.label, for: .disabled)
 
             if dateItem?.isEnabled ?? false {
                 isEnabled = true
@@ -242,7 +196,8 @@ open class RVS_CalendarInput: UIView {
                 alpha = 1.0
             } else {
                 isEnabled = false
-                backgroundColor = .systemBackground
+                backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground.inverse : .systemBackground
+                setTitleColor((dateItem?.isSelected ?? false) ? .label.inverse : .label, for: .disabled)
                 removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
                 alpha = 0.5
             }
@@ -259,7 +214,7 @@ open class RVS_CalendarInput: UIView {
      
      This is a class, as opposed to a struct, because we rely on reference semantics to set and get state.
      */
-    public class DateItem: Comparable {
+    public class DateItem: DateItemProtocol {
         // MARK: Comparable Conformance
         /* ############################################################## */
         /**
@@ -293,19 +248,19 @@ open class RVS_CalendarInput: UIView {
         /**
          The year, as an integer. REQUIRED
          */
-        public let year: Int
+        public var year: Int
         
         /* ############################################################## */
         /**
          The month, as an integer (1 -> 12). REQUIRED
          */
-        public let month: Int
+        public var month: Int
         
         /* ############################################################## */
         /**
          The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
          */
-        public let day: Int
+        public var day: Int
         
         // MARK: Optional Stored Properties
         /* ############################################################## */
@@ -331,13 +286,13 @@ open class RVS_CalendarInput: UIView {
         /**
          This returns the instance as a standard Foundation DateComponents instance. The calendar used, will be the current one.
          */
-        public var dateComponents: DateComponents { DateComponents(calendar: Calendar.current, year: year, month: month, day: day) }
+        public var dateComponents: DateComponents? { DateComponents(calendar: Calendar.current, year: year, month: month, day: day) }
         
         /* ############################################################## */
         /**
          This returns the instance as a standard Foundation Date. It may be nil. The calendar used, will be the current one.
          */
-        public var date: Date? { dateComponents.date }
+        public var date: Date? { dateComponents?.date }
         
         // MARK: Default Initializer
         /* ############################################################## */
@@ -416,6 +371,20 @@ open class RVS_CalendarInput: UIView {
         }
     }
 
+    // MARK: Public State Properties That Cannot Be Changed At Runtime
+    /* ################################################################## */
+    /**
+     This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
+     */
+    public private(set) var data: [DateItem] = []
+
+    // MARK: Public State Properties That Can Be Changed At Runtime
+    /* ################################################################## */
+    /**
+     This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
+     */
+    public var calendar: Calendar = Calendar.current
+    
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
@@ -470,18 +439,7 @@ open class RVS_CalendarInput: UIView {
      */
     public var monthHeaderBackgroundColor = UIColor.systemGray2
 
-    /* ################################################################## */
-    /**
-     This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
-     */
-    public private(set) var data: [DateItem] = []
-
-    /* ################################################################## */
-    /**
-     This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
-     */
-    public var calendar: Calendar = Calendar.current
-    
+    // MARK: Delegate
     /* ################################################################## */
     /**
      This is the delegate that is used to receive noitifications of date items changing.
@@ -791,6 +749,7 @@ extension RVS_CalendarInput {
     /**
      This will clear and repopulate the data Array, based on the "seed" data, passed in.
      It should be noted that this *clears* the current data array, and does not preserve its previous state, so it is incumbent upon the user to "snapshot" the data, if so desired.
+     This copies data. Even though it is stored as a reference, when it is submitted here, we copy it into our internal data.
      - parameter from: This is an array of "seed" data.
      */
     private func _determineDataSetup(from inSeedData: [DateItem]) {
@@ -827,10 +786,13 @@ extension RVS_CalendarInput {
                    let numberOfDaysInThisMonth = calendar.range(of: .day, in: .month, for: calcDate)?.count {
                     for day in 1...numberOfDaysInThisMonth {
                         let comparisonInstance = DateItem(day: day, month: month, year: year)
-                        var dateItemForThisDay = comparisonInstance
+                        let dateItemForThisDay = comparisonInstance
                         if inSeedData.contains(comparisonInstance),
                            let dateItemForThisDayTemp = inSeedData.first(where: { $0 == comparisonInstance }) {
-                            dateItemForThisDay = dateItemForThisDayTemp
+                            // Since we are copying, the date is already OK, so we duplicate the rest of the state.
+                            dateItemForThisDay.isEnabled = dateItemForThisDayTemp.isEnabled
+                            dateItemForThisDay.isSelected = dateItemForThisDayTemp.isSelected
+                            dateItemForThisDay.refCon = dateItemForThisDayTemp.refCon
                         }
                         
                         data.append(dateItemForThisDay)
@@ -884,16 +846,119 @@ extension RVS_CalendarInput {
 }
 
 /* ###################################################################################################################################### */
-// MARK: Open Base Class Overrides
+// MARK: Public Base Class Overrides
 /* ###################################################################################################################################### */
-extension RVS_CalendarInput {
+public extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      Called when we will lay out our view hierarchy.
      */
-    open override func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         _setUpGrid()
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: - Special Calendar Input Class Delegate -
+/* ###################################################################################################################################### */
+/**
+ This is used to send change notifications out.
+ */
+public protocol RVS_CalendarInputDelegate: AnyObject {
+    /* ################################################################## */
+    /**
+     This is called when a data item changes (user selects the item).
+     - parameter inCalendarInput: The calendar input instance
+     - parameter dateItemChanged: The date item that changed selection state.
+     */
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput.DateItem)
+}
+
+/* ###################################################################################################################################### */
+// MARK: Defaults
+/* ###################################################################################################################################### */
+public extension RVS_CalendarInputDelegate {
+    /* ################################################################## */
+    /**
+     The default does nothing.
+     */
+    func calendarInput(_: RVS_CalendarInput, dateItemChanged: RVS_CalendarInput.DateItem) { }
+}
+
+/* ###################################################################################################################################### */
+// MARK: - Special Public Array Extension Functions for Date Items -
+/* ###################################################################################################################################### */
+public extension Array where Element: DateItemProtocol {
+    /* ################################################################## */
+    /**
+     This returns the range of years. It uses the calendar system for the data.
+     */
+    var yearRange: Range<Int> {
+        let lowerBound = reduce(Int.max) { current, next in current > next.year ? next.year : current }
+        let upperBound = reduce(Int.min) { current, next in current < next.year ? next.year : current }
+        
+        guard lowerBound <= upperBound else { return 0..<0 }
+        
+        return lowerBound..<(upperBound + 1)
+    }
+    
+    /* ################################################################## */
+    /**
+     This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
+     - parameter for: The year, as an integer. This needs to be in the calendar system used by the data.
+     - returns: The integer range (1-based) of the months available in this year.
+     */
+    func monthRange(for inYear: Int) -> Range<Int> {
+        // What we do here, is look for the range of months, that are available in the
+        let lowerBound = reduce(13) { current, next in (next.year == inYear) && current > next.month ? next.month : current }
+        let upperBound = reduce(0) { current, next in (next.year == inYear) && current < next.month ? next.month : current }
+        
+        return upperBound < lowerBound ? 0..<0 : lowerBound..<(upperBound + 1)
+    }
+    
+    /* ################################################################## */
+    /**
+     This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
+     - parameter year: The year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
+     - parameter month: The month of the year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
+     - parameter calendar: This is the calendar to use, for determining the month range.
+                           The year needs to be in this calendar system.
+                           It is optional. If not specified, the current calendar is used.
+     */
+    func dayRange(year inYear: Int,
+                  month inMonth: Int,
+                  calendar inCalendar: Calendar? = Calendar.current) -> Range<Int> {
+        guard let calendar = inCalendar,
+              let calcDate = calendar.date(from: DateComponents(year: inYear, month: inMonth)),
+              let dayRange = calendar.range(of: .day, in: .month, for: calcDate),
+              !dayRange.isEmpty
+        else { return 0..<0 }
+    
+        return dayRange
+    }
+    
+    /* ################################################################## */
+    /**
+     This returns a filtered array of the data, depending on the criteria provided. If no criteria are provided, the the entire array is returned. All responses are sorted from earliest date, to the latest date.
+     - parameter forThisYear: The year, as an integer. If not specified, then all years are returned.
+     - parameter forThisMonth: The month of the year, as an integer. If not specified, then all months are returned.
+     - parameter forThisDayOfTheMonth: The day of the month of the year, as an integer. If not specified, then all days of the month are returned.
+     - parameter enabled: If true, then only items that are enabled will be returned. If false, the only items that are not enabled will be returned. Default is nil (all items returned, ignoring enabled status).
+     - parameter selected: If true, then only items that are selected will be returned. If false, the only items that are not selected will be returned. Default is nil (all items returned, ignoring selected status).
+     */
+    func allResults(forThisYear inYear: Int = 0,
+                    forThisMonth inMonth: Int = 0,
+                    forThisDayOfTheMonth inDay: Int = 0,
+                    enabled inIsEnabled: Bool? = nil,
+                    selected inIsSelected: Bool? = nil) -> [Element] {
+        filter {
+                    (0 == inYear || inYear == $0.year)
+                &&  (0 == inMonth || inMonth == $0.month)
+                &&  (0 == inDay || inDay == $0.day)
+                &&  (nil == inIsEnabled || inIsEnabled == $0.isEnabled)
+                &&  (nil == inIsSelected || inIsSelected == $0.isSelected)
+        }.sorted()
     }
 }
 #endif
