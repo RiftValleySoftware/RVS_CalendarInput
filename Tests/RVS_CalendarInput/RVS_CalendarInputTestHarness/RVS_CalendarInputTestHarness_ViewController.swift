@@ -38,6 +38,26 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
     /**
      */
     @IBOutlet weak var calendarWidgetInstance: RVS_CalendarInput!
+    
+    /* ################################################################## */
+    /**
+     */
+    @IBOutlet weak var startDatePicker: UIDatePicker!
+    
+    /* ################################################################## */
+    /**
+     */
+    @IBOutlet weak var endDatePicker: UIDatePicker!
+    
+    /* ################################################################## */
+    /**
+     */
+    @IBOutlet weak var showDateHeadersSwitch: UISwitch!
+    
+    /* ################################################################## */
+    /**
+     */
+    @IBOutlet weak var showDayHeaderSwitch: UISwitch!
 }
 
 /* ###################################################################################################################################### */
@@ -50,7 +70,6 @@ extension RVS_CalendarInputTestHarness_ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpInitialSeedData()
-        calendarWidgetInstance?.setupData = seedData
     }
 }
 
@@ -61,45 +80,98 @@ extension RVS_CalendarInputTestHarness_ViewController {
     /* ################################################################## */
     /**
      */
-    func setUpInitialSeedData() {
-        seedData = []
-        // Four or five month window. 30 days before today, and 90 days after.
-        if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())),
-           let thisWeekday = Calendar.current.dateComponents([.weekday], from: today).weekday {
-            let startDate = today.addingTimeInterval(-2592000)
-            let endDate = today.addingTimeInterval(7776000)
-            
-            // What we do here, is strip out the days. We are only interested in the month and year of each end.
-            let startComponents = Calendar.current.dateComponents([.year, .month], from: startDate)
-            let endComponents = Calendar.current.dateComponents([.year, .month], from: endDate)
-            
-            guard let startYear = startComponents.year,
-                  let endYear = endComponents.year,
-                  var startMonth = startComponents.month,
-                  let endMonth = endComponents.month
-            else { return }
-            
-            // Now, a fairly simple nested loop is used to poulate our data.
-            for year in startYear...endYear {
-                for month in startMonth...12 where year < endYear || month <= endMonth {
-                    if let calcDate = Calendar.current.date(from: DateComponents(year: year, month: month)),
-                       let numberOfDaysInThisMonth = Calendar.current.range(of: .day, in: .month, for: calcDate)?.count {
-                        for day in 1...numberOfDaysInThisMonth {
-                            let dateItemForThisDay = RVS_CalendarInput.DateItem(day: day, month: month, year: year)
-                            
-                            if let date = dateItemForThisDay.date,
-                               let weekday = Calendar.current.dateComponents([.weekday], from: date).weekday,
-                               weekday == thisWeekday {
-                                dateItemForThisDay.isEnabled = date >= today
-                                dateItemForThisDay.isSelected = date <= today
+    func setUpWidgetFromDates() {
+        if let startDate = startDatePicker?.date,
+           let endDate = endDatePicker?.date,
+           startDate < endDate {
+            seedData = []
+            // Four or five month window. 30 days before today, and 90 days after.
+            if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())),
+               let thisWeekday = Calendar.current.dateComponents([.weekday], from: today).weekday {
+                // What we do here, is strip out the days. We are only interested in the month and year of each end.
+                let startComponents = Calendar.current.dateComponents([.year, .month], from: startDate)
+                let endComponents = Calendar.current.dateComponents([.year, .month], from: endDate)
+                
+                guard let startYear = startComponents.year,
+                      let endYear = endComponents.year,
+                      var startMonth = startComponents.month,
+                      let endMonth = endComponents.month
+                else { return }
+                
+                // Now, a fairly simple nested loop is used to poulate our data.
+                for year in startYear...endYear {
+                    for month in startMonth...12 where year < endYear || month <= endMonth {
+                        if let calcDate = Calendar.current.date(from: DateComponents(year: year, month: month)),
+                           let numberOfDaysInThisMonth = Calendar.current.range(of: .day, in: .month, for: calcDate)?.count {
+                            for day in 1...numberOfDaysInThisMonth {
+                                let dateItemForThisDay = RVS_CalendarInput.DateItem(day: day, month: month, year: year)
+                                
+                                if let date = dateItemForThisDay.date,
+                                   let weekday = Calendar.current.dateComponents([.weekday], from: date).weekday,
+                                   weekday == thisWeekday {
+                                    dateItemForThisDay.isEnabled = today <= endDate && (today...endDate).contains(date)
+                                    dateItemForThisDay.isSelected = date <= today
+                                }
+                                seedData.append(dateItemForThisDay)
                             }
-                            seedData.append(dateItemForThisDay)
                         }
                     }
+                    
+                    startMonth = 1
                 }
                 
-                startMonth = 1
+                calendarWidgetInstance?.setupData = seedData
+                calendarWidgetInstance?.showHeaders = showDateHeadersSwitch?.isOn ?? true
+                calendarWidgetInstance?.showWeekdayHeader = showDayHeaderSwitch?.isOn ?? true
             }
+        }
+    }
+    
+    /* ################################################################## */
+    /**
+     */
+    func setUpInitialSeedData() {
+        // Four or five month window. 30 days before today, and 90 days after.
+        if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())) {
+            startDatePicker?.date = today.addingTimeInterval(-2592000)
+            endDatePicker?.date = today.addingTimeInterval(7776000)
+            datePickerChanged()
+        }
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Callbacks
+/* ###################################################################################################################################### */
+extension RVS_CalendarInputTestHarness_ViewController {
+    /* ################################################################## */
+    /**
+     */
+    @IBAction func datePickerChanged(_: UIDatePicker! = nil) {
+        setUpWidgetFromDates()
+    }
+    
+    /* ################################################################## */
+    /**
+     */
+    @IBAction func showDateHeadersSwitchHit(_ inControl: Any) {
+        if inControl is UIButton {
+            showDateHeadersSwitch?.isOn = !(showDateHeadersSwitch?.isOn ?? true)
+            showDateHeadersSwitch?.sendActions(for: .valueChanged)
+        } else {
+            setUpWidgetFromDates()
+        }
+    }
+    
+    /* ################################################################## */
+    /**
+     */
+    @IBAction func showDayHeaderSwitchHit(_ inControl: Any) {
+        if inControl is UIButton {
+            showDayHeaderSwitch?.isOn = !(showDayHeaderSwitch?.isOn ?? true)
+            showDayHeaderSwitch?.sendActions(for: .valueChanged)
+        } else {
+            setUpWidgetFromDates()
         }
     }
 }

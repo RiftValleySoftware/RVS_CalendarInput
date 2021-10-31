@@ -27,43 +27,122 @@
                                     <constraint firstAttribute="width" secondItem="vDu-Zf-G82" secondAttribute="height" multiplier="1:1" id="ef6-bo-1BQ"/>
                                 </constraints>
                             </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WwT-E6-EhK">
+                                <rect key="frame" x="20" y="44" width="374" height="214"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S3f-yf-5XW">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="64"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leL-a4-tZv">
+                                                <rect key="frame" x="0.0" y="0.0" width="77.5" height="64"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <datePicker contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="chW-V5-dpv">
+                                                <rect key="frame" x="77.5" y="0.0" width="296.5" height="64"/>
+                                                <connections>
+                                                    <action selector="datePickerChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="9Uo-wc-d3z"/>
+                                                </connections>
+                                            </datePicker>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="biy-76-woJ">
+                                        <rect key="frame" x="0.0" y="72" width="374" height="64"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="End Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Yk-sW-c45">
+                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="64"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <datePicker contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="pSo-p6-dFB">
+                                                <rect key="frame" x="69.5" y="0.0" width="304.5" height="64"/>
+                                                <connections>
+                                                    <action selector="datePickerChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Bn-g0-O01"/>
+                                                </connections>
+                                            </datePicker>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KMA-Sy-wd3">
+                                        <rect key="frame" x="0.0" y="144" width="374" height="31"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9q5-qZ-RzT">
+                                                <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Show Date Headers:"/>
+                                                <connections>
+                                                    <action selector="showDateHeadersSwitchHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Yay-va-1hP"/>
+                                                </connections>
+                                            </button>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UQd-dB-817">
+                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="showDateHeadersSwitchHit:" destination="BYZ-38-t0r" eventType="valueChanged" id="CP9-Bj-LeI"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="2WJ-BO-9mW">
+                                        <rect key="frame" x="0.0" y="183" width="374" height="31"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdz-p2-4kB">
+                                                <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Show Day Header:"/>
+                                                <connections>
+                                                    <action selector="showDayHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BaK-uK-1gm"/>
+                                                </connections>
+                                            </button>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18n-W6-A6g">
+                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="showDayHeaderSwitchHit:" destination="BYZ-38-t0r" eventType="valueChanged" id="T4J-ul-flR"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F8Y-t3-PtB" customClass="RVS_CalendarInput" customModule="RVS_CalendarInput">
-                                <rect key="frame" x="20" y="179" width="374" height="683"/>
+                                <rect key="frame" x="47" y="266" width="320" height="596"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" name="AccentColor"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wPI-YT-Hib">
-                                <rect key="frame" x="20" y="44" width="374" height="135"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="135" id="RsJ-LU-FAm"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="oc0-LY-woI"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="wPI-YT-Hib" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="1jx-vs-0kA"/>
+                            <constraint firstItem="F8Y-t3-PtB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="10W-DN-Sda"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="height" secondItem="ccB-F9-IXa" secondAttribute="height" priority="750" id="3DE-2S-kh6"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="width" relation="lessThanOrEqual" secondItem="ccB-F9-IXa" secondAttribute="width" multiplier="0.6" id="5fX-pf-gbH"/>
                             <constraint firstItem="ccB-F9-IXa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="7mU-4u-egS"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="F8Y-t3-PtB" secondAttribute="trailing" constant="20" id="KMD-dQ-Rr8"/>
-                            <constraint firstItem="F8Y-t3-PtB" firstAttribute="top" secondItem="wPI-YT-Hib" secondAttribute="bottom" id="Mf2-Sa-IwR"/>
                             <constraint firstItem="ccB-F9-IXa" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="P1k-28-DfW"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="width" secondItem="ccB-F9-IXa" secondAttribute="width" priority="750" id="PC8-qt-Okf"/>
+                            <constraint firstItem="WwT-E6-EhK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="RL0-B1-PII"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="height" relation="lessThanOrEqual" secondItem="ccB-F9-IXa" secondAttribute="height" multiplier="0.6" id="Sv1-Re-ppg"/>
                             <constraint firstAttribute="bottom" secondItem="ccB-F9-IXa" secondAttribute="bottom" id="TSI-9q-t4e"/>
+                            <constraint firstItem="F8Y-t3-PtB" firstAttribute="top" secondItem="WwT-E6-EhK" secondAttribute="bottom" constant="8" id="Yc6-3u-9fx"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dlj-zN-vrQ"/>
-                            <constraint firstItem="wPI-YT-Hib" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="iSo-SY-17Q"/>
                             <constraint firstAttribute="trailing" secondItem="ccB-F9-IXa" secondAttribute="trailing" id="jix-Qp-nQm"/>
-                            <constraint firstItem="F8Y-t3-PtB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="mOY-yr-sGc"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="wPI-YT-Hib" secondAttribute="trailing" constant="20" id="qBN-IB-yx6"/>
+                            <constraint firstItem="WwT-E6-EhK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="m7G-5Z-2Tk"/>
+                            <constraint firstItem="F8Y-t3-PtB" firstAttribute="width" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="width" multiplier="0.6" priority="750" id="sSz-rl-0z2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="F8Y-t3-PtB" secondAttribute="bottom" id="wnv-Ue-sXT"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WwT-E6-EhK" secondAttribute="trailing" constant="20" id="z3V-bk-Xrh"/>
                             <constraint firstItem="vDu-Zf-G82" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zGv-lS-Bug"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="calendarWidgetInstance" destination="F8Y-t3-PtB" id="0x2-IG-aKP"/>
+                        <outlet property="endDatePicker" destination="pSo-p6-dFB" id="SpE-NC-x1S"/>
+                        <outlet property="showDateHeadersSwitch" destination="UQd-dB-817" id="SII-a8-uZt"/>
+                        <outlet property="showDayHeaderSwitch" destination="18n-W6-A6g" id="Cd6-fP-ic2"/>
+                        <outlet property="startDatePicker" destination="chW-V5-dpv" id="mjY-eb-oKG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
