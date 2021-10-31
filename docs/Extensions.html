@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Classes  Reference</title>
+    <title>Extensions  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Section/Classes" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Section/Extensions" class="dashAnchor"></a>
 
-    <a title="Classes  Reference"></a>
+    <a title="Extensions  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">RVS_CalendarInput Reference</a>
       <img class="carat" src="img/carat.png" />
-      Classes  Reference
+      Extensions  Reference
     </p>
 
     <div class="content-wrapper">
@@ -83,8 +83,8 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>Classes</h1>
-            <p>The following classes are available globally.</p>
+            <h1>Extensions</h1>
+            <p>The following extensions are available globally.</p>
 
           </div>
         </section>
@@ -93,11 +93,11 @@
           <div class="section-content">
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Special%20Calendar%20Input%20Class"></a>
-                <a name="//apple_ref/swift/Section/Special Calendar Input Class" class="dashAnchor"></a>
+                <a name="/Special%20Public%20Array%20Extension%20Functions%20for%20Date%20Items"></a>
+                <a name="//apple_ref/swift/Section/Special Public Array Extension Functions for Date Items" class="dashAnchor"></a>
                 <div class="section-name-container">
-                  <a class="section-name-link" href="#/Special%20Calendar%20Input%20Class"></a>
-                  <h3 class="section-name"><p>Special Calendar Input Class</p>
+                  <a class="section-name-link" href="#/Special%20Public%20Array%20Extension%20Functions%20for%20Date%20Items"></a>
+                  <h3 class="section-name"><p>Special Public Array Extension Functions for Date Items</p>
 </h3>
                 </div>
               </div>
@@ -105,9 +105,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput"></a>
-                    <a name="//apple_ref/swift/Class/RVS_CalendarInput" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput">RVS_CalendarInput</a>
+                    <a name="/s:Sa"></a>
+                    <a name="//apple_ref/swift/Extension/Array" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sa">Array</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -115,28 +115,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This is a customized <a href="https://developer.apple.com/documentation/uikit/uiview">UIView</a> implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.
-The idea is to present a simple, intuitive interface, much like the classic &ldquo;booking&rdquo; interfaces, presented by Web sites.
-The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency.
-The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates.
-Allowance is made for localization, with localized month and weekday names, as well as week start options.
-Implementors can register as delegates, to receive notifications, when the user selects a day, or they can examine an array of data objects, representing the state of the control.
-The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, and supply it with an initial dataset.
-The control will develop the range of months, depending on the provided dataset.
-The minimal unit is a month. The dataset&rsquo;s earliest date will determine the starting month; including dates before the dataset start (from the first of the month), to the final month of the dataset.
-When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.
-The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol">UIControl</a>, as the event targeting system would not be useful for the types of interactions
-that can occur with this control. Instead, the implementor should register as a delegate (<code><a href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code>), and receive messages, when the control is used.
-The implementor can always examine the <code>data</code> array, and detrmine the control state. That array is updated in realtime.</p>
-
-                        <a href="Classes/RVS_CalendarInput.html" class="slightly-smaller">See more</a>
+                        
+                        <a href="Extensions/Array.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@IBDesignable</span>
-<span class="kd">open</span> <span class="kd">class</span> <span class="kt">RVS_CalendarInput</span> <span class="p">:</span> <span class="kt">UIView</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Array</span> <span class="k">where</span> <span class="kt">Element</span><span class="p">:</span> <span class="kt"><a href="Classes/RVS_CalendarInput.html">RVS_CalendarInput</a></span><span class="o">.</span><span class="kt">DateItem</span></code></pre>
 
                         </div>
                       </div>

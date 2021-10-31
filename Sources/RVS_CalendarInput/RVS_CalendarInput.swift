@@ -188,6 +188,19 @@ extension RVS_CalendarInputDelegate {
 // MARK: - Special Calendar Input Class -
 /* ###################################################################################################################################### */
 /**
+ This is a customized [UIView](https://developer.apple.com/documentation/uikit/uiview) implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.
+ The idea is to present a simple, intuitive interface, much like the classic "booking" interfaces, presented by Web sites.
+ The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency.
+ The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates.
+ Allowance is made for localization, with localized month and weekday names, as well as week start options.
+ Implementors can register as delegates, to receive notifications, when the user selects a day, or they can examine an array of data objects, representing the state of the control.
+ The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, and supply it with an initial dataset.
+ The control will develop the range of months, depending on the provided dataset.
+ The minimal unit is a month. The dataset's earliest date will determine the starting month; including dates before the dataset start (from the first of the month), to the final month of the dataset.
+ When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.
+ The control does not derive from [UIControl](https://developer.apple.com/documentation/uikit/uicontrol), as the event targeting system would not be useful for the types of interactions
+ that can occur with this control. Instead, the implementor should register as a delegate (`RVS_CalendarInputDelegate`), and receive messages, when the control is used.
+ The implementor can always examine the `data` array, and detrmine the control state. That array is updated in realtime.
  */
 @IBDesignable
 open class RVS_CalendarInput: UIView {
@@ -223,8 +236,8 @@ open class RVS_CalendarInput: UIView {
 
             if dateItem?.isEnabled ?? false {
                 isEnabled = true
-                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : .label.inverse
-                setTitleColor((dateItem?.isSelected ?? false) ? .label.inverse : myHandler?.tintColor, for: .normal)
+                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : .white
+                setTitleColor((dateItem?.isSelected ?? false) ? .white : myHandler?.tintColor, for: .normal)
                 addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
                 alpha = 1.0
             } else {
@@ -239,14 +252,42 @@ open class RVS_CalendarInput: UIView {
     }
 
     /* ################################################################################################################################## */
-    // MARK: Data Item Class
+    // MARK: Date Item Class (One element of the `data` array)
     /* ################################################################################################################################## */
     /**
      This is one element of the data that is provided to, and read from, the view.
      
-     This is a class, as opposed to a struct, because I rely on reference semantics to set and get state.
+     This is a class, as opposed to a struct, because we rely on reference semantics to set and get state.
      */
     public class DateItem: Comparable {
+        // MARK: Comparable Conformance
+        /* ############################################################## */
+        /**
+         Less-than comparison test.
+         
+         - parameter lhs: The left-hand side of the comparison.
+         - parameter rhs: The right-hand side of the comparison.
+         - returns: true, if lhs is less than rhs. False will be returned, if either has a nil date.
+         */
+        public static func < (lhs: DateItem, rhs: DateItem) -> Bool {
+            guard let lhsDate = lhs.date,
+                  let rhsDate = rhs.date
+            else { return false }
+            
+            return lhsDate < rhsDate
+        }
+        
+        // MARK: Equatable Conformance
+        /* ############################################################## */
+        /**
+         Equality test.
+         
+         - parameter lhs: The left-hand side of the comparison.
+         - parameter rhs: The right-hand side of the comparison.
+         - returns: true, if lhs is equal to rhs. If either one has a nil date, false will be returned; even if both are nil.
+         */
+        public static func == (lhs: DateItem, rhs: DateItem) -> Bool { nil != lhs.date && lhs.date == rhs.date }
+
         // MARK: Required Stored Properties
         /* ############################################################## */
         /**
@@ -266,6 +307,7 @@ open class RVS_CalendarInput: UIView {
          */
         public let day: Int
         
+        // MARK: Optional Stored Properties
         /* ############################################################## */
         /**
          True, if the item is enabled for selection. Default is false. OPTIONAL
@@ -278,14 +320,13 @@ open class RVS_CalendarInput: UIView {
          */
         public var isSelected: Bool
 
-        // MARK: Optional Stored Properties
         /* ############################################################## */
         /**
          Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public var refCon: Any?
         
-        // MARK: Computed Properties
+        // MARK: Computed (Read-Only) Properties
         /* ############################################################## */
         /**
          This returns the instance as a standard Foundation DateComponents instance. The calendar used, will be the current one.
@@ -298,7 +339,7 @@ open class RVS_CalendarInput: UIView {
          */
         public var date: Date? { dateComponents.date }
         
-        // MARK: Initializers
+        // MARK: Default Initializer
         /* ############################################################## */
         /**
          Default Initializer. The calendar used, will be the current one.
@@ -325,6 +366,7 @@ open class RVS_CalendarInput: UIView {
             refCon = inRefCon
         }
 
+        // MARK: Convenience Initializers
         /* ############################################################## */
         /**
          DateComponents Initializer (can return nil)
@@ -372,41 +414,7 @@ open class RVS_CalendarInput: UIView {
             
             self.init(day: inDay, month: inMonth, year: inYear, isEnabled: inIsEnabled, isSelected: inIsSelected, refCon: inRefCon)
         }
-
-        // MARK: Comparable Conformance
-        /* ############################################################## */
-        /**
-         Less-than comparison test.
-         
-         - parameter lhs: The left-hand side of the comparison.
-         - parameter rhs: The right-hand side of the comparison.
-         - returns: true, if lhs is less than rhs. False will be returned, if either has a nil date.
-         */
-        public static func < (lhs: DateItem, rhs: DateItem) -> Bool {
-            guard let lhsDate = lhs.date,
-                  let rhsDate = rhs.date
-            else { return false }
-            
-            return lhsDate < rhsDate
-        }
-        
-        // MARK: Equatable Conformance
-        /* ############################################################## */
-        /**
-         Equality test.
-         
-         - parameter lhs: The left-hand side of the comparison.
-         - parameter rhs: The right-hand side of the comparison.
-         - returns: true, if lhs is equal to rhs. If either one has a nil date, false will be returned; even if both are nil.
-         */
-        public static func == (lhs: DateItem, rhs: DateItem) -> Bool { nil != lhs.date && lhs.date == rhs.date }
     }
-
-    /* ################################################################## */
-    /**
-     The background color to be used for each of the days.
-     */
-    private var _weekdayBackgroundColorDisabled = UIColor.systemGray3
 
     /* ################################################################## */
     /**
