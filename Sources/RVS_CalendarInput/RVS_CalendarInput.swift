@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.1.0
+ Version 1.1.1
  */
 
 import UIKit
@@ -37,7 +37,7 @@ fileprivate extension UIView {
      
     ***NOTE:** This requires that `clipsToBounds` be set, which will be done, if the value is greater than zero.*
      */
-    @IBInspectable var cornerRadius: CGFloat {
+    @IBInspectable var roundedCornerRadius: CGFloat {
         get { layer.cornerRadius }
         set {
             layer.cornerRadius = newValue
@@ -119,7 +119,7 @@ open class RVS_CalendarInput: UIView {
          Called when the views are being laid out.
          */
         override func layoutSubviews() {
-            cornerRadius = 8
+            roundedCornerRadius = 8
             titleLabel?.font = myHandler?.weekdayFont
             titleLabel?.textAlignment = .center
             setTitle(String(dateItem?.day ?? 0), for: .normal)
@@ -566,7 +566,7 @@ extension RVS_CalendarInput {
             monthHeader.textColor = monthHeaderFontColor
             monthHeader.textAlignment = .center
             monthHeader.backgroundColor = monthHeaderBackgroundColor
-            monthHeader.cornerRadius = height / 2
+            monthHeader.roundedCornerRadius = height / 2
 
             monthView.addSubview(monthHeader)
             monthHeader.translatesAutoresizingMaskIntoConstraints = false
@@ -617,7 +617,7 @@ extension RVS_CalendarInput {
             yearHeader.textAlignment = .center
             yearHeader.textColor = yearHeaderFontColor
             yearHeader.backgroundColor = yearHeaderBackgroundColor
-            yearHeader.cornerRadius = height / 4
+            yearHeader.roundedCornerRadius = height / 4
             
             yearView.addSubview(yearHeader)
             yearHeader.translatesAutoresizingMaskIntoConstraints = false

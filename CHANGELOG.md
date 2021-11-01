@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.1.1
+
+- **November 1, 2021**
+
+- Changed the internal "cornerRadius" UIView extension, to avoid conflicts with implementations.
+
 ## 1.1.0
 
 - **November 1, 2021**
