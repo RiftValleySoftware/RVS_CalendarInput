@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.1.2
+
+- **November 1, 2021**
+
+- Further simplification of the date item protocol.
+
 ## 1.1.1
 
 - **November 1, 2021**

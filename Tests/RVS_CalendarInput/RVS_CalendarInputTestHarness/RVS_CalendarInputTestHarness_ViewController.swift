@@ -34,10 +34,8 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
     /* ################################################################################################################################## */
     /**
      This is one element of the data that is provided to, and read from, the view.
-     
-     This is a class, as opposed to a struct, because we rely on reference semantics to set and get state.
      */
-    private class DateItem: RVS_CalendarInput_DateItemProtocol {
+    private struct _DateItem: RVS_CalendarInput_DateItemProtocol {
         // MARK: Required Stored Properties
         /* ############################################################## */
         /**
@@ -229,7 +227,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
         if let startDate = startDatePicker?.date,
            let endDate = endDatePicker?.date,
            startDate < endDate {
-            var seedData = [DateItem]()
+            var seedData = [_DateItem]()
 
             // Determine a start day, and an end day. Remember that we work in "whole month" increments.
             if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())),
@@ -250,7 +248,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
                         if let calcDate = Calendar.current.date(from: DateComponents(year: year, month: month)),
                            let numberOfDaysInThisMonth = Calendar.current.range(of: .day, in: .month, for: calcDate)?.count {
                             for day in 1...numberOfDaysInThisMonth {
-                                let dateItemForThisDay = DateItem(day: day, month: month, year: year)
+                                var dateItemForThisDay = _DateItem(day: day, month: month, year: year)
                                 
                                 if let date = dateItemForThisDay.date,
                                    let weekday = Calendar.current.dateComponents([.weekday], from: date).weekday,

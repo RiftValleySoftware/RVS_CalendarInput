@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.1.1
+ Version 1.1.2
  */
 
 import UIKit
@@ -341,6 +341,7 @@ open class RVS_CalendarInput: UIView {
     /* ################################################################## */
     /**
      This is the color for the background of unselected and enabled days.
+     The [`UIView.tintColor`](https://developer.apple.com/documentation/uikit/uiview/1622467-tintcolor) property is used to set the font color for the enabled days (and becomes the background, when the day is selected).
      If the day is selected, this becomes the font color.
      */
     public var enabledItemBackgroundColor = UIColor.white { didSet { setNeedsLayout() }}
@@ -930,8 +931,7 @@ public extension RVS_CalendarInputDelegate {
 // MARK: - Special Public Array Extension Functions for Date Items (Equatable) -
 /* ###################################################################################################################################### */
 /**
- NOTE: In order to use the `allResults()` method of this extension, your elements must conform to [`Comparable`](https://developer.apple.com/documentation/swift/comparable/),
- as well as [`RVS_CalendarInput_DateItemProtocol`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html).
+ This extension allows you to filter an Array, and get some information about the contents.
  */
 public extension Array where Element: RVS_CalendarInput_DateItemProtocol {
     /* ################################################################## */
@@ -981,19 +981,14 @@ public extension Array where Element: RVS_CalendarInput_DateItemProtocol {
     
         return dayRange
     }
-}
 
-/* ###################################################################################################################################### */
-// MARK: - Special Public Array Extension Functions for Date Items (Comparable) -
-/* ###################################################################################################################################### */
-public extension Array where Element: RVS_CalendarInput_DateItemProtocol & Comparable {
     /* ################################################################## */
     /**
      This returns a filtered array of the data, depending on the criteria provided. The criteria are all optional.
      If no criteria are provided, the entire array is returned. All responses are sorted from earliest date, to the latest date.
      - parameter forThisYear: The year, as an integer. If not specified, then all years are returned.
      - parameter forThisMonth: The month of the year, as an integer. If not specified, then all months are returned.
-     - parameter forThisDayOfTheMonth: The day of the month of the year, as an integer. If not specified, then all days of the month are returned.
+     - parameter forThisDayOfTheMonth: The day of the month, as an integer. If not specified, then all days of the month are returned.
      - parameter enabled: If true, then only items that are enabled will be returned. If false, the only items that are not enabled will be returned. Default is nil (all items returned, ignoring enabled status).
      - parameter selected: If true, then only items that are selected will be returned. If false, the only items that are not selected will be returned. Default is nil (all items returned, ignoring selected status).
      */
@@ -1008,7 +1003,12 @@ public extension Array where Element: RVS_CalendarInput_DateItemProtocol & Compa
                 &&  (0 == inDay || inDay == $0.day)
                 &&  (nil == inIsEnabled || inIsEnabled == $0.isEnabled)
                 &&  (nil == inIsSelected || inIsSelected == $0.isSelected)
-        }.sorted()
+        }.sorted { a, b in
+            guard let aDate = a.date,
+                  let bDate = b.date else { return false }
+            
+            return aDate < bDate
+        }
     }
 }
 #endif
