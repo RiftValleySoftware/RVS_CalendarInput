@@ -29,6 +29,81 @@ import RVS_CalendarInput
  The test harness app is a very simple app, with only one screen. This screen presents a "dashboard" to test the control.
  */
 class RVS_CalendarInputTestHarness_ViewController: UIViewController {
+    /* ################################################################################################################################## */
+    // MARK: Date Item Class (One element of the `data` array)
+    /* ################################################################################################################################## */
+    /**
+     This is one element of the data that is provided to, and read from, the view.
+     
+     This is a class, as opposed to a struct, because we rely on reference semantics to set and get state.
+     */
+    private class DateItem: RVS_CalendarInput_DateItemProtocol {
+        // MARK: Required Stored Properties
+        /* ############################################################## */
+        /**
+         The year, as an integer. REQUIRED
+         */
+        public var year: Int
+        
+        /* ############################################################## */
+        /**
+         The month, as an integer (1 -> 12). REQUIRED
+         */
+        public var month: Int
+        
+        /* ############################################################## */
+        /**
+         The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
+         */
+        public var day: Int
+        
+        // MARK: Optional Stored Properties
+        /* ############################################################## */
+        /**
+         True, if the item is enabled for selection. Default is false. OPTIONAL
+         */
+        public var isEnabled: Bool
+        
+        /* ############################################################## */
+        /**
+         True, if the item is currently selected. Default is false. OPTIONAL
+         */
+        public var isSelected: Bool
+
+        /* ############################################################## */
+        /**
+         Reference context. This is how we attach arbitrary data to the item. OPTIONAL
+         */
+        public var refCon: Any?
+        
+        // MARK: Default Initializer
+        /* ############################################################## */
+        /**
+         Default Initializer. The calendar used, will be the current one.
+         
+         - parameter day: The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
+         - parameter month: The month, as an integer (1 -> 12). REQUIRED
+         - parameter year: The year, as an integer. REQUIRED
+         - parameter isEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
+         - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
+         - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
+         */
+        public init(day inDay: Int,
+                    month inMonth: Int,
+                    year inYear: Int,
+                    isEnabled inIsEnabled: Bool = false,
+                    isSelected inIsSelected: Bool = false,
+                    refCon inRefCon: Any? = nil
+        ) {
+            day = inDay
+            month = inMonth
+            year = inYear
+            isEnabled = inIsEnabled
+            isSelected = inIsSelected
+            refCon = inRefCon
+        }
+    }
+
     /* ################################################################## */
     /**
      The initial (default) color for the widget's weekday header font.
@@ -154,7 +229,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
         if let startDate = startDatePicker?.date,
            let endDate = endDatePicker?.date,
            startDate < endDate {
-            var seedData = [RVS_CalendarInput.DateItem]()
+            var seedData = [DateItem]()
 
             // Determine a start day, and an end day. Remember that we work in "whole month" increments.
             if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())),
@@ -175,7 +250,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
                         if let calcDate = Calendar.current.date(from: DateComponents(year: year, month: month)),
                            let numberOfDaysInThisMonth = Calendar.current.range(of: .day, in: .month, for: calcDate)?.count {
                             for day in 1...numberOfDaysInThisMonth {
-                                let dateItemForThisDay = RVS_CalendarInput.DateItem(day: day, month: month, year: year)
+                                let dateItemForThisDay = DateItem(day: day, month: month, year: year)
                                 
                                 if let date = dateItemForThisDay.date,
                                    let weekday = Calendar.current.dateComponents([.weekday], from: date).weekday,
@@ -299,7 +374,7 @@ extension RVS_CalendarInputTestHarness_ViewController: RVS_CalendarInputDelegate
      - parameter inCalendarInput: The calendar input widget instance. It is ignored in this handler.
      - parameter dateItemChanged: The date item that was changed.
      */
-    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput.DateItem) {
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput_DateItemProtocol) {
         print("The date \(String(describing: inDateItem.date)) was selected by the user. It is currently \(inDateItem.isSelected ? "" : "not ")selected.")
     }
 }

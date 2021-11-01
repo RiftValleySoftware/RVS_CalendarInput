@@ -84,7 +84,7 @@ You can add the repo as a [Git Submodule](https://git-scm.com/book/en/v2/Git-Too
 Get the same file, as indicated by Carthage, and add it to your project.
 
 ### IMPLEMENTATION
-The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of [date objects](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/DateItem.html) to the widget, and the widget will configure itself around that array.
+The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of [date objects (conforming to `RVS_CalendarInput_DateItemProtocol`)](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html) to the widget, and the widget will configure itself around that array.
 
 The minimal unit is a month. Months will always be displayed completely, from the first day of the month, to the last. The dataset's earliest date will determine the starting month, athe the dataset's latest date, the final month of the dataset. The dataset does not need to be sorted, upon presentation, but the internal dataset will always be sorted (by date). [There is a useful Array Extension](https://riftvalleysoftware.github.io/RVS_CalendarInput/Extensions/Array.html), for filtering the dataset.
 
@@ -98,7 +98,7 @@ Implementors can register as [delegates](https://riftvalleysoftware.github.io/RV
 The control does not derive from [UIControl](https://developer.apple.com/documentation/uikit/uicontrol), as the event targeting system would not be useful for the types of interactions
 that can occur with this control. Instead, the implementor should register as a [delegate (`RVS_CalendarInputDelegate`)](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), and [receive messages, when the control is used](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF).
 The implementor can always examine the [`data` array](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315), and determine the control state. That array is updated in realtime.
-The data is kept in an array of [`RVS_CalendarInput.DateItem`](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L153) instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.
+The data is kept in an array of [`RVS_CalendarInput_DateItemProtocol`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html) instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.
 
 The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, position it in the layout, and supply it with an initial dataset. The widget, itself, uses autolayout to maintain its internal layout. All the user needs to worry about, is positioning the widget as a rectangle, in their own layout.
 

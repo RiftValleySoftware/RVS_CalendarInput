@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.0.0
+ Version 1.1.0
  */
 
 import UIKit
@@ -106,7 +106,7 @@ open class RVS_CalendarInput: UIView {
         /**
          The date item associated with this instance. Remember that we are using reference emantics for the date items.
          */
-        var dateItem: DateItem? { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+        var dateItem: _DateItem? { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
         
         /* ############################################################## */
         /**
@@ -143,14 +143,14 @@ open class RVS_CalendarInput: UIView {
     }
 
     /* ################################################################################################################################## */
-    // MARK: Date Item Class (One element of the `data` array)
+    // MARK: Private Date Item Class (One element of the `data` array)
     /* ################################################################################################################################## */
     /**
      This is one element of the data that is provided to, and read from, the view.
      
      This is a class, as opposed to a struct, because we rely on reference semantics to set and get state.
      */
-    public class DateItem: DateItemProtocol {
+    private class _DateItem: RVS_CalendarInput_DateItemProtocol, Comparable {
         // MARK: Comparable Conformance
         /* ############################################################## */
         /**
@@ -160,7 +160,7 @@ open class RVS_CalendarInput: UIView {
          - parameter rhs: The right-hand side of the comparison.
          - returns: true, if lhs is less than rhs. False will be returned, if either has a nil date.
          */
-        public static func < (lhs: DateItem, rhs: DateItem) -> Bool {
+        static func < (lhs: _DateItem, rhs: _DateItem) -> Bool {
             guard let lhsDate = lhs.date,
                   let rhsDate = rhs.date
             else { return false }
@@ -177,58 +177,45 @@ open class RVS_CalendarInput: UIView {
          - parameter rhs: The right-hand side of the comparison.
          - returns: true, if lhs is equal to rhs. If either one has a nil date, false will be returned; even if both are nil.
          */
-        public static func == (lhs: DateItem, rhs: DateItem) -> Bool { nil != lhs.date && lhs.date == rhs.date }
+        static func == (lhs: _DateItem, rhs: _DateItem) -> Bool { nil != lhs.date && lhs.date == rhs.date }
 
         // MARK: Required Stored Properties
         /* ############################################################## */
         /**
          The year, as an integer. REQUIRED
          */
-        public var year: Int
+        var year: Int
         
         /* ############################################################## */
         /**
          The month, as an integer (1 -> 12). REQUIRED
          */
-        public var month: Int
+        var month: Int
         
         /* ############################################################## */
         /**
          The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
          */
-        public var day: Int
+        var day: Int
         
         // MARK: Optional Stored Properties
         /* ############################################################## */
         /**
          True, if the item is enabled for selection. Default is false. OPTIONAL
          */
-        public var isEnabled: Bool
+        var isEnabled: Bool
         
         /* ############################################################## */
         /**
          True, if the item is currently selected. Default is false. OPTIONAL
          */
-        public var isSelected: Bool
+        var isSelected: Bool
 
         /* ############################################################## */
         /**
          Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        public var refCon: Any?
-        
-        // MARK: Computed (Read-Only) Properties
-        /* ############################################################## */
-        /**
-         This returns the instance as a standard Foundation DateComponents instance. The calendar used, will be the current one.
-         */
-        public var dateComponents: DateComponents? { DateComponents(calendar: Calendar.current, year: year, month: month, day: day) }
-        
-        /* ############################################################## */
-        /**
-         This returns the instance as a standard Foundation Date. It may be nil. The calendar used, will be the current one.
-         */
-        public var date: Date? { dateComponents?.date }
+        var refCon: Any?
         
         // MARK: Default Initializer
         /* ############################################################## */
@@ -242,12 +229,12 @@ open class RVS_CalendarInput: UIView {
          - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        public init(day inDay: Int,
-                    month inMonth: Int,
-                    year inYear: Int,
-                    isEnabled inIsEnabled: Bool = false,
-                    isSelected inIsSelected: Bool = false,
-                    refCon inRefCon: Any? = nil
+        init(day inDay: Int,
+             month inMonth: Int,
+             year inYear: Int,
+             isEnabled inIsEnabled: Bool = false,
+             isSelected inIsSelected: Bool = false,
+             refCon inRefCon: Any? = nil
         ) {
             day = inDay
             month = inMonth
@@ -267,11 +254,11 @@ open class RVS_CalendarInput: UIView {
          - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        public convenience init?(dateComponents inDateComponents: DateComponents,
-                                 isEnabled inIsEnabled: Bool = false,
-                                 isSelected inIsSelected: Bool = false,
-                                 calendar inCalendar: Calendar? = nil,
-                                 refCon inRefCon: Any? = nil
+        convenience init?(dateComponents inDateComponents: DateComponents,
+                          isEnabled inIsEnabled: Bool = false,
+                          isSelected inIsSelected: Bool = false,
+                          calendar inCalendar: Calendar? = nil,
+                          refCon inRefCon: Any? = nil
         ) {
             guard let inDay = inDateComponents.day,
                   let inMonth = inDateComponents.month,
@@ -290,11 +277,11 @@ open class RVS_CalendarInput: UIView {
          - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
          - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
-        public convenience init?(date inDate: Date,
-                                 isEnabled inIsEnabled: Bool = false,
-                                 isSelected inIsSelected: Bool = false,
-                                 calendar inCalendar: Calendar? = nil,
-                                 refCon inRefCon: Any? = nil
+        convenience init?(date inDate: Date,
+                          isEnabled inIsEnabled: Bool = false,
+                          isSelected inIsSelected: Bool = false,
+                          calendar inCalendar: Calendar? = nil,
+                          refCon inRefCon: Any? = nil
         ) {
             let tempCalendar = inCalendar ?? Calendar.current
             let tempComponents = tempCalendar.dateComponents([.day, .month, .year], from: inDate)
@@ -312,7 +299,13 @@ open class RVS_CalendarInput: UIView {
     /**
      This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
      */
-    public private(set) var data: [DateItem] = []
+    private var _data: [_DateItem] = []
+
+    /* ################################################################## */
+    /**
+     This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
+     */
+    public var data: [RVS_CalendarInput_DateItemProtocol] { _data }
 
     // MARK: Public State Properties That Can Be Changed At Runtime
     /* ################################################################## */
@@ -420,7 +413,7 @@ extension RVS_CalendarInput {
      - parameter setUpData: This is an array of initial date objects that will be used. OPTIONAL
      - parameter delegate: A delegate for this instance. OPTIONAL
      */
-    public convenience init(frame inFrame: CGRect = .zero, setUpData inSetupData: [DateItem] = [], delegate inDelegate: RVS_CalendarInputDelegate? = nil) {
+    public convenience init(frame inFrame: CGRect = .zero, setUpData inSetupData: [RVS_CalendarInput_DateItemProtocol] = [], delegate inDelegate: RVS_CalendarInputDelegate? = nil) {
         if inFrame.isEmpty {
             self.init()
         } else {
@@ -445,7 +438,7 @@ extension RVS_CalendarInput {
      - parameter inDay: The date item associated with this button.
      - parameter in: The container for this button.
      */
-    private func _makeMyDay(_ inDay: DateItem, in inContainer: UIView) {
+    private func _makeMyDay(_ inDay: _DateItem, in inContainer: UIView) {
         let dayButton = _DayButton()
         inContainer.addSubview(dayButton)
         dayButton.dateItem = inDay
@@ -466,7 +459,7 @@ extension RVS_CalendarInput {
      - parameter topAnchor: This is the item immediately above this week, and the week will be attached to it.
      - returns: A tuple, containing the new index (incremented past the items needed for this week), and the new top anchor (which is the bottom of the week conrtainer).
      */
-    private func _populateWeek(_ inAllDays: [DateItem], index inCurrentIndex: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> (topAnchor: NSLayoutYAxisAnchor, endIndex: Int) {
+    private func _populateWeek(_ inAllDays: [_DateItem], index inCurrentIndex: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> (topAnchor: NSLayoutYAxisAnchor, endIndex: Int) {
         var index = inCurrentIndex
         
         let weekContainerView = UIView()
@@ -521,7 +514,7 @@ extension RVS_CalendarInput {
      - parameter topAnchor: This is the item immediately above this month of weeks (the header).
      */
     private func _populateMonth(_ inMonth: Int, year inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) {
-        let dataForThisMonth = data.allResults(forThisYear: inYear, forThisMonth: inMonth)
+        let dataForThisMonth = _data.allResults(forThisYear: inYear, forThisMonth: inMonth)
         
         if !dataForThisMonth.isEmpty {
             let monthWeekContainerView = UIView()
@@ -636,7 +629,7 @@ extension RVS_CalendarInput {
             monthBottom = yearHeader.bottomAnchor
         }
 
-        data.monthRange(for: inYear).forEach { monthBottom = _addMonth($0, year: inYear, to: yearView, topAnchor: monthBottom) }
+        _data.monthRange(for: inYear).forEach { monthBottom = _addMonth($0, year: inYear, to: yearView, topAnchor: monthBottom) }
 
         bottomAnchor = yearView.bottomAnchor
 
@@ -678,7 +671,7 @@ extension RVS_CalendarInput {
         var bottomAnchor = containerView.topAnchor
         
         // The years, months, and days
-        data.yearRange.forEach { bottomAnchor = _addYear($0, in: containerView, topAnchor: bottomAnchor) }
+        _data.yearRange.forEach { bottomAnchor = _addYear($0, in: containerView, topAnchor: bottomAnchor) }
         
         bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
         
@@ -724,8 +717,8 @@ extension RVS_CalendarInput {
      This copies data. Even though it is stored as a reference, when it is submitted here, we copy it into our internal data.
      - parameter from: This is an array of "seed" data.
      */
-    private func _determineDataSetup(from inSeedData: [DateItem]) {
-        data = []
+    private func _determineDataSetup(from inSeedData: [_DateItem]) {
+        _data = []
         
         // From the given data, we determine the earliest date, and the latest date.
         let startDate = inSeedData.reduce(Date.distantFuture) { current, next in
@@ -757,7 +750,7 @@ extension RVS_CalendarInput {
                 if let calcDate = calendar.date(from: DateComponents(year: year, month: month)),
                    let numberOfDaysInThisMonth = calendar.range(of: .day, in: .month, for: calcDate)?.count {
                     for day in 1...numberOfDaysInThisMonth {
-                        let comparisonInstance = DateItem(day: day, month: month, year: year)
+                        let comparisonInstance = _DateItem(day: day, month: month, year: year)
                         let dateItemForThisDay = comparisonInstance
                         if inSeedData.contains(comparisonInstance),
                            let dateItemForThisDayTemp = inSeedData.first(where: { $0 == comparisonInstance }) {
@@ -767,7 +760,7 @@ extension RVS_CalendarInput {
                             dateItemForThisDay.refCon = dateItemForThisDayTemp.refCon
                         }
                         
-                        data.append(dateItemForThisDay)
+                        _data.append(dateItemForThisDay)
                     }
                 }
             }
@@ -804,10 +797,10 @@ extension RVS_CalendarInput {
      This contains the particular dates that you want to affect. The date range of the control will be determined from these data.
      Setting this value will re-initialize the control.
      */
-    public var setupData: [DateItem] {
+    public var setupData: [RVS_CalendarInput_DateItemProtocol] {
         get { [] }
         set {
-            let temp = newValue
+            let temp = newValue.map { _DateItem(day: $0.day, month: $0.month, year: $0.year, isEnabled: $0.isEnabled, isSelected: $0.isSelected, refCon: $0.refCon) }
             
             if !temp.isEmpty {
                 _determineDataSetup(from: temp)
@@ -832,13 +825,13 @@ public extension RVS_CalendarInput {
 }
 
 /* ###################################################################################################################################### */
-// MARK: Date Item Protocol (One element of the `data` array)
+// MARK: - Date Item Protocol (One element of the `data` array) -
 /* ###################################################################################################################################### */
 /**
  This protocol defines the basic structure of one item of the stored data.
  All properties are required.
  */
-public protocol DateItemProtocol: Comparable {
+public protocol RVS_CalendarInput_DateItemProtocol {
     /* ################################################################## */
     /**
      The year, as an integer.
@@ -875,17 +868,35 @@ public protocol DateItemProtocol: Comparable {
      */
     var refCon: Any? { get set }
     
+    // MARK: Computed (Read-Only) Optional Properties
     /* ################################################################## */
     /**
-     Return the date item state as a date.
+     Return the date item state as a date. OPTIONAL
      */
     var date: Date? { get }
     
     /* ################################################################## */
     /**
-     Return the date item state as date components.
+     Return the date item state as date components. OPTIONAL
      */
     var dateComponents: DateComponents? { get }
+}
+
+/* ###################################################################################################################################### */
+// MARK: DDefaults
+/* ###################################################################################################################################### */
+extension RVS_CalendarInput_DateItemProtocol {
+    /* ############################################################## */
+    /**
+     This returns the instance as a standard Foundation DateComponents instance. The calendar used, will be the current one.
+     */
+    public var dateComponents: DateComponents? { DateComponents(calendar: Calendar.current, year: year, month: month, day: day) }
+
+    /* ############################################################## */
+    /**
+     This returns the instance as a standard Foundation Date. It may be nil. The calendar used, will be the current one.
+     */
+    public var date: Date? { dateComponents?.date }
 }
 
 /* ###################################################################################################################################### */
@@ -901,7 +912,7 @@ public protocol RVS_CalendarInputDelegate: AnyObject {
      - parameter inCalendarInput: The calendar input instance
      - parameter dateItemChanged: The date item that changed selection state.
      */
-    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput.DateItem)
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput_DateItemProtocol)
 }
 
 /* ###################################################################################################################################### */
@@ -912,13 +923,16 @@ public extension RVS_CalendarInputDelegate {
     /**
      The default does nothing.
      */
-    func calendarInput(_: RVS_CalendarInput, dateItemChanged: RVS_CalendarInput.DateItem) { }
+    func calendarInput(_: RVS_CalendarInput, dateItemChanged: RVS_CalendarInput_DateItemProtocol) { }
 }
 
 /* ###################################################################################################################################### */
 // MARK: - Special Public Array Extension Functions for Date Items -
 /* ###################################################################################################################################### */
-public extension Array where Element: DateItemProtocol {
+/**
+ NOTE: In order to use this extension, your elements must conform to [`Comparable`](https://developer.apple.com/documentation/swift/comparable/), as well as [`RVS_CalendarInput_DateItemProtocol`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html).
+ */
+public extension Array where Element: RVS_CalendarInput_DateItemProtocol & Comparable {
     /* ################################################################## */
     /**
      This returns the range of years. It uses the calendar system for the data.

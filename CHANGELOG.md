@@ -1,7 +1,13 @@
 # RVS_CalendarInput Change Log
 
+## 1.1.0
+
+- **November 1, 2021**
+
+- Changed everything to use a protocol interface, in order to maximize flexibility.
+
 ## 1.0.0
 
-- **TBD**
+- **October 31, 2021**
 
 - Initial Release

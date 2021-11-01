@@ -14,8 +14,8 @@ function_body_length:
 - 100 #error
 
 file_length:
-- 999 # warning
-- 1000 # error
+- 1999 # warning
+- 1100 # error
 
 type_body_length:
 - 99 # warning
