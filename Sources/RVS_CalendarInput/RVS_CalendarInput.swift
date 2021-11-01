@@ -930,11 +930,10 @@ public extension RVS_CalendarInputDelegate {
 // MARK: - Special Public Array Extension Functions for Date Items (Equatable) -
 /* ###################################################################################################################################### */
 /**
- NOTE: In order to use this extension, your elements must conform to [`Equatable`](https://developer.apple.com/documentation/swift/equatable/)
- or [`Comparable`](https://developer.apple.com/documentation/swift/comparable/),
+ NOTE: In order to use the `allResults()` method of this extension, your elements must conform to [`Comparable`](https://developer.apple.com/documentation/swift/comparable/),
  as well as [`RVS_CalendarInput_DateItemProtocol`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html).
  */
-public extension Array where Element: RVS_CalendarInput_DateItemProtocol & Equatable {
+public extension Array where Element: RVS_CalendarInput_DateItemProtocol {
     /* ################################################################## */
     /**
      This returns the range of years. It uses the calendar system for the data.
