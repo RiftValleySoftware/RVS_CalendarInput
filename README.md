@@ -84,7 +84,7 @@ You can add the repo as a [Git Submodule](https://git-scm.com/book/en/v2/Git-Too
 Get the same file, as indicated by Carthage, and add it to your project.
 
 ### IMPLEMENTATION
-The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of [date objects (conforming to `RVS_CalendarInput_DateItemProtocol`)](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html) to the widget, and the widget will configure itself around that array.
+The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of date objects (conforming to [ `RVS_CalendarInput_DateItemProtocol`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html)) to the widget, and the widget will configure itself around that array.
 
 The minimal unit is a month. Months will always be displayed completely, from the first day of the month, to the last. The dataset's earliest date will determine the starting month, athe the dataset's latest date, the final month of the dataset. The dataset does not need to be sorted, upon presentation, but the internal dataset will always be sorted (by date). [There is a useful Array Extension](https://riftvalleysoftware.github.io/RVS_CalendarInput/Extensions/Array.html), for filtering the dataset.
 
