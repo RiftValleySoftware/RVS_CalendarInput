@@ -969,7 +969,8 @@ public extension Array where Element: DateItemProtocol {
     
     /* ################################################################## */
     /**
-     This returns a filtered array of the data, depending on the criteria provided. If no criteria are provided, the the entire array is returned. All responses are sorted from earliest date, to the latest date.
+     This returns a filtered array of the data, depending on the criteria provided. The criteria are all optional.
+     If no criteria are provided, the entire array is returned. All responses are sorted from earliest date, to the latest date.
      - parameter forThisYear: The year, as an integer. If not specified, then all years are returned.
      - parameter forThisMonth: The month of the year, as an integer. If not specified, then all months are returned.
      - parameter forThisDayOfTheMonth: The day of the month of the year, as an integer. If not specified, then all days of the month are returned.

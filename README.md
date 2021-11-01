@@ -35,6 +35,8 @@ This is a [Swift](https://apple.com/swift)-only module. It is based on [standard
 There are no dependencies for the widget, or the test harness app.
 
 ## HOW DO WE USE IT?
+The widget consists of just [one single source file](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift). That's all that is needed for your project. Everything else is testing and documentation. You can access this file in several ways.
+
 ### INSTALLATION
 
 #### Where to Get the Package
@@ -63,7 +65,7 @@ Add the following line to your [Cartfile](https://github.com/Carthage/Carthage/b
     
 Then, run `carthage update` in the main project directory.
 
-This will create a directory, called "Carthage". Inside of that, will be another directory, called `Checkins`. Inside of that, will be `RVS_CalendarInput/Sources/RVS_CalendarInput/RVS_CalendarInput.swift`.
+This will create a directory, called "Carthage". Inside of that, will be another directory, called `Checkins`. Inside of that, will be [`RVS_CalendarInput/Sources/RVS_CalendarInput/RVS_CalendarInput.swift`](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift).
 
 I recommend that you include this file directly into your app, as opposed to building the library, and adding that. If you do this, there will be no need to import a module. Additionally, the IBDesignables stuff should work (these are the previews in the storyboard file).
 
@@ -82,18 +84,20 @@ You can add the repo as a [Git Submodule](https://git-scm.com/book/en/v2/Git-Too
 Get the same file, as indicated by Carthage, and add it to your project.
 
 ### IMPLEMENTATION
-The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of date objects to the widget, and the widget will configure itself around that array.
+The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of [date objects](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/DateItem.html) to the widget, and the widget will configure itself around that array.
 
-The minimal unit is a month. The dataset's earliest date will determine the starting month; including dates before the dataset start (from the first of the month), to the final month of the dataset.
+The minimal unit is a month. Months will always be displayed completely, from the first day of the month, to the last. The dataset's earliest date will determine the starting month, athe the dataset's latest date, the final month of the dataset. The dataset does not need to be sorted, upon presentation, but the internal dataset will always be sorted (by date). [There is a useful Array Extension](https://riftvalleysoftware.github.io/RVS_CalendarInput/Extensions/Array.html), for filtering the dataset.
 
 There must be at least one date in the array presented. Any additional dates will be synthesized within the widget (for example, if one date is the twentieth of a month, the entire month, including all the other days that were not provided, will be created).
 
-Implementors can register as [delegates](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L897), to [receive notifications](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L904), when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.
+Only dates specifically in the initial set can be enabled and/or selected (Not required. These dates can also be disabled and/or deselected). All other (artificial) dates will be deselected and disabled.
+
+Implementors can register as [delegates](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), to [receive notifications](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF), when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.
 
 ## MORE INFORMATION
 The control does not derive from [UIControl](https://developer.apple.com/documentation/uikit/uicontrol), as the event targeting system would not be useful for the types of interactions
-that can occur with this control. Instead, the implementor should register as a delegate ([`RVS_CalendarInputDelegate`](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L897)), and receive messages, when the control is used.
-The implementor can always examine the [`data` array](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315), and detrmine the control state. That array is updated in realtime.
+that can occur with this control. Instead, the implementor should register as a [delegate (`RVS_CalendarInputDelegate`)](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), and [receive messages, when the control is used](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF).
+The implementor can always examine the [`data` array](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315), and determine the control state. That array is updated in realtime.
 The data is kept in an array of [`RVS_CalendarInput.DateItem`](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L153) instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.
 
 The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, position it in the layout, and supply it with an initial dataset. The widget, itself, uses autolayout to maintain its internal layout. All the user needs to worry about, is positioning the widget as a rectangle, in their own layout.
