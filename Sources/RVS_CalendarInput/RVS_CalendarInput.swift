@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.1.2
+ Version 1.1.3
  */
 
 import UIKit
@@ -30,21 +30,18 @@ import UIKit
 /**
  Add a corner radius
  */
-fileprivate extension UIView {
+private extension UIView {
     /* ################################################################## */
     /**
      This gives us access to the corner radius, so we can give the view rounded corners.
      
     ***NOTE:** This requires that `clipsToBounds` be set, which will be done, if the value is greater than zero.*
      */
-    @IBInspectable var roundedCornerRadius: CGFloat {
+    var _cornerRadius: CGFloat {
         get { layer.cornerRadius }
         set {
             layer.cornerRadius = newValue
-            if 0 < newValue {
-                clipsToBounds = true
-            }
-            setNeedsDisplay()
+            clipsToBounds = 0 < newValue ? true : clipsToBounds
         }
     }
 }
@@ -55,12 +52,12 @@ fileprivate extension UIView {
 /**
  Allow inversion
  */
-fileprivate extension UIColor {
+private extension UIColor {
     /* ################################################################## */
     /**
      Returns a "blunt instrument" inversion of the color. It may not always be what we want.
      */
-    var inverse: UIColor {
+    var _inverse: UIColor {
         var ret = self
         var alpha: CGFloat = 1.0
         var red: CGFloat = 0.0, green: CGFloat = 0.0, blue: CGFloat = 0.0
@@ -119,7 +116,7 @@ open class RVS_CalendarInput: UIView {
          Called when the views are being laid out.
          */
         override func layoutSubviews() {
-            roundedCornerRadius = 8
+            _cornerRadius = 8
             titleLabel?.font = myHandler?.weekdayFont
             titleLabel?.textAlignment = .center
             setTitle(String(dateItem?.day ?? 0), for: .normal)
@@ -132,8 +129,8 @@ open class RVS_CalendarInput: UIView {
                 alpha = 1.0
             } else {
                 isEnabled = false
-                backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground.inverse : .systemBackground
-                setTitleColor((dateItem?.isSelected ?? false) ? .label.inverse : .label, for: .disabled)
+                backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground._inverse : .systemBackground
+                setTitleColor((dateItem?.isSelected ?? false) ? .label._inverse : .label, for: .disabled)
                 removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
                 alpha = 0.5
             }
@@ -567,7 +564,7 @@ extension RVS_CalendarInput {
             monthHeader.textColor = monthHeaderFontColor
             monthHeader.textAlignment = .center
             monthHeader.backgroundColor = monthHeaderBackgroundColor
-            monthHeader.roundedCornerRadius = height / 2
+            monthHeader._cornerRadius = height / 2
 
             monthView.addSubview(monthHeader)
             monthHeader.translatesAutoresizingMaskIntoConstraints = false
@@ -618,7 +615,7 @@ extension RVS_CalendarInput {
             yearHeader.textAlignment = .center
             yearHeader.textColor = yearHeaderFontColor
             yearHeader.backgroundColor = yearHeaderBackgroundColor
-            yearHeader.roundedCornerRadius = height / 4
+            yearHeader._cornerRadius = height / 4
             
             yearView.addSubview(yearHeader)
             yearHeader.translatesAutoresizingMaskIntoConstraints = false

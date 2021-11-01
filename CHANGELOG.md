@@ -1,5 +1,13 @@
 # RVS_CalendarInput Change Log
 
+## 1.1.3
+
+- **November 1, 2021**
+
+- Needed to make the internal extensions private (as opposed to fileprivate).
+- Removed the @IBInspectable from the UIView extension (it was a leftover, anyway).
+- Fixed some storyboard issues in the test harness.
+
 ## 1.1.2
 
 - **November 1, 2021**
