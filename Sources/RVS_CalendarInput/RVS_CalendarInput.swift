@@ -948,7 +948,7 @@ public extension Array where Element: DateItemProtocol {
     
     /* ################################################################## */
     /**
-     This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
+     This returns the range of months, in the given year. It allows the user to specify a calendar to use for this.
      - parameter year: The year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
      - parameter month: The month of the year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
      - parameter calendar: This is the calendar to use, for determining the month range.
