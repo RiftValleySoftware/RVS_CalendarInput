@@ -14,7 +14,7 @@
 ## INTRODUCTION
 RVS_CalendarInput is a customized [UIView](https://developer.apple.com/documentation/uikit/uiview) implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.
 
-The workflow may be familiar to people that have used Web-based "booking" systems. A date grid is presented, in calendar form, with certain dates higlighted as toggle buttons. The user can select these dates.
+The workflow may be familiar to people that have used Web-based "booking" systems. A date grid is presented, in calendar form, with certain dates highlighted as toggle buttons. The user can select these dates.
  
 ## WHAT PROBLEM DOES IT SOLVE?
 Unlike some of the other open-source widgets that we've produced, this widget is being designed for a single application and workflow, so it will be less "general purpose" than other Great Rift Valley Software Company widgets.
