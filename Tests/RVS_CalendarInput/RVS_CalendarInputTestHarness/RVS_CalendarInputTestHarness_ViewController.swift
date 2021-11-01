@@ -156,7 +156,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
            startDate < endDate {
             var seedData = [RVS_CalendarInput.DateItem]()
 
-            // Four or five month window. 30 days before today, and 90 days after.
+            // Determine a start day, and an end day. Remember that we work in "whole month" increments.
             if let today = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: Date())),
                let thisWeekday = Calendar.current.dateComponents([.weekday], from: today).weekday {
                 // What we do here, is strip out the days. We are only interested in the month and year of each end.
