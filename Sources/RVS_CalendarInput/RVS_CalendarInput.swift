@@ -58,7 +58,7 @@ private extension UIColor {
      Returns a "blunt instrument" inversion of the color. It may not always be what we want.
      */
     var _inverse: UIColor {
-        var ret = self.copy()
+        var ret: UIColor?
         var alpha = CGFloat(1)
         var red = CGFloat(0)
         var green = CGFloat(0)
@@ -79,7 +79,7 @@ private extension UIColor {
             }
         }
 
-        return ret
+        return ret ?? self.copy()
     }
 }
 
