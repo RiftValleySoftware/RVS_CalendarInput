@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.1.3
+ Version 1.1.4
  */
 
 import UIKit
@@ -136,7 +136,7 @@ open class RVS_CalendarInput: UIView {
                 backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground._inverse : .systemBackground
                 setTitleColor((dateItem?.isSelected ?? false) ? .label._inverse : .label, for: .disabled)
                 removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
-                alpha = 0.5
+                alpha = 0.4
             }
 
             super.layoutSubviews()
