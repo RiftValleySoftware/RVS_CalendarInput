@@ -79,7 +79,7 @@ private extension UIColor {
             }
         }
 
-        return ret ?? self.copy()
+        return ret ?? copy()
     }
 }
 
