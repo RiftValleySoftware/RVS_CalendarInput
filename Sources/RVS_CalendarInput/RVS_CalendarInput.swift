@@ -296,13 +296,14 @@ open class RVS_CalendarInput: UIView {
         }
     }
 
-    // MARK: Public State Properties That Cannot Be Changed At Runtime
+    // MARK: Private Instance Properties
     /* ################################################################## */
     /**
      This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
      */
     private var _data: [_DateItem] = []
 
+    // MARK: Public State Properties That Cannot Be Changed At Runtime
     /* ################################################################## */
     /**
      This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
