@@ -59,21 +59,21 @@ private extension UIColor {
      */
     var _inverse: UIColor {
         var ret = self
-        var alpha: CGFloat = 1.0
-        var red: CGFloat = 0.0
-        var green: CGFloat = 0.0
-        var blue: CGFloat = 0.0
-        if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+        var alpha = CGFloat(1)
+        var red = CGFloat(0)
+        var green = CGFloat(0)
+        var blue = CGFloat(0)
+        if getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
             ret = UIColor(red: 1.0 - red, green: 1.0 - green, blue: 1.0 - blue, alpha: alpha)
         } else {
-            var hue: CGFloat = 0.0
-            var saturation: CGFloat = 0.0
-            var brightness: CGFloat = 0.0
-            if self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+            var hue = CGFloat(0)
+            var saturation = CGFloat(0)
+            var brightness = CGFloat(0)
+            if getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
                 ret = UIColor(hue: 1.0 - hue, saturation: 1.0 - saturation, brightness: 1.0 - brightness, alpha: alpha)
             } else {
-                var white: CGFloat = 0.0
-                if self.getWhite(&white, alpha: &alpha) {
+                var white = CGFloat(0)
+                if getWhite(&white, alpha: &alpha) {
                     ret = UIColor(white: 1.0 - white, alpha: alpha)
                 }
             }
