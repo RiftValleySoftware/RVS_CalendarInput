@@ -25,7 +25,7 @@ import UIKit
 
 #if os(iOS) // This prevents the IB errors from showing up, under SPM (From SO Answer: https://stackoverflow.com/a/66334661/879365).
 /* ###################################################################################################################################### */
-// MARK: - Fileprivate UIView Extension -
+// MARK: - Private UIView Extension -
 /* ###################################################################################################################################### */
 /**
  Add a corner radius
@@ -47,7 +47,7 @@ private extension UIView {
 }
 
 /* ###################################################################################################################################### */
-// MARK: - Fileprivate UIColor Extension -
+// MARK: - Private UIColor Extension -
 /* ###################################################################################################################################### */
 /**
  Allow inversion
@@ -97,7 +97,7 @@ private extension UIColor {
 @IBDesignable
 open class RVS_CalendarInput: UIView {
     /* ################################################################################################################################## */
-    // MARK: Individual Day Button Class
+    // MARK: Private Individual Day Button Class
     /* ################################################################################################################################## */
     /**
      Each day is represented by a button. This allows us to associate a DateItem with the button, and customize its display
