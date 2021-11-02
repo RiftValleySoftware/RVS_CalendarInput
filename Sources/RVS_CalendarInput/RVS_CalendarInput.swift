@@ -56,6 +56,7 @@ private extension UIColor {
     /* ################################################################## */
     /**
      Returns a "blunt instrument" inversion of the color. It may not always be what we want.
+     This always returns a new instance (copy).
      */
     var _inverse: UIColor {
         var ret: UIColor?
@@ -79,7 +80,7 @@ private extension UIColor {
             }
         }
 
-        return ret ?? copy()
+        return ret ?? UIColor(cgColor: cgColor)
     }
 }
 
@@ -136,7 +137,7 @@ open class RVS_CalendarInput: UIView {
                 backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground._inverse : .systemBackground
                 setTitleColor((dateItem?.isSelected ?? false) ? .label._inverse : .label, for: .disabled)
                 removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
-                alpha = 0.4
+                alpha = myHandler?.disabledAlpha ?? 0.4
             }
 
             super.layoutSubviews()
@@ -376,6 +377,12 @@ open class RVS_CalendarInput: UIView {
      The background color to be used for the month header.
      */
     public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { setNeedsLayout() }}
+
+    /* ################################################################## */
+    /**
+     The opacity of disabled date buttons.
+     */
+    public var disabledAlpha = CGFloat(0.4) { didSet { setNeedsLayout() }}
 
     /* ################################################################## */
     /**

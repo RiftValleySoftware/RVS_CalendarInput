@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.1.4
+
+- **November 2, 2021**
+
+- Some internal refactoring, and added the ability to modify the transparency of disabled dates.
+
 ## 1.1.3
 
 - **November 1, 2021**

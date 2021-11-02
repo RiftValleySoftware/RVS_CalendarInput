@@ -268,6 +268,7 @@ extension RVS_CalendarInputTestHarness_ViewController {
                 calendarWidgetInstance?.showMonthHeaders = showMonthHeaderSwitch?.isOn ?? true
                 calendarWidgetInstance?.showYearHeaders = showYearHeaderSwitch?.isOn ?? true
                 calendarWidgetInstance?.showWeekdayHeader = showWeekdayHeaderSwitch?.isOn ?? true
+                calendarWidgetInstance?.disabledAlpha = (.dark == traitCollection.userInterfaceStyle) ? 0.5 : 0.3   // More transparent, when light.
             }
         }
     }
