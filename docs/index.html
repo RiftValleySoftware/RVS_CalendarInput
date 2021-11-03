@@ -172,10 +172,53 @@
 <p>Only dates specifically in the initial set can be enabled and/or selected (Not required. These dates can also be disabled and/or deselected). All other (artificial) dates will be deselected and disabled.</p>
 
 <p>Implementors can register as <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegates</a>, to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF">receive notifications</a>, when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.</p>
+<h3 id='accessible-instance-properties' class='heading'>Accessible Instance Properties</h3>
+
+<p>All of these properties have default values, but can be altered at runtime.</p>
+
+<ul>
+<li><p><code>calendar: Calendar</code>
+This contains the calendar used for the control. It defaults to the current calendar, but can be changed.</p></li>
+<li><p><code>weekdayHeaderFont: UIFont</code>
+The font to be used for the weekday header, at the top.</p></li>
+<li><p><code>yearHeaderFont: UIFont</code>
+The font to be used for the year header.</p></li>
+<li><p><code>monthHeaderFont: UIFont</code>
+The font to be used for the month header.</p></li>
+<li><p><code>weekdayFont: UIFont</code>
+The font to be used for each of the days (both enabled and disabled).</p></li>
+<li><p><code>enabledItemBackgroundColor: UIColor</code>
+This is the color for the background of unselected and enabled days.
+The <a href="https://developer.apple.com/documentation/uikit/uiview/1622467-tintcolor"><code>UIView.tintColor</code></a> property is used to set the font color for the enabled days (and becomes the background, when the day is selected).
+If the day is selected, this becomes the font color.</p></li>
+<li><p><code>weekdayHeaderFontColor: UIColor</code>
+The font to be used for the weekday header, at the top.</p></li>
+<li><p><code>yearHeaderFontColor: UIColor</code>
+The font color to be used for the year header.</p></li>
+<li><p><code>monthHeaderFontColor: UIColor</code>
+The font color to be used for the month header.</p></li>
+<li><p><code>yearHeaderBackgroundColor: UIColor</code>
+The background color to be used for the year header.</p></li>
+<li><p><code>monthHeaderBackgroundColor: UIColor</code>
+The background color to be used for the month header.</p></li>
+<li><p><code>disabledAlpha: CGFloat</code>
+The opacity of disabled date buttons.</p></li>
+<li><p><code>showMonthHeaders: Bool</code>
+If this is false (default is true), then the month headers will not be shown.</p></li>
+<li><p><code>showYearHeaders: Bool</code>
+If this is false (default is true), then the year headers will not be shown.</p></li>
+<li><p><code>showWeekdayHeader: Bool</code>
+If this is false (default is true), then the weekday header will not be shown.</p></li>
+<li><p><code>delegate: RVS_CalendarInputDelegate?</code>
+This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
+This is not IB-accessible, because we don&rsquo;t want to require delegates to conform to <a href="https://developer.apple.com/documentation/objectivec/nsobjectprotocol"><code>NSObjectProtocol</code></a></p></li>
+</ul>
 <h2 id='more-information' class='heading'>MORE INFORMATION</h2>
 
-<p>The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol">UIControl</a>, as the event targeting system would not be useful for the types of interactions
-that can occur with this control. Instead, the implementor should register as a <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegate (<code><a href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code>)</a>, and <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF">receive messages, when the control is used</a>.
+<p>The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol"><code>UIControl</code></a>.
+This is because the <a href="https://developer.apple.com/documentation/uikit/uicontrol"><code>UIControl</code></a> event targeting system would not be useful for the types of interactions
+that can occur with this control.
+Instead, the implementor should register as a <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegate (<code><a href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code>)</a>, and <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF">receive messages, when the control is used</a>.
 The implementor can always examine the <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315"><code>data</code> array</a>, and determine the control state. That array is updated in realtime.
 The data is kept in an array of <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html"><code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code></a> instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.</p>
 
@@ -297,7 +340,7 @@ SOFTWARE.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-02)</p>
+      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-03)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.7</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

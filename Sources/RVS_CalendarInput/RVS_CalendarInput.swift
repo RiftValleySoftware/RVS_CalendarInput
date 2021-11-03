@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.1.4
+ Version 1.1.5
  */
 
 import UIKit
@@ -121,7 +121,7 @@ open class RVS_CalendarInput: UIView {
          Called when the views are being laid out.
          */
         override func layoutSubviews() {
-            _cornerRadius = 8
+            _cornerRadius = RVS_CalendarInput._dayCornerRadiusInDisplayUnits
             titleLabel?.font = myHandler?.weekdayFont
             titleLabel?.textAlignment = .center
             setTitle(String(dateItem?.day ?? 0), for: .normal)
@@ -137,7 +137,7 @@ open class RVS_CalendarInput: UIView {
                 backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground._inverse : .systemBackground
                 setTitleColor((dateItem?.isSelected ?? false) ? .label._inverse : .label, for: .disabled)
                 removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
-                alpha = myHandler?.disabledAlpha ?? 0.4
+                alpha = myHandler?.disabledAlpha ?? RVS_CalendarInput._defaultDisabledAlpha
             }
 
             super.layoutSubviews()
@@ -152,35 +152,7 @@ open class RVS_CalendarInput: UIView {
      
      This is a class, as opposed to a struct, because we rely on reference semantics to set and get state.
      */
-    private class _DateItem: RVS_CalendarInput_DateItemProtocol, Comparable {
-        // MARK: Comparable Conformance
-        /* ############################################################## */
-        /**
-         Less-than comparison test.
-         
-         - parameter lhs: The left-hand side of the comparison.
-         - parameter rhs: The right-hand side of the comparison.
-         - returns: true, if lhs is less than rhs. False will be returned, if either has a nil date.
-         */
-        static func < (lhs: _DateItem, rhs: _DateItem) -> Bool {
-            guard let lhsDate = lhs.date,
-                  let rhsDate = rhs.date
-            else { return false }
-            
-            return lhsDate < rhsDate
-        }
-        
-        // MARK: Equatable Conformance
-        /* ############################################################## */
-        /**
-         Equality test.
-         
-         - parameter lhs: The left-hand side of the comparison.
-         - parameter rhs: The right-hand side of the comparison.
-         - returns: true, if lhs is equal to rhs. If either one has a nil date, false will be returned; even if both are nil.
-         */
-        static func == (lhs: _DateItem, rhs: _DateItem) -> Bool { nil != lhs.date && lhs.date == rhs.date }
-
+    private class _DateItem: RVS_CalendarInput_DateItemProtocol {
         // MARK: Required Stored Properties
         /* ############################################################## */
         /**
@@ -296,12 +268,31 @@ open class RVS_CalendarInput: UIView {
         }
     }
 
+    // MARK: Private Static Constants
+    /* ################################################################## */
+    /**
+     This is the "padding" around each day button.
+     */
+    private static let _buttonPaddingInDisplayUnits = CGFloat(2)
+
+    /* ################################################################## */
+    /**
+     This is the corner radius of each day button.
+     */
+    private static let _dayCornerRadiusInDisplayUnits = CGFloat(8)
+
+    /* ################################################################## */
+    /**
+     This is the default opacity for the disabled days.
+     */
+    private static let _defaultDisabledAlpha = CGFloat(0.4)
+
     // MARK: Private Instance Properties
     /* ################################################################## */
     /**
-     This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in. READ-ONLY
+     This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in.
      */
-    private var _data: [_DateItem] = []
+    private var _data: [_DateItem] = [] { didSet { setNeedsLayout() } }
 
     // MARK: Public State Properties That Cannot Be Changed At Runtime
     /* ################################################################## */
@@ -315,31 +306,31 @@ open class RVS_CalendarInput: UIView {
     /**
      This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
      */
-    public var calendar: Calendar = Calendar.current { didSet { setNeedsLayout() }}
+    public var calendar: Calendar = Calendar.current { didSet { setNeedsLayout() } }
     
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() }}
+    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The font to be used for the year header.
      */
-    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20) { didSet { setNeedsLayout() }}
+    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20) { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The font to be used for the month header.
      */
-    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() }}
+    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The font to be used for each of the days.
      */
-    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24) { didSet { setNeedsLayout() }}
+    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24) { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
@@ -347,66 +338,67 @@ open class RVS_CalendarInput: UIView {
      The [`UIView.tintColor`](https://developer.apple.com/documentation/uikit/uiview/1622467-tintcolor) property is used to set the font color for the enabled days (and becomes the background, when the day is selected).
      If the day is selected, this becomes the font color.
      */
-    public var enabledItemBackgroundColor = UIColor.white { didSet { setNeedsLayout() }}
+    public var enabledItemBackgroundColor = UIColor.white { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFontColor = UIColor.label { didSet { setNeedsLayout() }}
+    public var weekdayHeaderFontColor = UIColor.label { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The font color to be used for the year header.
      */
-    public var yearHeaderFontColor = UIColor.white { didSet { setNeedsLayout() }}
+    public var yearHeaderFontColor = UIColor.white { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The font color to be used for the month header.
      */
-    public var monthHeaderFontColor = UIColor.white { didSet { setNeedsLayout() }}
+    public var monthHeaderFontColor = UIColor.white { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The background color to be used for the year header.
      */
-    public var yearHeaderBackgroundColor = UIColor.systemGray { didSet { setNeedsLayout() }}
+    public var yearHeaderBackgroundColor = UIColor.systemGray { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The background color to be used for the month header.
      */
-    public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { setNeedsLayout() }}
+    public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      The opacity of disabled date buttons.
      */
-    public var disabledAlpha = CGFloat(0.4) { didSet { setNeedsLayout() }}
+    public var disabledAlpha = RVS_CalendarInput._defaultDisabledAlpha { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the month headers will not be shown.
      */
-    @IBInspectable public var showMonthHeaders: Bool = true { didSet { setNeedsLayout() }}
+    @IBInspectable public var showMonthHeaders: Bool = true { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the year headers will not be shown.
      */
-    @IBInspectable public var showYearHeaders: Bool = true { didSet { setNeedsLayout() }}
+    @IBInspectable public var showYearHeaders: Bool = true { didSet { setNeedsLayout() } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the weekday header will not be shown.
      */
-    @IBInspectable public var showWeekdayHeader: Bool = true { didSet { setNeedsLayout() }}
+    @IBInspectable public var showWeekdayHeader: Bool = true { didSet { setNeedsLayout() } }
 
     // MARK: Delegate
     /* ################################################################## */
     /**
-     This is the delegate that is used to receive noitifications of date items changing.
+     This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
+     This is not IB-accessible, because we don't want to require delegates to conform to [`NSObjectProtocol`](https://developer.apple.com/documentation/objectivec/nsobjectprotocol)
      */
     public weak var delegate: RVS_CalendarInputDelegate?
     
@@ -423,7 +415,9 @@ extension RVS_CalendarInput {
      - parameter setUpData: This is an array of initial date objects that will be used. OPTIONAL
      - parameter delegate: A delegate for this instance. OPTIONAL
      */
-    public convenience init(frame inFrame: CGRect = .zero, setUpData inSetupData: [RVS_CalendarInput_DateItemProtocol] = [], delegate inDelegate: RVS_CalendarInputDelegate? = nil) {
+    public convenience init(frame inFrame: CGRect = .zero,
+                            setUpData inSetupData: [RVS_CalendarInput_DateItemProtocol] = [],
+                            delegate inDelegate: RVS_CalendarInputDelegate? = nil) {
         if inFrame.isEmpty {
             self.init()
         } else {
@@ -454,22 +448,26 @@ extension RVS_CalendarInput {
         dayButton.dateItem = inDay
         dayButton.myHandler = self
         dayButton.translatesAutoresizingMaskIntoConstraints = false
-        dayButton.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor, constant: 2).isActive = true
-        dayButton.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor, constant: -2).isActive = true
-        dayButton.topAnchor.constraint(equalTo: inContainer.topAnchor, constant: 2).isActive = true
-        dayButton.bottomAnchor.constraint(equalTo: inContainer.bottomAnchor, constant: -2).isActive = true
+        dayButton.leadingAnchor.constraint(equalTo: inContainer.leadingAnchor, constant: Self._buttonPaddingInDisplayUnits).isActive = true
+        dayButton.trailingAnchor.constraint(equalTo: inContainer.trailingAnchor, constant: -Self._buttonPaddingInDisplayUnits).isActive = true
+        dayButton.topAnchor.constraint(equalTo: inContainer.topAnchor, constant: Self._buttonPaddingInDisplayUnits).isActive = true
+        dayButton.bottomAnchor.constraint(equalTo: inContainer.bottomAnchor, constant: -Self._buttonPaddingInDisplayUnits).isActive = true
     }
     
     /* ################################################################## */
     /**
      This creates a week of buttons, accounting for offest days (month start), as well as weeks that begin on different days.
+     It has a week container (strip), then seven square day containers, which are filled with buttons.
      - parameter inAllDays: This is an array of DateItem, containing all the days for the month (usually). It does not need to be just the month, but it should have at least one date in this week.
      - parameter index: The current index into the date item array.
      - parameter in: The container for this week.
      - parameter topAnchor: This is the item immediately above this week, and the week will be attached to it.
      - returns: A tuple, containing the new index (incremented past the items needed for this week), and the new top anchor (which is the bottom of the week conrtainer).
      */
-    private func _populateWeek(_ inAllDays: [_DateItem], index inCurrentIndex: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> (topAnchor: NSLayoutYAxisAnchor, endIndex: Int) {
+    private func _populateWeek(_ inAllDays: [_DateItem],
+                               index inCurrentIndex: Int,
+                               in inContainer: UIView,
+                               topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> (topAnchor: NSLayoutYAxisAnchor, endIndex: Int) {
         var index = inCurrentIndex
         
         let weekContainerView = UIView()
@@ -523,7 +521,10 @@ extension RVS_CalendarInput {
      - parameter in: The container for this month.
      - parameter topAnchor: This is the item immediately above this month of weeks (the header).
      */
-    private func _populateMonth(_ inMonth: Int, year inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) {
+    private func _populateMonth(_ inMonth: Int,
+                                year inYear: Int,
+                                in inContainer: UIView,
+                                topAnchor inTopAnchor: NSLayoutYAxisAnchor) {
         let dataForThisMonth = _data.allResults(forThisYear: inYear, forThisMonth: inMonth)
         
         if !dataForThisMonth.isEmpty {
@@ -554,7 +555,10 @@ extension RVS_CalendarInput {
      - parameter topAnchor: This is the item immediately above this month, and the month will be attached to it.
      - returns: The Y-axis anchor to be used as the top of the next month/year, or attached to the bottom of the control.
      */
-    private func _addMonth(_ inMonth: Int, year inYear: Int, to inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
+    private func _addMonth(_ inMonth: Int,
+                           year inYear: Int,
+                           to inContainer: UIView,
+                           topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
         guard (1..<13).contains(inMonth) else { return inTopAnchor }
         
         let monthView = UIView()
@@ -602,7 +606,9 @@ extension RVS_CalendarInput {
      - parameter topAnchor: This is the item immediately above this year of months (the header).
      - returns: The Y-axis anchor to be used as the top of the next year, or attached to the bottom of the control.
      */
-    private func _addYear(_ inYear: Int, in inContainer: UIView, topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
+    private func _addYear(_ inYear: Int,
+                          in inContainer: UIView,
+                          topAnchor inTopAnchor: NSLayoutYAxisAnchor) -> NSLayoutYAxisAnchor {
         var bottomAnchor = inTopAnchor
         
         let yearView = UIView()
@@ -696,12 +702,16 @@ extension RVS_CalendarInput {
             weekdayLabelHeader.heightAnchor.constraint(equalToConstant: weekdayHeight).isActive = true
 
             let startingWeekday = calendar.firstWeekday
+            // Start everything at the beginning of the container.
             var leadingAnchor = weekdayLabelHeader.leadingAnchor
-            var indexAnchor: NSLayoutDimension?
+            var indexAnchor: NSLayoutDimension? // This will contain the width constraint of the *previous* day (starting with nothing).
+            // We make all the day widths equal, and attach each end to the sides of the container. Each day is attached to the next/previous one.
             for weekday in startingWeekday..<(startingWeekday + 7) {
                 let weekDayIndex = weekday < 8 ? weekday - 1 : weekday - 8
                 let thisWeekdayHeader = UILabel()
                 let text = String(calendar.shortWeekdaySymbols[weekDayIndex])
+                thisWeekdayHeader.adjustsFontSizeToFitWidth = true  // Will probably never be necessary, but belt and suspenders...
+                thisWeekdayHeader.minimumScaleFactor = 0.5
                 thisWeekdayHeader.text = text
                 thisWeekdayHeader.font = weekdayHeaderFont
                 thisWeekdayHeader.textColor = weekdayHeaderFontColor
@@ -709,13 +719,17 @@ extension RVS_CalendarInput {
                 weekdayLabelHeader.addSubview(thisWeekdayHeader)
                 thisWeekdayHeader.translatesAutoresizingMaskIntoConstraints = false
                 thisWeekdayHeader.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                // This makes the day width the same as the previous one. If no previous, then nothing happens.
                 indexAnchor?.constraint(equalTo: thisWeekdayHeader.widthAnchor).isActive = true
                 thisWeekdayHeader.topAnchor.constraint(equalTo: weekdayLabelHeader.topAnchor).isActive = true
                 thisWeekdayHeader.bottomAnchor.constraint(equalTo: weekdayLabelHeader.bottomAnchor).isActive = true
+                // The next one will attach to the trailing of this one.
                 leadingAnchor = thisWeekdayHeader.trailingAnchor
+                // The next width will be equal to us.
                 indexAnchor = thisWeekdayHeader.widthAnchor
             }
         
+            // tie off the loose end to the trailing of the container.
         leadingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         }
     }
@@ -724,10 +738,10 @@ extension RVS_CalendarInput {
     /**
      This will clear and repopulate the data Array, based on the "seed" data, passed in.
      It should be noted that this *clears* the current data array, and does not preserve its previous state, so it is incumbent upon the user to "snapshot" the data, if so desired.
-     This copies data. Even though it is stored as a reference, when it is submitted here, we copy it into our internal data.
+     This copies data. Even though it is stored internally, as a reference type, when it is submitted here, we copy it into our internal data.
      - parameter from: This is an array of "seed" data.
      */
-    private func _determineDataSetup(from inSeedData: [_DateItem]) {
+    private func _determineDataSetup(from inSeedData: [RVS_CalendarInput_DateItemProtocol]) {
         _data = []
         
         // From the given data, we determine the earliest date, and the latest date.
@@ -735,6 +749,7 @@ extension RVS_CalendarInput {
             guard let nextDate = next.date,
                   current > nextDate
             else { return current }
+            
             return nextDate
         }
         
@@ -742,28 +757,32 @@ extension RVS_CalendarInput {
             guard let nextDate = next.date,
                   current < nextDate
             else { return current }
+            
             return nextDate
         }
+        
+        guard endDate >= startDate else { return }
         
         // What we do here, is strip out the days. We are only interested in the month and year of each end. This also translates the data into our view's calendar.
         let startComponents = calendar.dateComponents([.year, .month], from: startDate)
         let endComponents = calendar.dateComponents([.year, .month], from: endDate)
         
+        // We get the range, in years and months.
         guard let startYear = startComponents.year,
-              let endYear = endComponents.year,
               var startMonth = startComponents.month,
+              let endYear = endComponents.year,
               let endMonth = endComponents.month
         else { return }
+        
         // Now, a fairly simple nested loop is used to poulate our data.
         for year in startYear...endYear {
             for month in startMonth...12 where year < endYear || month <= endMonth {
                 if let calcDate = calendar.date(from: DateComponents(year: year, month: month)),
                    let numberOfDaysInThisMonth = calendar.range(of: .day, in: .month, for: calcDate)?.count {
                     for day in 1...numberOfDaysInThisMonth {
-                        let comparisonInstance = _DateItem(day: day, month: month, year: year)
-                        let dateItemForThisDay = comparisonInstance
-                        if inSeedData.contains(comparisonInstance),
-                           let dateItemForThisDayTemp = inSeedData.first(where: { $0 == comparisonInstance }) {
+                        let dateItemForThisDay = _DateItem(day: day, month: month, year: year)
+                        if inSeedData.contains(where: { $0.date == dateItemForThisDay.date }),
+                           let dateItemForThisDayTemp = inSeedData.first(where: { $0.date == dateItemForThisDay.date }) {
                             // Since we are copying, the date is already OK, so we duplicate the rest of the state.
                             dateItemForThisDay.isEnabled = dateItemForThisDayTemp.isEnabled
                             dateItemForThisDay.isSelected = dateItemForThisDayTemp.isSelected
@@ -810,10 +829,8 @@ extension RVS_CalendarInput {
     public var setupData: [RVS_CalendarInput_DateItemProtocol] {
         get { [] }
         set {
-            let temp = newValue.map { _DateItem(day: $0.day, month: $0.month, year: $0.year, isEnabled: $0.isEnabled, isSelected: $0.isSelected, refCon: $0.refCon) }
-            
-            if !temp.isEmpty {
-                _determineDataSetup(from: temp)
+            if !newValue.isEmpty {
+                _determineDataSetup(from: newValue)
                 setNeedsLayout()
             }
         }

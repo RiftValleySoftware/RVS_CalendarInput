@@ -94,9 +94,65 @@ Only dates specifically in the initial set can be enabled and/or selected (Not r
 
 Implementors can register as [delegates](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), to [receive notifications](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF), when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.
 
+### Accessible Instance Properties
+All of these properties have default values, but can be altered at runtime.
+
+- `calendar: Calendar`
+This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
+    
+- `weekdayHeaderFont: UIFont`
+The font to be used for the weekday header, at the top.
+
+- `yearHeaderFont: UIFont`
+The font to be used for the year header.
+
+- `monthHeaderFont: UIFont`
+The font to be used for the month header.
+
+- `weekdayFont: UIFont`
+The font to be used for each of the days (both enabled and disabled).
+
+- `enabledItemBackgroundColor: UIColor`
+ This is the color for the background of unselected and enabled days.
+ The [`UIView.tintColor`](https://developer.apple.com/documentation/uikit/uiview/1622467-tintcolor) property is used to set the font color for the enabled days (and becomes the background, when the day is selected).
+ If the day is selected, this becomes the font color.
+
+- `weekdayHeaderFontColor: UIColor`
+The font to be used for the weekday header, at the top.
+
+- `yearHeaderFontColor: UIColor`
+The font color to be used for the year header.
+
+- `monthHeaderFontColor: UIColor`
+The font color to be used for the month header.
+
+- `yearHeaderBackgroundColor: UIColor`
+The background color to be used for the year header.
+
+- `monthHeaderBackgroundColor: UIColor`
+The background color to be used for the month header.
+
+- `disabledAlpha: CGFloat`
+The opacity of disabled date buttons.
+
+- `showMonthHeaders: Bool`
+If this is false (default is true), then the month headers will not be shown.
+
+- `showYearHeaders: Bool`
+If this is false (default is true), then the year headers will not be shown.
+
+- `showWeekdayHeader: Bool`
+If this is false (default is true), then the weekday header will not be shown.
+
+- `delegate: RVS_CalendarInputDelegate?`
+This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
+This is not IB-accessible, because we don't want to require delegates to conform to [`NSObjectProtocol`](https://developer.apple.com/documentation/objectivec/nsobjectprotocol)
+
 ## MORE INFORMATION
-The control does not derive from [UIControl](https://developer.apple.com/documentation/uikit/uicontrol), as the event targeting system would not be useful for the types of interactions
-that can occur with this control. Instead, the implementor should register as a [delegate (`RVS_CalendarInputDelegate`)](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), and [receive messages, when the control is used](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF).
+The control does not derive from [`UIControl`](https://developer.apple.com/documentation/uikit/uicontrol).
+This is because the [`UIControl`](https://developer.apple.com/documentation/uikit/uicontrol) event targeting system would not be useful for the types of interactions
+that can occur with this control.
+Instead, the implementor should register as a [delegate (`RVS_CalendarInputDelegate`)](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), and [receive messages, when the control is used](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF).
 The implementor can always examine the [`data` array](https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315), and determine the control state. That array is updated in realtime.
 The data is kept in an array of [`RVS_CalendarInput_DateItemProtocol`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html) instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.
 
