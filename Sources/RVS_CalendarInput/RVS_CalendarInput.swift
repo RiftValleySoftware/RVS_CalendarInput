@@ -405,34 +405,6 @@ open class RVS_CalendarInput: UIView {
 }
 
 /* ###################################################################################################################################### */
-// MARK: Convenience Initializer
-/* ###################################################################################################################################### */
-extension RVS_CalendarInput {
-    /* ################################################################## */
-    /**
-     This allows the instance to be instantiated with an initial frame and/or initial data and/or a delegate.
-     - parameter frame: An initial frame. OPTIONAL
-     - parameter setUpData: This is an array of initial date objects that will be used. OPTIONAL
-     - parameter delegate: A delegate for this instance. OPTIONAL
-     */
-    public convenience init(frame inFrame: CGRect = .zero,
-                            setUpData inSetupData: [RVS_CalendarInput_DateItemProtocol] = [],
-                            delegate inDelegate: RVS_CalendarInputDelegate? = nil) {
-        if inFrame.isEmpty {
-            self.init()
-        } else {
-            self.init(frame: inFrame)
-        }
-        
-        if !inSetupData.isEmpty {
-            setupData = inSetupData
-        }
-        
-        delegate = inDelegate
-    }
-}
-
-/* ###################################################################################################################################### */
 // MARK: Private Instance Methods
 /* ###################################################################################################################################### */
 extension RVS_CalendarInput {
@@ -825,6 +797,7 @@ extension RVS_CalendarInput {
      This is basically a write-only way to set up the control. Read will always return an empty array.
      This contains the particular dates that you want to affect. The date range of the control will be determined from these data.
      Setting this value will re-initialize the control.
+     This copies the data. It does not make references to it.
      */
     public var setupData: [RVS_CalendarInput_DateItemProtocol] {
         get { [] }
@@ -848,6 +821,34 @@ public extension RVS_CalendarInput {
     override func layoutSubviews() {
         super.layoutSubviews()
         _setUpGrid()
+    }
+}
+
+/* ###################################################################################################################################### */
+// MARK: Public Convenience Initializer
+/* ###################################################################################################################################### */
+extension RVS_CalendarInput {
+    /* ################################################################## */
+    /**
+     This allows the instance to be instantiated with an initial frame and/or initial data and/or a delegate.
+     - parameter frame: An initial frame. OPTIONAL
+     - parameter setUpData: This is an array of initial date objects that will be used. OPTIONAL
+     - parameter delegate: A delegate for this instance. OPTIONAL
+     */
+    public convenience init(frame inFrame: CGRect = .zero,
+                            setUpData inSetupData: [RVS_CalendarInput_DateItemProtocol] = [],
+                            delegate inDelegate: RVS_CalendarInputDelegate? = nil) {
+        if inFrame.isEmpty {
+            self.init()
+        } else {
+            self.init(frame: inFrame)
+        }
+        
+        if !inSetupData.isEmpty {
+            setupData = inSetupData
+        }
+        
+        delegate = inDelegate
     }
 }
 
