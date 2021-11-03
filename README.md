@@ -92,7 +92,7 @@ There must be at least one date in the array presented. Any additional dates wil
 
 Only dates specifically in the initial set can be enabled and/or selected (Not required. These dates can also be disabled and/or deselected). All other (artificial) dates will be deselected and disabled.
 
-Implementors can register as [delegates](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), to [receive notifications](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF), when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.
+Implementors can register as [delegates](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html), to [receive notifications](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AA0a1_bc5_DateG8Protocol_ptF), when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.
 
 ### Accessible Instance Properties
 All of these properties have default values, but can be altered at runtime.
