@@ -171,10 +171,12 @@
 
 <p>Only dates specifically in the initial set can be enabled and/or selected (Not required. These dates can also be disabled and/or deselected). All other (artificial) dates will be deselected and disabled.</p>
 
-<p>Implementors can register as <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegates</a>, to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF">receive notifications</a>, when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.</p>
+<p>Implementors can register as <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegates</a>, to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AA0a1_bc5_DateG8Protocol_ptF">receive notifications</a>, when the user [de]selects a day, or they can examine an array of data objects, representing the state of the control.</p>
 <h3 id='accessible-instance-properties' class='heading'>Accessible Instance Properties</h3>
 
 <p>All of these properties have default values, but can be altered at runtime.</p>
+
+<p><em>**NOTE:</em>* The disabled items will always be displayed in monochrome, and transparent. You can adjust the transparency and the font, but not the color.*</p>
 
 <ul>
 <li><p><code>calendar: Calendar</code>
@@ -218,7 +220,7 @@ This is not IB-accessible, because we don&rsquo;t want to require delegates to c
 <p>The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol"><code>UIControl</code></a>.
 This is because the <a href="https://developer.apple.com/documentation/uikit/uicontrol"><code>UIControl</code></a> event targeting system would not be useful for the types of interactions
 that can occur with this control.
-Instead, the implementor should register as a <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegate (<code><a href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code>)</a>, and <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AF04DateG0CtF">receive messages, when the control is used</a>.
+Instead, the implementor should register as a <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegate (<code><a href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code>)</a>, and <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AA0a1_bc5_DateG8Protocol_ptF">receive messages, when the control is used</a>.
 The implementor can always examine the <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315"><code>data</code> array</a>, and determine the control state. That array is updated in realtime.
 The data is kept in an array of <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html"><code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code></a> instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.</p>
 

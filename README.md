@@ -97,6 +97,8 @@ Implementors can register as [delegates](https://riftvalleysoftware.github.io/RV
 ### Accessible Instance Properties
 All of these properties have default values, but can be altered at runtime.
 
+***NOTE:** The disabled items will always be displayed in monochrome, and transparent. You can adjust the transparency and the font, but not the color.*
+
 - `calendar: Calendar`
 This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
     
