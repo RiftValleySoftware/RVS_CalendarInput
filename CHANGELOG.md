@@ -1,5 +1,18 @@
 # RVS_CalendarInput Change Log
 
+## 1.1.6
+
+- **November 3, 2021**
+
+- No internal changes. Just changed the module name to use an underscore.
+
+## 1.1.5
+
+- **November 3, 2021**
+
+- Internal refactoring to simplify the code.
+- Improved documentation.
+
 ## 1.1.4
 
 - **November 2, 2021**

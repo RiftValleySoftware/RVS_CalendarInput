@@ -28,7 +28,7 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "RVS-CalendarInput",
+            name: "RVS_CalendarInput",
             targets: ["RVS_CalendarInput"]
         )],
     targets: [
