@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.1.6
+ Version 1.1.7
  */
 
 import UIKit
@@ -803,8 +803,10 @@ extension RVS_CalendarInput {
         get { [] }
         set {
             if !newValue.isEmpty {
-                _determineDataSetup(from: newValue)
-                setNeedsLayout()
+                DispatchQueue.main.async { [weak self] in
+                    self?._determineDataSetup(from: newValue)
+                    self?.setNeedsLayout()
+                }
             }
         }
     }

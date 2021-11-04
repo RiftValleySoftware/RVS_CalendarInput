@@ -1,5 +1,12 @@
 # RVS_CalendarInput Change Log
 
+## 1.1.7
+
+- **November 4, 2021**
+
+- Improved documentation.
+- Make sure that the setup is done ine the main thread, so the data can be presented in other threads.
+
 ## 1.1.6
 
 - **November 3, 2021**

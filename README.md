@@ -150,6 +150,31 @@ If this is false (default is true), then the weekday header will not be shown.
 This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
 This is not IB-accessible, because we don't want to require delegates to conform to [`NSObjectProtocol`](https://developer.apple.com/documentation/objectivec/nsobjectprotocol)
 
+## PROVIDING DATA
+The calendar develops its month range, dependent upon an Array of elementa that conform to [the `RVS_CalendarInput_DateItemProtocol` protocol](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html). This protocol defines some basic characteristics that define the date, itself, whether or not it is selected, and/or enabled, and also, you can attach a "reference context," which is an arbitrary entity. "Refrence Context" is an old pattern, and is how we can attach any type of information, in a type-blind manner, to an element of information.
+
+Each element that conforms to [the `RVS_CalendarInput_DateItemProtocol` protocol](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html), must implement the following properties or computed properties:
+
+- [`year: Int`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP4yearSivp)
+- [`month: Int`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP5monthSivp)
+- [`day: Int`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP3daySivp)
+- [`isEnabled: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP9isEnabledSbvp)
+- [`isSelected: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP10isSelectedSbvp)
+- [`refCon: Any?`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP6refConypSgvp)
+
+You present the data to the control, by creating an Array that contains a series of elements that conform to this protocol, and the widget will automatically configure itself to display the dates, in the range specified by the Array.
+
+### The Smallest Unit Is One Whole Month
+The control displays dates in blocks of entire months. If a date in the Array falls anywhere in that month, then the entire month of dates is displayed. The range of months will go from the month that contains the earliest date in the Array (the Array does not need to be ordered), to the month that contains the latest date in the Array.
+
+Any days not specifically mentioned in the Array, will be shown as disabled, and unselected.
+
+### The Array Is Given to The Control in An Initializer, or Via A "Write-Only" Property
+There is [a convenience initializer](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC5frame9setUpData8delegateABSo6CGRectV_SayAA0a1_bC17_DateItemProtocol_pGAA0a1_bC8Delegate_pSgtcfc) that can be used to set the initial data, or you can set the control up, at any time, by setting the Array to the [`setupData`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC9setupDataSayAA0a1_bC17_DateItemProtocol_pGvp) property. Setting this property will recalculate the date range, and redraw the widget.
+
+### The Data Is Copied
+When the data is presented to the widget, it is used to create an internal Array that copies the relevant data from the presented Array. It does not reference the Array elements. Internally, the Array is treated as classes (reference context), so viewing the [`data`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp) Array looks at references, but these are not referenced to the original data that was presented.
+
 ## MORE INFORMATION
 The control does not derive from [`UIControl`](https://developer.apple.com/documentation/uikit/uicontrol).
 This is because the [`UIControl`](https://developer.apple.com/documentation/uikit/uicontrol) event targeting system would not be useful for the types of interactions

@@ -215,6 +215,33 @@ If this is false (default is true), then the weekday header will not be shown.</
 This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
 This is not IB-accessible, because we don&rsquo;t want to require delegates to conform to <a href="https://developer.apple.com/documentation/objectivec/nsobjectprotocol"><code>NSObjectProtocol</code></a></p></li>
 </ul>
+<h2 id='providing-data' class='heading'>PROVIDING DATA</h2>
+
+<p>The calendar develops its month range, dependent upon an Array of elementa that conform to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html">the <code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code> protocol</a>. This protocol defines some basic characteristics that define the date, itself, whether or not it is selected, and/or enabled, and also, you can attach a &ldquo;reference context,&rdquo; which is an arbitrary entity. &ldquo;Refrence Context&rdquo; is an old pattern, and is how we can attach any type of information, in a type-blind manner, to an element of information.</p>
+
+<p>Each element that conforms to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html">the <code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code> protocol</a>, must implement the following properties or computed properties:</p>
+
+<ul>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP4yearSivp"><code>year: Int</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP5monthSivp"><code>month: Int</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP3daySivp"><code>day: Int</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP9isEnabledSbvp"><code>isEnabled: Bool</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP10isSelectedSbvp"><code>isSelected: Bool</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP6refConypSgvp"><code>refCon: Any?</code></a></li>
+</ul>
+
+<p>You present the data to the control, by creating an Array that contains a series of elements that conform to this protocol, and the widget will automatically configure itself to display the dates, in the range specified by the Array.</p>
+<h3 id='the-smallest-unit-is-one-whole-month' class='heading'>The Smallest Unit Is One Whole Month</h3>
+
+<p>The control displays dates in blocks of entire months. If a date in the Array falls anywhere in that month, then the entire month of dates is displayed. The range of months will go from the month that contains the earliest date in the Array (the Array does not need to be ordered), to the month that contains the latest date in the Array.</p>
+
+<p>Any days not specifically mentioned in the Array, will be shown as disabled, and unselected.</p>
+<h3 id='the-array-is-given-to-the-control-in-an-initializer-or-via-a-quot-write-only-quot-property' class='heading'>The Array Is Given to The Control in An Initializer, or Via A &ldquo;Write-Only&rdquo; Property</h3>
+
+<p>There is <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC5frame9setUpData8delegateABSo6CGRectV_SayAA0a1_bC17_DateItemProtocol_pGAA0a1_bC8Delegate_pSgtcfc">a convenience initializer</a> that can be used to set the initial data, or you can set the control up, at any time, by setting the Array to the <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC9setupDataSayAA0a1_bC17_DateItemProtocol_pGvp"><code>setupData</code></a> property. Setting this property will recalculate the date range, and redraw the widget.</p>
+<h3 id='the-data-is-copied' class='heading'>The Data Is Copied</h3>
+
+<p>When the data is presented to the widget, it is used to create an internal Array that copies the relevant data from the presented Array. It does not reference the Array elements. Internally, the Array is treated as classes (reference context), so viewing the <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp"><code>data</code></a> Array looks at references, but these are not referenced to the original data that was presented.</p>
 <h2 id='more-information' class='heading'>MORE INFORMATION</h2>
 
 <p>The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol"><code>UIControl</code></a>.
@@ -342,7 +369,7 @@ SOFTWARE.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-03)</p>
+      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.7</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
