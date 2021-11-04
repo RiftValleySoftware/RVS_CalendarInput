@@ -99,59 +99,59 @@ All of these properties have default values, but can be altered at runtime.
 
 ***NOTE:** The disabled items will always be displayed in monochrome, and transparent. You can adjust the transparency and the font, but not the color.*
 
-- `calendar: Calendar`
+- [`calendar: Calendar`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC8calendar10Foundation0B0Vvp)
 This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
     
-- `weekdayHeaderFont: UIFont`
+- [`weekdayHeaderFont: UIFont`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC17weekdayHeaderFontSo6UIFontCvp)
 The font to be used for the weekday header, at the top.
 
-- `yearHeaderFont: UIFont`
+- [`yearHeaderFont: UIFont`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC14yearHeaderFontSo6UIFontCvp)
 The font to be used for the year header.
 
-- `monthHeaderFont: UIFont`
+- [`monthHeaderFont: UIFont`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC15monthHeaderFontSo6UIFontCvp)
 The font to be used for the month header.
 
-- `weekdayFont: UIFont`
+- [`weekdayFont: UIFont`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC11weekdayFontSo6UIFontCvp)
 The font to be used for each of the days (both enabled and disabled).
 
-- `enabledItemBackgroundColor: UIColor`
+- [`enabledItemBackgroundColor: UIColor`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC26enabledItemBackgroundColorSo7UIColorCvp)
  This is the color for the background of unselected and enabled days.
  The [`UIView.tintColor`](https://developer.apple.com/documentation/uikit/uiview/1622467-tintcolor) property is used to set the font color for the enabled days (and becomes the background, when the day is selected).
  If the day is selected, this becomes the font color.
 
-- `weekdayHeaderFontColor: UIColor`
+- [`weekdayHeaderFontColor: UIColor`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC22weekdayHeaderFontColorSo7UIColorCvp)
 The font to be used for the weekday header, at the top.
 
-- `yearHeaderFontColor: UIColor`
+- [`yearHeaderFontColor: UIColor`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC19yearHeaderFontColorSo7UIColorCvp)
 The font color to be used for the year header.
 
-- `monthHeaderFontColor: UIColor`
+- [`monthHeaderFontColor: UIColor`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC20monthHeaderFontColorSo7UIColorCvp)
 The font color to be used for the month header.
 
-- `yearHeaderBackgroundColor: UIColor`
+- [`yearHeaderBackgroundColor: UIColor`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC25yearHeaderBackgroundColorSo7UIColorCvp)
 The background color to be used for the year header.
 
-- `monthHeaderBackgroundColor: UIColor`
+- [`monthHeaderBackgroundColor: UIColor`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC26monthHeaderBackgroundColorSo7UIColorCvp)
 The background color to be used for the month header.
 
-- `disabledAlpha: CGFloat`
+- [`disabledAlpha: CGFloat`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC13disabledAlpha12CoreGraphics7CGFloatVvp)
 The opacity of disabled date buttons.
 
-- `showMonthHeaders: Bool`
+- [`showMonthHeaders: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showMonthHeaders))
 If this is false (default is true), then the month headers will not be shown.
 
-- `showYearHeaders: Bool`
+- [`showYearHeaders: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showYearHeaders))
 If this is false (default is true), then the year headers will not be shown.
 
-- `showWeekdayHeader: Bool`
+- [`showWeekdayHeader: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showWeekdayHeader))
 If this is false (default is true), then the weekday header will not be shown.
 
-- `delegate: RVS_CalendarInputDelegate?`
+- [`delegate: RVS_CalendarInputDelegate?`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC8delegateAA0a1_bC8Delegate_pSgvp))
 This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
 This is not IB-accessible, because we don't want to require delegates to conform to [`NSObjectProtocol`](https://developer.apple.com/documentation/objectivec/nsobjectprotocol)
 
 ## PROVIDING DATA
-The calendar develops its month range, dependent upon an Array of elementa that conform to [the `RVS_CalendarInput_DateItemProtocol` protocol](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html). This protocol defines some basic characteristics that define the date, itself, whether or not it is selected, and/or enabled, and also, you can attach a "reference context," which is an arbitrary entity. "Refrence Context" is an old pattern, and is how we can attach any type of information, in a type-blind manner, to an element of information.
+The calendar develops its month range, dependent upon an Array of elementa that conform to [the `RVS_CalendarInput_DateItemProtocol` protocol](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html). This protocol defines some basic characteristics that define the date, itself, whether or not it is selected, and/or enabled, and also, you can attach a "reference context," which is an arbitrary entity. "Refrence Context" is an old pattern, and is how we can attach any type of information, in a type-blind manner, to an element of information. When you look at the date item, either in the [`data`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp) Array, or when presented in [the delegate callback](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AA0a1_bc5_DateG8Protocol_ptF), you will be able to access and cast this item.
 
 Each element that conforms to [the `RVS_CalendarInput_DateItemProtocol` protocol](https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html), must implement the following properties or computed properties:
 

@@ -292,7 +292,7 @@ open class RVS_CalendarInput: UIView {
     /**
      This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in.
      */
-    private var _data: [_DateItem] = [] { didSet { setNeedsLayout() } }
+    private var _data: [_DateItem] = [] { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     // MARK: Public State Properties That Cannot Be Changed At Runtime
     /* ################################################################## */
@@ -306,31 +306,31 @@ open class RVS_CalendarInput: UIView {
     /**
      This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
      */
-    public var calendar: Calendar = Calendar.current { didSet { setNeedsLayout() } }
+    public var calendar: Calendar = Calendar.current { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
     
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() } }
+    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The font to be used for the year header.
      */
-    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20) { didSet { setNeedsLayout() } }
+    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The font to be used for the month header.
      */
-    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { setNeedsLayout() } }
+    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The font to be used for each of the days.
      */
-    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24) { didSet { setNeedsLayout() } }
+    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
@@ -338,61 +338,61 @@ open class RVS_CalendarInput: UIView {
      The [`UIView.tintColor`](https://developer.apple.com/documentation/uikit/uiview/1622467-tintcolor) property is used to set the font color for the enabled days (and becomes the background, when the day is selected).
      If the day is selected, this becomes the font color.
      */
-    public var enabledItemBackgroundColor = UIColor.white { didSet { setNeedsLayout() } }
+    public var enabledItemBackgroundColor = UIColor.white { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFontColor = UIColor.label { didSet { setNeedsLayout() } }
+    public var weekdayHeaderFontColor = UIColor.label { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The font color to be used for the year header.
      */
-    public var yearHeaderFontColor = UIColor.white { didSet { setNeedsLayout() } }
+    public var yearHeaderFontColor = UIColor.white { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The font color to be used for the month header.
      */
-    public var monthHeaderFontColor = UIColor.white { didSet { setNeedsLayout() } }
+    public var monthHeaderFontColor = UIColor.white { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The background color to be used for the year header.
      */
-    public var yearHeaderBackgroundColor = UIColor.systemGray { didSet { setNeedsLayout() } }
+    public var yearHeaderBackgroundColor = UIColor.systemGray { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The background color to be used for the month header.
      */
-    public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { setNeedsLayout() } }
+    public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      The opacity of disabled date buttons.
      */
-    public var disabledAlpha = RVS_CalendarInput._defaultDisabledAlpha { didSet { setNeedsLayout() } }
+    public var disabledAlpha = RVS_CalendarInput._defaultDisabledAlpha { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the month headers will not be shown.
      */
-    @IBInspectable public var showMonthHeaders: Bool = true { didSet { setNeedsLayout() } }
+    @IBInspectable public var showMonthHeaders: Bool = true { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the year headers will not be shown.
      */
-    @IBInspectable public var showYearHeaders: Bool = true { didSet { setNeedsLayout() } }
+    @IBInspectable public var showYearHeaders: Bool = true { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the weekday header will not be shown.
      */
-    @IBInspectable public var showWeekdayHeader: Bool = true { didSet { setNeedsLayout() } }
+    @IBInspectable public var showWeekdayHeader: Bool = true { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
 
     // MARK: Delegate
     /* ################################################################## */
