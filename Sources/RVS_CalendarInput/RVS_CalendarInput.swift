@@ -411,6 +411,7 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      This creates a single day button.
+ 
      - parameter inDay: The date item associated with this button.
      - parameter in: The container for this button.
      */
@@ -428,8 +429,9 @@ extension RVS_CalendarInput {
     
     /* ################################################################## */
     /**
-     This creates a week of buttons, accounting for offest days (month start), as well as weeks that begin on different days.
+     This creates a week of buttons, accounting for offset days (month start), as well as weeks that begin on different days.
      It has a week container (strip), then seven square day containers, which are filled with buttons.
+ 
      - parameter inAllDays: This is an array of DateItem, containing all the days for the month (usually). It does not need to be just the month, but it should have at least one date in this week.
      - parameter index: The current index into the date item array.
      - parameter in: The container for this week.
@@ -488,6 +490,7 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      This populates the actual weeks inside the month, under the header.
+ 
      - parameter inMonth: The numerical value of the month, in the calendar used for the data.
      - parameter inYear: The numerical year, in the calendar used for the data.
      - parameter in: The container for this month.
@@ -521,6 +524,8 @@ extension RVS_CalendarInput {
     
     /* ################################################################## */
     /**
+     This adds and populates a month of days, under the previous month (or the top of the container).
+ 
      - parameter inMonth: The numerical value of the month, in the calendar used for the data.
      - parameter inYear: The numerical year, in the calendar used for the data.
      - parameter to: The container for this month.
@@ -711,6 +716,7 @@ extension RVS_CalendarInput {
      This will clear and repopulate the data Array, based on the "seed" data, passed in.
      It should be noted that this *clears* the current data array, and does not preserve its previous state, so it is incumbent upon the user to "snapshot" the data, if so desired.
      This copies data. Even though it is stored internally, as a reference type, when it is submitted here, we copy it into our internal data.
+ 
      - parameter from: This is an array of "seed" data.
      */
     private func _determineDataSetup(from inSeedData: [RVS_CalendarInput_DateItemProtocol]) {
@@ -778,6 +784,8 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      This is called by buttons for days. It toggles the state of the day, and notifies the delegate.
+ 
+     - parameter inButton: The button object that was hit.
      */
     @objc private func _buttonHit(_ inButton: _DayButton) {
         if let dateItem = inButton.dateItem,
@@ -833,6 +841,7 @@ extension RVS_CalendarInput {
     /* ################################################################## */
     /**
      This allows the instance to be instantiated with an initial frame and/or initial data and/or a delegate.
+ 
      - parameter frame: An initial frame. OPTIONAL
      - parameter setUpData: This is an array of initial date objects that will be used. OPTIONAL
      - parameter delegate: A delegate for this instance. OPTIONAL
@@ -939,6 +948,7 @@ public protocol RVS_CalendarInputDelegate: AnyObject {
     /* ################################################################## */
     /**
      This is called when a data item changes (user selects the item).
+ 
      - parameter inCalendarInput: The calendar input instance
      - parameter dateItemChanged: The date item that changed selection state.
      */
@@ -979,6 +989,7 @@ public extension Array where Element: RVS_CalendarInput_DateItemProtocol {
     /* ################################################################## */
     /**
      This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
+ 
      - parameter for: The year, as an integer. This needs to be in the calendar system used by the data.
      - returns: The integer range (1-based) of the months available in this year.
      */
@@ -993,6 +1004,7 @@ public extension Array where Element: RVS_CalendarInput_DateItemProtocol {
     /* ################################################################## */
     /**
      This returns the range of months, in the given year. It allows the user to specify a calendar to use for this.
+ 
      - parameter year: The year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
      - parameter month: The month of the year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
      - parameter calendar: This is the calendar to use, for determining the month range.
@@ -1015,6 +1027,7 @@ public extension Array where Element: RVS_CalendarInput_DateItemProtocol {
     /**
      This returns a filtered array of the data, depending on the criteria provided. The criteria are all optional.
      If no criteria are provided, the entire array is returned. All responses are sorted from earliest date, to the latest date.
+ 
      - parameter forThisYear: The year, as an integer. If not specified, then all years are returned.
      - parameter forThisMonth: The month of the year, as an integer. If not specified, then all months are returned.
      - parameter forThisDayOfTheMonth: The day of the month, as an integer. If not specified, then all days of the month are returned.
