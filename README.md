@@ -24,7 +24,7 @@ In our application, we are adding a workflow, that allows the user of the app to
 ## HOW DOES IT WORK?
 The user is presented with a grid of possible dates, and certain dates are enabled. This is visually indicated by a combination of colors/contrasts, and transparency. The user can select or deselect enabled dates, and the view will contain a scroller, allowing the implementor to present a range of possible dates. When the user selects an enabled date, its state will toggle. The stored dataset will have that date modified, and the delegate will be informed of the change.
 
-There are headers for weekdays, years and months. They can all be individually hidden. The weekdays header is "fixed." The scroller will scroll underneath it.
+There are headers for weekdays, years, and months. They can all be individually hidden. The weekdays header is "fixed." The scroller will scroll underneath it.
 
 The widget is completely localized, respecting the user's calendar and week start. All weekdays and months are displayed in the localized form. It also adapts well to various layouts, and can have its headers and other items customized.
 
