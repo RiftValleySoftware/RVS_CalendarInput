@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.1.7
+ Version 1.2.0
  */
 
 import UIKit
@@ -304,6 +304,27 @@ open class RVS_CalendarInput: UIView {
     // MARK: Public State Properties That Can Be Changed At Runtime
     /* ################################################################## */
     /**
+     The height, in display units, of the weekday header.
+     We "hardcode" this, because dynamically calculating it is crazy slow.
+     */
+    public var weekdayHeaderHeightInDisplayUnits = CGFloat(30) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+
+    /* ################################################################## */
+    /**
+     The height, in display units, of the year header.
+     We "hardcode" this, because dynamically calculating it is crazy slow.
+     */
+    public var yearHeaderHeightInDisplayUnits = CGFloat(25) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+
+    /* ################################################################## */
+    /**
+     The height, in display units, of the month header.
+     We "hardcode" this, because dynamically calculating it is crazy slow.
+     */
+    public var monthHeaderHeightInDisplayUnits = CGFloat(20) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+
+    /* ################################################################## */
+    /**
      This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
      */
     public var calendar: Calendar = Calendar.current { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
@@ -550,21 +571,20 @@ extension RVS_CalendarInput {
             let monthHeader = UILabel()
             
             let text = String(calendar.monthSymbols[inMonth - 1])
-            let calcString = NSAttributedString(string: text, attributes: [.font: monthHeaderFont])
-            let height = ceil(calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height)
+
             monthHeader.font = monthHeaderFont
             monthHeader.text = text
             monthHeader.textColor = monthHeaderFontColor
             monthHeader.textAlignment = .center
             monthHeader.backgroundColor = monthHeaderBackgroundColor
-            monthHeader._cornerRadius = height / 2
+            monthHeader._cornerRadius = monthHeaderHeightInDisplayUnits / 2
 
             monthView.addSubview(monthHeader)
             monthHeader.translatesAutoresizingMaskIntoConstraints = false
             monthHeader.topAnchor.constraint(equalTo: monthView.topAnchor).isActive = true
             monthHeader.leadingAnchor.constraint(equalTo: monthView.leadingAnchor, constant: 20).isActive = true
             monthHeader.trailingAnchor.constraint(equalTo: monthView.trailingAnchor, constant: -20).isActive = true
-            monthHeader.heightAnchor.constraint(equalToConstant: height).isActive = true
+            monthHeader.heightAnchor.constraint(equalToConstant: monthHeaderHeightInDisplayUnits).isActive = true
 
             monthBottom = monthHeader.bottomAnchor
         }
@@ -600,24 +620,19 @@ extension RVS_CalendarInput {
         if showYearHeaders {
             let yearHeader = UILabel()
             
-            let text = String(inYear)
-            let calcString = NSAttributedString(string: text, attributes: [.font: yearHeaderFont])
-            let cropRect = calcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil)
-            let height = ceil(cropRect.size.height)
-            
             yearHeader.font = yearHeaderFont
-            yearHeader.text = text
+            yearHeader.text = String(inYear)
             yearHeader.textAlignment = .center
             yearHeader.textColor = yearHeaderFontColor
             yearHeader.backgroundColor = yearHeaderBackgroundColor
-            yearHeader._cornerRadius = height / 4
+            yearHeader._cornerRadius = yearHeaderHeightInDisplayUnits / 4
             
             yearView.addSubview(yearHeader)
             yearHeader.translatesAutoresizingMaskIntoConstraints = false
             yearHeader.topAnchor.constraint(equalTo: yearView.topAnchor).isActive = true
             yearHeader.leadingAnchor.constraint(equalTo: yearView.leadingAnchor).isActive = true
             yearHeader.trailingAnchor.constraint(equalTo: yearView.trailingAnchor).isActive = true
-            yearHeader.heightAnchor.constraint(equalToConstant: height).isActive = true
+            yearHeader.heightAnchor.constraint(equalToConstant: yearHeaderHeightInDisplayUnits).isActive = true
 
             monthBottom = yearHeader.bottomAnchor
         }
@@ -638,8 +653,7 @@ extension RVS_CalendarInput {
     private func _setUpGrid() {
         subviews.forEach { $0.removeFromSuperview() } // Clean the surface with an alcohol swab, before beginning...
         
-        let weekdayCalcString = NSAttributedString(string: "WWWWW", attributes: [.font: weekdayHeaderFont])
-        let weekdayHeight = showWeekdayHeader ? ceil(weekdayCalcString.boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), context: nil).size.height) : 0
+        let weekdayHeight = showWeekdayHeader ? weekdayHeaderHeightInDisplayUnits : 0
 
         // Set up the main scroller
         let scrollView = UIScrollView()
@@ -759,8 +773,7 @@ extension RVS_CalendarInput {
                    let numberOfDaysInThisMonth = calendar.range(of: .day, in: .month, for: calcDate)?.count {
                     for day in 1...numberOfDaysInThisMonth {
                         let dateItemForThisDay = _DateItem(day: day, month: month, year: year)
-                        if inSeedData.contains(where: { $0.date == dateItemForThisDay.date }),
-                           let dateItemForThisDayTemp = inSeedData.first(where: { $0.date == dateItemForThisDay.date }) {
+                        if let dateItemForThisDayTemp = inSeedData.first(where: { $0.day == day && $0.month == month && $0.year == year }) {
                             // Since we are copying, the date is already OK, so we duplicate the rest of the state.
                             dateItemForThisDay.isEnabled = dateItemForThisDayTemp.isEnabled
                             dateItemForThisDay.isSelected = dateItemForThisDayTemp.isSelected

@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.2.0
+
+- **November 10, 2021**
+
+- Significant performance boost, by removing the runtime string height calculations, and also speeding up the comparison, in the inner loop.
+
 ## 1.1.7
 
 - **November 4, 2021**

@@ -101,7 +101,16 @@ All of these properties have default values, but can be altered at runtime.
 
 - [`calendar: Calendar`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC8calendar10Foundation0B0Vvp)
 This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
-    
+
+- [`weekdayHeaderHeightInDisplayUnits: CGFloat`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC33weekdayHeaderHeightInDisplayUnits12CoreGraphics7CGFloatVvp)
+The height, in display units, of the weekday header. It defaults to 30 units, but can be changed.
+
+- [`yearHeaderHeightInDisplayUnits: CGFloat`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC30yearHeaderHeightInDisplayUnits12CoreGraphics7CGFloatVvp)
+The height, in display units, of the year headers. It defaults to 25 units, but can be changed.
+
+- [`monthHeaderHeightInDisplayUnits: CGFloat`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC31monthHeaderHeightInDisplayUnits12CoreGraphics7CGFloatVvp)
+The height, in display units, of the month headers. It defaults to 20 units, but can be changed.
+
 - [`weekdayHeaderFont: UIFont`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC17weekdayHeaderFontSo6UIFontCvp)
 The font to be used for the weekday header, at the top.
 
