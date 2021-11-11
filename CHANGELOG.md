@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.2.3
+
+- **November 11, 2021**
+
+- Added a simple sorting integer to the data protocol.
+
 ## 1.2.2
 
 - **November 11, 2021**

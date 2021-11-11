@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.2.2
+ Version 1.2.3
  */
 
 import UIKit
@@ -757,35 +757,7 @@ extension RVS_CalendarInput {
     private func _determineDataSetup(from inSeedData: [RVS_CalendarInput_DateItemProtocol]) {
         _data = []
         
-        let localSeedDataCopy = inSeedData.sorted { a, b in
-            var ret = false
-            
-            if a.year < b.year {
-                ret = true
-            } else if a.year == b.year,
-                      a.month < b.month {
-                ret = true
-            } else if a.year == b.year,
-                      a.month == b.month,
-                      a.day < b.day {
-                ret = true
-            } else if a.year == b.year,
-                      a.month == b.month,
-                      a.day == b.day,
-                      a.isSelected,
-                      !b.isSelected {
-                ret = true
-            } else if a.year == b.year,
-                      a.month == b.month,
-                      a.day == b.day,
-                      a.isSelected == b.isSelected,
-                      a.isEnabled,
-                      !b.isEnabled {
-                ret = true
-            }
-            
-            return ret
-        }
+        let localSeedDataCopy = inSeedData.sorted { $0.dateSortKey < $1.dateSortKey }
         
         // From the given data, we determine the earliest date, and the latest date.
         let startDate = localSeedDataCopy.reduce(Date.distantFuture) { current, next in
@@ -983,6 +955,13 @@ public protocol RVS_CalendarInput_DateItemProtocol {
      Return the date item state as date components. OPTIONAL
      */
     var dateComponents: DateComponents? { get }
+    
+    /* ################################################################## */
+    /**
+     This allows us to sort the data by the date.
+     It returns a simple int, which is useful for sorting.
+     */
+    var dateSortKey: Int { get }
 }
 
 /* ###################################################################################################################################### */
@@ -1000,6 +979,12 @@ extension RVS_CalendarInput_DateItemProtocol {
      This returns the instance as a standard Foundation Date. It may be nil. The calendar used, will be the current one.
      */
     public var date: Date? { dateComponents?.date }
+    
+    /* ################################################################## */
+    /**
+     The default returns a simple int, which is a sum of the various date components (YYYYMMDD).
+     */
+    public var dateSortKey: Int { (year * 10000) + (month * 100) + day }
 }
 
 /* ###################################################################################################################################### */
