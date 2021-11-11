@@ -184,6 +184,9 @@ There is [a convenience initializer](https://riftvalleysoftware.github.io/RVS_Ca
 ### The Data Is Copied
 When the data is presented to the widget, it is used to create an internal Array that copies the relevant data from the presented Array. It does not reference the Array elements. Internally, the Array is treated as classes (reference context), so viewing the [`data`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp) Array looks at references, but these are not referenced to the original data that was presented.
 
+### Only One Item Per Day
+Even though the protocol is not hashable, we should treat it as if it was, with the unique value being each day (year + month + day).
+
 ## MORE INFORMATION
 The control does not derive from [`UIControl`](https://developer.apple.com/documentation/uikit/uicontrol).
 This is because the [`UIControl`](https://developer.apple.com/documentation/uikit/uicontrol) event targeting system would not be useful for the types of interactions

@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.2.1
+ Version 1.2.2
  */
 
 import UIKit
@@ -757,8 +757,38 @@ extension RVS_CalendarInput {
     private func _determineDataSetup(from inSeedData: [RVS_CalendarInput_DateItemProtocol]) {
         _data = []
         
+        let localSeedDataCopy = inSeedData.sorted { a, b in
+            var ret = false
+            
+            if a.year < b.year {
+                ret = true
+            } else if a.year == b.year,
+                      a.month < b.month {
+                ret = true
+            } else if a.year == b.year,
+                      a.month == b.month,
+                      a.day < b.day {
+                ret = true
+            } else if a.year == b.year,
+                      a.month == b.month,
+                      a.day == b.day,
+                      a.isSelected,
+                      !b.isSelected {
+                ret = true
+            } else if a.year == b.year,
+                      a.month == b.month,
+                      a.day == b.day,
+                      a.isSelected == b.isSelected,
+                      a.isEnabled,
+                      !b.isEnabled {
+                ret = true
+            }
+            
+            return ret
+        }
+        
         // From the given data, we determine the earliest date, and the latest date.
-        let startDate = inSeedData.reduce(Date.distantFuture) { current, next in
+        let startDate = localSeedDataCopy.reduce(Date.distantFuture) { current, next in
             guard let nextDate = next.date,
                   current > nextDate
             else { return current }
@@ -766,7 +796,7 @@ extension RVS_CalendarInput {
             return nextDate
         }
         
-        let endDate = inSeedData.reduce(Date.distantPast) { current, next in
+        let endDate = localSeedDataCopy.reduce(Date.distantPast) { current, next in
             guard let nextDate = next.date,
                   current < nextDate
             else { return current }
@@ -794,7 +824,7 @@ extension RVS_CalendarInput {
                    let numberOfDaysInThisMonth = calendar.range(of: .day, in: .month, for: calcDate)?.count {
                     for day in 1...numberOfDaysInThisMonth {
                         let dateItemForThisDay = _DateItem(day: day, month: month, year: year)
-                        if let dateItemForThisDayTemp = inSeedData.first(where: { $0.day == day && $0.month == month && $0.year == year }) {
+                        if let dateItemForThisDayTemp = localSeedDataCopy.first(where: { $0.day == day && $0.month == month && $0.year == year }) {
                             // Since we are copying, the date is already OK, so we duplicate the rest of the state.
                             dateItemForThisDay.isEnabled = dateItemForThisDayTemp.isEnabled
                             dateItemForThisDay.isSelected = dateItemForThisDayTemp.isSelected

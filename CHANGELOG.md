@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.2.2
+
+- **November 11, 2021**
+
+- Just made sure that the internal seed data is sorted. This will help to have a predictable response.
+
 ## 1.2.1
 
 - **November 11, 2021**

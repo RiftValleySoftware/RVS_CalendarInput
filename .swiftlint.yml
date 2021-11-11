@@ -15,8 +15,8 @@ function_body_length:
 - 100 #error
 
 file_length:
-- 1999 # warning
-- 1100 # error
+- 1199 # warning
+- 1200 # error
 
 type_body_length:
 - 99 # warning
@@ -27,8 +27,8 @@ line_length:
 - 220 # error
 
 cyclomatic_complexity:
-- 9 # warning
-- 10 # error
+- 14 # warning
+- 15 # error
 
 excluded:
 - Carthage
