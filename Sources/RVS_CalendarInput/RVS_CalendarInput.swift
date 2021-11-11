@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.2.0
+ Version 1.2.1
  */
 
 import UIKit
@@ -292,7 +292,7 @@ open class RVS_CalendarInput: UIView {
     /**
      This contains the data that defines the state of this control. This will have *every* day shown by the control; not just the ones passed in.
      */
-    private var _data: [_DateItem] = [] { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    private var _data: [_DateItem] = [] { didSet { _resetControl() } }
 
     // MARK: Public State Properties That Cannot Be Changed At Runtime
     /* ################################################################## */
@@ -307,51 +307,51 @@ open class RVS_CalendarInput: UIView {
      The height, in display units, of the weekday header.
      We "hardcode" this, because dynamically calculating it is crazy slow.
      */
-    public var weekdayHeaderHeightInDisplayUnits = CGFloat(30) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var weekdayHeaderHeightInDisplayUnits = CGFloat(30) { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The height, in display units, of the year header.
      We "hardcode" this, because dynamically calculating it is crazy slow.
      */
-    public var yearHeaderHeightInDisplayUnits = CGFloat(25) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var yearHeaderHeightInDisplayUnits = CGFloat(25) { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The height, in display units, of the month header.
      We "hardcode" this, because dynamically calculating it is crazy slow.
      */
-    public var monthHeaderHeightInDisplayUnits = CGFloat(20) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var monthHeaderHeightInDisplayUnits = CGFloat(20) { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      This contains the calendar used for the control. It defaults to the current calendar, but can be changed.
      */
-    public var calendar: Calendar = Calendar.current { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var calendar: Calendar = Calendar.current { didSet { _resetControl() } }
     
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var weekdayHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The font to be used for the year header.
      */
-    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var yearHeaderFont = UIFont.boldSystemFont(ofSize: 20) { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The font to be used for the month header.
      */
-    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var monthHeaderFont = UIFont.boldSystemFont(ofSize: 18) { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The font to be used for each of the days.
      */
-    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24) { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var weekdayFont = UIFont.boldSystemFont(ofSize: 24) { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
@@ -359,61 +359,61 @@ open class RVS_CalendarInput: UIView {
      The [`UIView.tintColor`](https://developer.apple.com/documentation/uikit/uiview/1622467-tintcolor) property is used to set the font color for the enabled days (and becomes the background, when the day is selected).
      If the day is selected, this becomes the font color.
      */
-    public var enabledItemBackgroundColor = UIColor.white { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var enabledItemBackgroundColor = UIColor.white { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The font to be used for the weekday header, at the top.
      */
-    public var weekdayHeaderFontColor = UIColor.label { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var weekdayHeaderFontColor = UIColor.label { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The font color to be used for the year header.
      */
-    public var yearHeaderFontColor = UIColor.white { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var yearHeaderFontColor = UIColor.white { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The font color to be used for the month header.
      */
-    public var monthHeaderFontColor = UIColor.white { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var monthHeaderFontColor = UIColor.white { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The background color to be used for the year header.
      */
-    public var yearHeaderBackgroundColor = UIColor.systemGray { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var yearHeaderBackgroundColor = UIColor.systemGray { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The background color to be used for the month header.
      */
-    public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var monthHeaderBackgroundColor = UIColor.systemGray2 { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      The opacity of disabled date buttons.
      */
-    public var disabledAlpha = RVS_CalendarInput._defaultDisabledAlpha { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    public var disabledAlpha = RVS_CalendarInput._defaultDisabledAlpha { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the month headers will not be shown.
      */
-    @IBInspectable public var showMonthHeaders: Bool = true { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    @IBInspectable public var showMonthHeaders: Bool = true { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the year headers will not be shown.
      */
-    @IBInspectable public var showYearHeaders: Bool = true { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    @IBInspectable public var showYearHeaders: Bool = true { didSet { _resetControl() } }
 
     /* ################################################################## */
     /**
      If this is false (default is true), then the weekday header will not be shown.
      */
-    @IBInspectable public var showWeekdayHeader: Bool = true { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+    @IBInspectable public var showWeekdayHeader: Bool = true { didSet { _resetControl() } }
 
     // MARK: Delegate
     /* ################################################################## */
@@ -422,13 +422,31 @@ open class RVS_CalendarInput: UIView {
      This is not IB-accessible, because we don't want to require delegates to conform to [`NSObjectProtocol`](https://developer.apple.com/documentation/objectivec/nsobjectprotocol)
      */
     public weak var delegate: RVS_CalendarInputDelegate?
-    
+
+    // MARK: Scroll View
+    /* ################################################################## */
+    /**
+     The scroller that will contain the view.
+     */
+    public weak var scrollView: UIScrollView?
 }
 
 /* ###################################################################################################################################### */
 // MARK: Private Instance Methods
 /* ###################################################################################################################################### */
 extension RVS_CalendarInput {
+    /* ################################################################## */
+    /**
+     This is called to completely reset the control from scratch.
+     */
+    private func _resetControl() {
+        DispatchQueue.main.async { [weak self] in
+            self?.scrollView?.removeFromSuperview()
+            self?.scrollView = nil
+            self?.setNeedsLayout()
+        }
+    }
+    
     /* ################################################################## */
     /**
      This creates a single day button.
@@ -651,77 +669,80 @@ extension RVS_CalendarInput {
      This sets up the entire control, creating the views necessary, and relating all the various anchors and constraints.
      */
     private func _setUpGrid() {
-        subviews.forEach { $0.removeFromSuperview() } // Clean the surface with an alcohol swab, before beginning...
-        
-        let weekdayHeight = showWeekdayHeader ? weekdayHeaderHeightInDisplayUnits : 0
+        if nil == scrollView,
+           !_data.isEmpty {
+            let scrollViewTemp = UIScrollView()
+            addSubview(scrollViewTemp)
+            scrollView = scrollViewTemp
+            
+            let weekdayHeight = showWeekdayHeader ? weekdayHeaderHeightInDisplayUnits : 0
 
-        // Set up the main scroller
-        let scrollView = UIScrollView()
-        addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        // Adding the weekday header height as an offset, allows us to keep the weekdays over the actual grid.
-        scrollView.topAnchor.constraint(equalTo: topAnchor, constant: weekdayHeight).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
-        // Set up the scolled container
-        let containerView = UIView()
-        scrollView.addSubview(containerView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor).isActive = true
-        containerView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
-        containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+            // Set up the main scroller
+            scrollViewTemp.translatesAutoresizingMaskIntoConstraints = false
+            scrollViewTemp.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+            // Adding the weekday header height as an offset, allows us to keep the weekdays over the actual grid.
+            scrollViewTemp.topAnchor.constraint(equalTo: topAnchor, constant: weekdayHeight).isActive = true
+            scrollViewTemp.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+            scrollViewTemp.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            
+            // Set up the scolled container
+            let containerView = UIView()
+            scrollViewTemp.addSubview(containerView)
+            containerView.translatesAutoresizingMaskIntoConstraints = false
+            containerView.leadingAnchor.constraint(equalTo: scrollViewTemp.contentLayoutGuide.leadingAnchor).isActive = true
+            containerView.topAnchor.constraint(equalTo: scrollViewTemp.contentLayoutGuide.topAnchor).isActive = true
+            containerView.trailingAnchor.constraint(equalTo: scrollViewTemp.contentLayoutGuide.trailingAnchor).isActive = true
+            containerView.bottomAnchor.constraint(equalTo: scrollViewTemp.contentLayoutGuide.bottomAnchor).isActive = true
+            containerView.widthAnchor.constraint(equalTo: scrollViewTemp.widthAnchor).isActive = true
 
-        var bottomAnchor = containerView.topAnchor
-        
-        // The years, months, and days
-        _data.yearRange.forEach { bottomAnchor = _addYear($0, in: containerView, topAnchor: bottomAnchor) }
-        
-        bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
-        
-        // This displays a fixed header, containing the weekday column headers, over the grid.
-        if showWeekdayHeader {
-            let weekdayLabelHeader = UIView()
-            addSubview(weekdayLabelHeader)
-            weekdayLabelHeader.translatesAutoresizingMaskIntoConstraints = false
-            weekdayLabelHeader.topAnchor.constraint(equalTo: topAnchor).isActive = true
-            weekdayLabelHeader.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-            weekdayLabelHeader.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-            weekdayLabelHeader.heightAnchor.constraint(equalToConstant: weekdayHeight).isActive = true
+            var bottomAnchor = containerView.topAnchor
+            
+            // The years, months, and days
+            _data.yearRange.forEach { bottomAnchor = _addYear($0, in: containerView, topAnchor: bottomAnchor) }
+            
+            bottomAnchor.constraint(equalTo: scrollViewTemp.contentLayoutGuide.bottomAnchor).isActive = true
+            
+            // This displays a fixed header, containing the weekday column headers, over the grid.
+            if showWeekdayHeader {
+                let weekdayLabelHeader = UIView()
+                addSubview(weekdayLabelHeader)
+                weekdayLabelHeader.translatesAutoresizingMaskIntoConstraints = false
+                weekdayLabelHeader.topAnchor.constraint(equalTo: topAnchor).isActive = true
+                weekdayLabelHeader.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                weekdayLabelHeader.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+                weekdayLabelHeader.heightAnchor.constraint(equalToConstant: weekdayHeight).isActive = true
 
-            let startingWeekday = calendar.firstWeekday
-            // Start everything at the beginning of the container.
-            var leadingAnchor = weekdayLabelHeader.leadingAnchor
-            var indexAnchor: NSLayoutDimension? // This will contain the width constraint of the *previous* day (starting with nothing).
-            // We make all the day widths equal, and attach each end to the sides of the container. Each day is attached to the next/previous one.
-            for weekday in startingWeekday..<(startingWeekday + 7) {
-                let weekDayIndex = weekday < 8 ? weekday - 1 : weekday - 8
-                let thisWeekdayHeader = UILabel()
-                let text = String(calendar.shortWeekdaySymbols[weekDayIndex])
-                thisWeekdayHeader.adjustsFontSizeToFitWidth = true  // Will probably never be necessary, but belt and suspenders...
-                thisWeekdayHeader.minimumScaleFactor = 0.5
-                thisWeekdayHeader.text = text
-                thisWeekdayHeader.font = weekdayHeaderFont
-                thisWeekdayHeader.textColor = weekdayHeaderFontColor
-                thisWeekdayHeader.textAlignment = .center
-                weekdayLabelHeader.addSubview(thisWeekdayHeader)
-                thisWeekdayHeader.translatesAutoresizingMaskIntoConstraints = false
-                thisWeekdayHeader.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-                // This makes the day width the same as the previous one. If no previous, then nothing happens.
-                indexAnchor?.constraint(equalTo: thisWeekdayHeader.widthAnchor).isActive = true
-                thisWeekdayHeader.topAnchor.constraint(equalTo: weekdayLabelHeader.topAnchor).isActive = true
-                thisWeekdayHeader.bottomAnchor.constraint(equalTo: weekdayLabelHeader.bottomAnchor).isActive = true
-                // The next one will attach to the trailing of this one.
-                leadingAnchor = thisWeekdayHeader.trailingAnchor
-                // The next width will be equal to us.
-                indexAnchor = thisWeekdayHeader.widthAnchor
+                let startingWeekday = calendar.firstWeekday
+                // Start everything at the beginning of the container.
+                var leadingAnchor = weekdayLabelHeader.leadingAnchor
+                var indexAnchor: NSLayoutDimension? // This will contain the width constraint of the *previous* day (starting with nothing).
+                // We make all the day widths equal, and attach each end to the sides of the container. Each day is attached to the next/previous one.
+                for weekday in startingWeekday..<(startingWeekday + 7) {
+                    let weekDayIndex = weekday < 8 ? weekday - 1 : weekday - 8
+                    let thisWeekdayHeader = UILabel()
+                    let text = String(calendar.shortWeekdaySymbols[weekDayIndex])
+                    thisWeekdayHeader.adjustsFontSizeToFitWidth = true  // Will probably never be necessary, but belt and suspenders...
+                    thisWeekdayHeader.minimumScaleFactor = 0.5
+                    thisWeekdayHeader.text = text
+                    thisWeekdayHeader.font = weekdayHeaderFont
+                    thisWeekdayHeader.textColor = weekdayHeaderFontColor
+                    thisWeekdayHeader.textAlignment = .center
+                    weekdayLabelHeader.addSubview(thisWeekdayHeader)
+                    thisWeekdayHeader.translatesAutoresizingMaskIntoConstraints = false
+                    thisWeekdayHeader.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                    // This makes the day width the same as the previous one. If no previous, then nothing happens.
+                    indexAnchor?.constraint(equalTo: thisWeekdayHeader.widthAnchor).isActive = true
+                    thisWeekdayHeader.topAnchor.constraint(equalTo: weekdayLabelHeader.topAnchor).isActive = true
+                    thisWeekdayHeader.bottomAnchor.constraint(equalTo: weekdayLabelHeader.bottomAnchor).isActive = true
+                    // The next one will attach to the trailing of this one.
+                    leadingAnchor = thisWeekdayHeader.trailingAnchor
+                    // The next width will be equal to us.
+                    indexAnchor = thisWeekdayHeader.widthAnchor
+                }
+            
+                // tie off the loose end to the trailing of the container.
+            leadingAnchor.constraint(equalTo: trailingAnchor).isActive = true
             }
-        
-            // tie off the loose end to the trailing of the container.
-        leadingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         }
     }
     

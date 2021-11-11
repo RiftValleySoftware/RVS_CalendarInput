@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.2.1
+
+- **November 11, 2021**
+
+- It was possible for the control to get in a "set layout loop," so I added some "checks and balances."
+
 ## 1.2.0
 
 - **November 10, 2021**
