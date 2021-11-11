@@ -248,6 +248,9 @@ This is not IB-accessible, because we don&rsquo;t want to require delegates to c
 <h3 id='the-data-is-copied' class='heading'>The Data Is Copied</h3>
 
 <p>When the data is presented to the widget, it is used to create an internal Array that copies the relevant data from the presented Array. It does not reference the Array elements. Internally, the Array is treated as classes (reference context), so viewing the <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp"><code>data</code></a> Array looks at references, but these are not referenced to the original data that was presented.</p>
+<h3 id='only-one-item-per-day' class='heading'>Only One Item Per Day</h3>
+
+<p>Even though the protocol is not hashable, we should treat it as if it was, with the unique value being each day (year + month + day).</p>
 <h2 id='more-information' class='heading'>MORE INFORMATION</h2>
 
 <p>The control does not derive from <a href="https://developer.apple.com/documentation/uikit/uicontrol"><code>UIControl</code></a>.
