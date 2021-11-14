@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.2.4
+
+- **November 13, 2021**
+
+- Removed the @IBDesignable. It was nothing but misery.
+
 ## 1.2.3
 
 - **November 11, 2021**

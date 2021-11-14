@@ -95,7 +95,6 @@ private extension UIColor {
  that can occur with this control. Instead, the implementor should register as a delegate (`RVS_CalendarInputDelegate`), and receive messages, when the control is used.
  The implementor can always examine the `data` array, and detrmine the control state. That array is updated in realtime.
  */
-@IBDesignable
 open class RVS_CalendarInput: UIView {
     /* ################################################################################################################################## */
     // MARK: Private Individual Day Button Class
