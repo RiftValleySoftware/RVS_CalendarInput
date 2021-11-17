@@ -881,20 +881,21 @@ extension RVS_CalendarInput {
         
         /* ############################################################## */
         /**
-         Called when the views are being laid out.
+         Sets the colors of the displayed control.
          */
-        public override func layoutSubviews() {
-            _cornerRadius = RVS_CalendarInput._dayCornerRadiusInDisplayUnits
-            titleLabel?.font = myHandler?.weekdayFont
-            titleLabel?.textAlignment = .center
-            setTitle(String(dateItem?.day ?? 0), for: .normal)
-
+        private func _setControlColors() {
             if dateItem?.isEnabled ?? false {
                 isEnabled = true
-                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : myHandler?.enabledItemBackgroundColor
-                setTitleColor((dateItem?.isSelected ?? false) ? myHandler?.enabledItemBackgroundColor : myHandler?.tintColor, for: .normal)
-                setTitleColor(.systemGray3, for: .highlighted)
-                addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
+                let backgroundColorSelected = myHandler?.tintColor
+                let backgroundColorUnselected = myHandler?.enabledItemBackgroundColor
+                if var selectionState = dateItem?.isSelected {
+                    if isHighlighted {
+                        selectionState = !selectionState
+                    }
+                    backgroundColor = selectionState ? backgroundColorSelected : backgroundColorUnselected
+                    setTitleColor(selectionState ? backgroundColorUnselected : backgroundColorSelected, for: .normal)
+                    addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
+                }
                 alpha = 1.0
             } else {
                 isEnabled = false
@@ -903,6 +904,25 @@ extension RVS_CalendarInput {
                 removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
                 alpha = myHandler?.disabledAlpha ?? RVS_CalendarInput._defaultDisabledAlpha
             }
+        }
+        
+        /* ############################################################## */
+        /**
+         Overriden, so we change the colors.
+         */
+        public override var isHighlighted: Bool { didSet { _setControlColors() } }
+
+        /* ############################################################## */
+        /**
+         Called when the views are being laid out.
+         */
+        public override func layoutSubviews() {
+            _cornerRadius = RVS_CalendarInput._dayCornerRadiusInDisplayUnits
+            titleLabel?.font = myHandler?.weekdayFont
+            titleLabel?.textAlignment = .center
+            setTitle(String(dateItem?.day ?? 0), for: .normal)
+
+            _setControlColors()
 
             super.layoutSubviews()
         }
