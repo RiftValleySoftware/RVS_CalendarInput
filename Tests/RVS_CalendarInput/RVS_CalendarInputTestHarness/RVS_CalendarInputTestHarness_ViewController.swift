@@ -372,8 +372,9 @@ extension RVS_CalendarInputTestHarness_ViewController: RVS_CalendarInputDelegate
      Currently, only a console message is sent.
      - parameter inCalendarInput: The calendar input widget instance. It is ignored in this handler.
      - parameter dateItemChanged: The date item that was changed.
+     - parameter dateButton: The date item button that was actuated.
      */
-    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput_DateItemProtocol) {
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput_DateItemProtocol, dateButton inDateButton: UIButton?) {
         print("The date \(String(describing: inDateItem.date)) was selected by the user. It is currently \(inDateItem.isSelected ? "" : "not ")selected.")
     }
 }

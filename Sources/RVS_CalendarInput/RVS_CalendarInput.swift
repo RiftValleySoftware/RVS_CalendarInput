@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.2.3
+ Version 1.3.0
  */
 
 import UIKit
@@ -97,29 +97,29 @@ private extension UIColor {
  */
 open class RVS_CalendarInput: UIView {
     /* ################################################################################################################################## */
-    // MARK: Private Individual Day Button Class
+    // MARK: Public Individual Day Button Class
     /* ################################################################################################################################## */
     /**
      Each day is represented by a button. This allows us to associate a DateItem with the button, and customize its display
      */
-    private class _DayButton: UIButton {
+    public class DayButton: UIButton {
         /* ############################################################## */
         /**
          The date item associated with this instance. Remember that we are using reference emantics for the date items.
          */
-        var dateItem: _DateItem? { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+        public var dateItem: RVS_CalendarInput_DateItemProtocol? { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
         
         /* ############################################################## */
         /**
          The control that "owns" these buttons.
          */
-        weak var myHandler: RVS_CalendarInput?
+        public weak var myHandler: RVS_CalendarInput?
         
         /* ############################################################## */
         /**
          Called when the views are being laid out.
          */
-        override func layoutSubviews() {
+        public override func layoutSubviews() {
             _cornerRadius = RVS_CalendarInput._dayCornerRadiusInDisplayUnits
             titleLabel?.font = myHandler?.weekdayFont
             titleLabel?.textAlignment = .center
@@ -454,7 +454,7 @@ extension RVS_CalendarInput {
      - parameter in: The container for this button.
      */
     private func _makeMyDay(_ inDay: _DateItem, in inContainer: UIView) {
-        let dayButton = _DayButton()
+        let dayButton = DayButton()
         inContainer.addSubview(dayButton)
         dayButton.dateItem = inDay
         dayButton.myHandler = self
@@ -822,11 +822,11 @@ extension RVS_CalendarInput {
  
      - parameter inButton: The button object that was hit.
      */
-    @objc private func _buttonHit(_ inButton: _DayButton) {
-        if let dateItem = inButton.dateItem,
+    @objc private func _buttonHit(_ inButton: DayButton) {
+        if let dateItem = inButton.dateItem as? _DateItem,
            dateItem.isEnabled {
             dateItem.isSelected = !dateItem.isSelected
-            delegate?.calendarInput(self, dateItemChanged: dateItem)
+            delegate?.calendarInput(self, dateItemChanged: dateItem, dateButton: inButton)
         }
     }
 }
@@ -999,8 +999,9 @@ public protocol RVS_CalendarInputDelegate: AnyObject {
  
      - parameter inCalendarInput: The calendar input instance
      - parameter dateItemChanged: The date item that changed selection state.
+     - parameter dateButton: The actual button view that was touched.
      */
-    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput_DateItemProtocol)
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput_DateItemProtocol, dateButton: UIButton?)
 }
 
 /* ###################################################################################################################################### */
@@ -1011,7 +1012,7 @@ public extension RVS_CalendarInputDelegate {
     /**
      The default does nothing.
      */
-    func calendarInput(_: RVS_CalendarInput, dateItemChanged: RVS_CalendarInput_DateItemProtocol) { }
+    func calendarInput(_: RVS_CalendarInput, dateItemChanged: RVS_CalendarInput_DateItemProtocol, dateButton: UIButton?) { }
 }
 
 /* ###################################################################################################################################### */
