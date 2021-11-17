@@ -788,7 +788,7 @@ extension RVS_CalendarInput {
             dateItem.isSelected = !dateItem.isSelected
             delegate?.calendarInput(self, dateItemChanged: dateItem, dateButton: inButton)
             if readOnlyMode {
-                dateItem.isSelected = false
+                dateItem.isSelected = !dateItem.isSelected
             }
         }
     }

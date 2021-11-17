@@ -182,6 +182,12 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
 
     /* ################################################################## */
     /**
+     The switch to turn the control to "read-only mode."
+     */
+    @IBOutlet weak var readOnlyModeSwitch: UISwitch!
+
+    /* ################################################################## */
+    /**
      This is a button that initiates "clown mode," with disgusting colors.
      */
     @IBOutlet weak var clownButton: UIButton!
@@ -326,6 +332,20 @@ extension RVS_CalendarInputTestHarness_ViewController {
             showWeekdayHeaderSwitch?.sendActions(for: .valueChanged)
         } else {
             calendarWidgetInstance?.showWeekdayHeader = showWeekdayHeaderSwitch?.isOn ?? true
+        }
+    }
+
+    /* ################################################################## */
+    /**
+     This is called whenever the show the read-only mode switch, or its label button, are hit.
+     - parameter inControl: The control. It is used to determine the behavior of the callback (button only toggles the switch).
+     */
+    @IBAction func readOnlyModeSwitchHit(_ inControl: Any) {
+        if inControl is UIButton {
+            readOnlyModeSwitch?.isOn = !(readOnlyModeSwitch?.isOn ?? true)
+            readOnlyModeSwitch?.sendActions(for: .valueChanged)
+        } else {
+            calendarWidgetInstance?.readOnlyMode = readOnlyModeSwitch?.isOn ?? false
         }
     }
 
