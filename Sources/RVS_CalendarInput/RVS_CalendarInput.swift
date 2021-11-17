@@ -97,53 +97,6 @@ private extension UIColor {
  */
 open class RVS_CalendarInput: UIView {
     /* ################################################################################################################################## */
-    // MARK: Public Individual Day Button Class
-    /* ################################################################################################################################## */
-    /**
-     Each day is represented by a button. This allows us to associate a DateItem with the button, and customize its display
-     */
-    public class DayButton: UIButton {
-        /* ############################################################## */
-        /**
-         The date item associated with this instance. Remember that we are using reference emantics for the date items.
-         */
-        public var dateItem: RVS_CalendarInput_DateItemProtocol? { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
-        
-        /* ############################################################## */
-        /**
-         The control that "owns" these buttons.
-         */
-        public weak var myHandler: RVS_CalendarInput?
-        
-        /* ############################################################## */
-        /**
-         Called when the views are being laid out.
-         */
-        public override func layoutSubviews() {
-            _cornerRadius = RVS_CalendarInput._dayCornerRadiusInDisplayUnits
-            titleLabel?.font = myHandler?.weekdayFont
-            titleLabel?.textAlignment = .center
-            setTitle(String(dateItem?.day ?? 0), for: .normal)
-
-            if dateItem?.isEnabled ?? false {
-                isEnabled = true
-                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : myHandler?.enabledItemBackgroundColor
-                setTitleColor((dateItem?.isSelected ?? false) ? myHandler?.enabledItemBackgroundColor : myHandler?.tintColor, for: .normal)
-                addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
-                alpha = 1.0
-            } else {
-                isEnabled = false
-                backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground._inverse : .systemBackground
-                setTitleColor((dateItem?.isSelected ?? false) ? .label._inverse : .label, for: .disabled)
-                removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
-                alpha = myHandler?.disabledAlpha ?? RVS_CalendarInput._defaultDisabledAlpha
-            }
-
-            super.layoutSubviews()
-        }
-    }
-
-    /* ################################################################################################################################## */
     // MARK: Private Date Item Class (One element of the `data` array)
     /* ################################################################################################################################## */
     /**
@@ -413,6 +366,13 @@ open class RVS_CalendarInput: UIView {
      If this is false (default is true), then the weekday header will not be shown.
      */
     @IBInspectable public var showWeekdayHeader: Bool = true { didSet { _resetControl() } }
+
+    /* ################################################################## */
+    /**
+     If this is true (default is false), then each day button acts in a "momentary" fashion, and the control does not leave the day selected.
+     All days will appear as unselected, when "at rest."
+     */
+    @IBInspectable public var readOnlyMode: Bool = false { didSet { _resetControl() } }
 
     // MARK: Delegate
     /* ################################################################## */
@@ -798,7 +758,7 @@ extension RVS_CalendarInput {
                         if let dateItemForThisDayTemp = localSeedDataCopy.first(where: { $0.day == day && $0.month == month && $0.year == year }) {
                             // Since we are copying, the date is already OK, so we duplicate the rest of the state.
                             dateItemForThisDay.isEnabled = dateItemForThisDayTemp.isEnabled
-                            dateItemForThisDay.isSelected = dateItemForThisDayTemp.isSelected
+                            dateItemForThisDay.isSelected = readOnlyMode ? false : dateItemForThisDayTemp.isSelected
                             dateItemForThisDay.refCon = dateItemForThisDayTemp.refCon
                         }
                         
@@ -827,6 +787,9 @@ extension RVS_CalendarInput {
            dateItem.isEnabled {
             dateItem.isSelected = !dateItem.isSelected
             delegate?.calendarInput(self, dateItemChanged: dateItem, dateButton: inButton)
+            if readOnlyMode {
+                dateItem.isSelected = false
+            }
         }
     }
 }
@@ -895,6 +858,53 @@ extension RVS_CalendarInput {
         }
         
         delegate = inDelegate
+    }
+    
+    /* ################################################################################################################################## */
+    // MARK: Public Individual Day Button Class
+    /* ################################################################################################################################## */
+    /**
+     Each day is represented by a button. This allows us to associate a DateItem with the button, and customize its display
+     */
+    public class DayButton: UIButton {
+        /* ############################################################## */
+        /**
+         The date item associated with this instance. Remember that we are using reference emantics for the date items.
+         */
+        public var dateItem: RVS_CalendarInput_DateItemProtocol? { didSet { DispatchQueue.main.async { [weak self] in self?.setNeedsLayout() } } }
+        
+        /* ############################################################## */
+        /**
+         The control that "owns" these buttons.
+         */
+        public weak var myHandler: RVS_CalendarInput?
+        
+        /* ############################################################## */
+        /**
+         Called when the views are being laid out.
+         */
+        public override func layoutSubviews() {
+            _cornerRadius = RVS_CalendarInput._dayCornerRadiusInDisplayUnits
+            titleLabel?.font = myHandler?.weekdayFont
+            titleLabel?.textAlignment = .center
+            setTitle(String(dateItem?.day ?? 0), for: .normal)
+
+            if dateItem?.isEnabled ?? false {
+                isEnabled = true
+                backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : myHandler?.enabledItemBackgroundColor
+                setTitleColor((dateItem?.isSelected ?? false) ? myHandler?.enabledItemBackgroundColor : myHandler?.tintColor, for: .normal)
+                addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
+                alpha = 1.0
+            } else {
+                isEnabled = false
+                backgroundColor = (dateItem?.isSelected ?? false) ? .systemBackground._inverse : .systemBackground
+                setTitleColor((dateItem?.isSelected ?? false) ? .label._inverse : .label, for: .disabled)
+                removeTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
+                alpha = myHandler?.disabledAlpha ?? RVS_CalendarInput._defaultDisabledAlpha
+            }
+
+            super.layoutSubviews()
+        }
     }
 }
 
