@@ -893,6 +893,7 @@ extension RVS_CalendarInput {
                 isEnabled = true
                 backgroundColor = (dateItem?.isSelected ?? false) ? myHandler?.tintColor : myHandler?.enabledItemBackgroundColor
                 setTitleColor((dateItem?.isSelected ?? false) ? myHandler?.enabledItemBackgroundColor : myHandler?.tintColor, for: .normal)
+                setTitleColor(.systemGray3, for: .highlighted)
                 addTarget(myHandler, action: #selector(_buttonHit(_:)), for: .primaryActionTriggered)
                 alpha = 1.0
             } else {
