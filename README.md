@@ -155,7 +155,7 @@ If this is false (default is true), then the year headers will not be shown.
 - [`showWeekdayHeader: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showWeekdayHeader))
 If this is false (default is true), then the weekday header will not be shown.
 
-- [`readOnlyMode`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)readOnlyMode)
+- [`readOnlyMode: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)readOnlyMode)
 If this is true (default is false), then the control operates in "read-only" mode. In this mode, the dates do not toggle. The protocol callback is still made, but the state of the date item is transitory, and returns to its original value, after the callback.
 If this is false (default), then the state of each date toggles, and remains, after the callback is made.
 
