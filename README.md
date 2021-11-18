@@ -232,13 +232,13 @@ The three switches in the dashboard will hide the widget headers. Figures 3-6 wi
 
 ### CHANGING DATE RANGES
 
-Use the date pickers to choose a range. Note that any days before today (this file was authored on October 31, 2021 -Happy Halloween!) will be disabled. The same weekday as today, will be highlighted.
+Use the date pickers to choose a range. Note that any days before today (this file was authored on November 18, 2021) will be disabled. The same weekday as today, will be highlighted.
 
-| ![Figure 7: Selecting the Month of October, 2021](img/Figure-07.png) | ![Figure 8: Leaving Out Today (October 31)](img/Figure-08.png) |
+| ![Figure 7: Selecting the Month of November, 2021](img/Figure-07.png) | ![Figure 8: Leaving Out Today (November 18)](img/Figure-08.png) |
 | - | - |
-| Figure 7: Selecting the Month of October, 2021 | Figure 8: Leaving Out Today (October 31) |
+| Figure 7: Selecting the Month of November, 2021 | Figure 8: Leaving Out Today (November 18) |
 
-In Figure 8, we restrict the range, so that today is not included, so we do not get October 31 selected and enabled, even though it is displayed.
+In Figure 8, we restrict the range, so that today is not included, so we do not get November 18 enabled, even though it is displayed. It is selected, because the test harness app marks it as selected.
 
 ### "CLOWN MODE"
 

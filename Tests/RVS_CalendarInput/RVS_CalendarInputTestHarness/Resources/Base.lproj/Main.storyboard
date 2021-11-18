@@ -27,20 +27,20 @@
                                     <constraint firstAttribute="width" secondItem="vDu-Zf-G82" secondAttribute="height" multiplier="1:1" id="ef6-bo-1BQ"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WwT-E6-EhK">
-                                <rect key="frame" x="20" y="44" width="374" height="254"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="WwT-E6-EhK">
+                                <rect key="frame" x="20" y="44" width="374" height="245"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S3f-yf-5XW">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leL-a4-tZv">
-                                                <rect key="frame" x="0.0" y="0.0" width="77.5" height="31"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="77.5" height="50"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <datePicker contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="chW-V5-dpv">
-                                                <rect key="frame" x="77.5" y="0.0" width="296.5" height="31"/>
+                                                <rect key="frame" x="77.5" y="0.0" width="296.5" height="50"/>
                                                 <connections>
                                                     <action selector="datePickerChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="9Uo-wc-d3z"/>
                                                 </connections>
@@ -48,16 +48,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="biy-76-woJ">
-                                        <rect key="frame" x="0.0" y="39" width="374" height="58"/>
+                                        <rect key="frame" x="0.0" y="54" width="374" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="End Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Yk-sW-c45">
-                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="77.5" height="50"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <datePicker contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="pSo-p6-dFB">
-                                                <rect key="frame" x="69.5" y="0.0" width="304.5" height="58"/>
+                                                <rect key="frame" x="77.5" y="0.0" width="296.5" height="50"/>
                                                 <connections>
                                                     <action selector="datePickerChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="7Bn-g0-O01"/>
                                                 </connections>
@@ -65,7 +65,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KMA-Sy-wd3">
-                                        <rect key="frame" x="0.0" y="105" width="374" height="32"/>
+                                        <rect key="frame" x="0.0" y="108" width="374" height="32"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XgQ-mg-iNi">
                                                 <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
@@ -99,7 +99,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="IND-ob-ym9">
-                                        <rect key="frame" x="0.0" y="145" width="374" height="31"/>
+                                        <rect key="frame" x="0.0" y="144" width="374" height="31"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i16-5D-r2V">
                                                 <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
@@ -119,7 +119,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="2WJ-BO-9mW">
-                                        <rect key="frame" x="0.0" y="184" width="374" height="31"/>
+                                        <rect key="frame" x="0.0" y="179" width="374" height="31"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdz-p2-4kB">
                                                 <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
@@ -138,9 +138,8 @@
                                             </switch>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" id="Ist-V1-5sw">
-                                        <rect key="frame" x="0.0" y="223" width="374" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ist-V1-5sw">
+                                        <rect key="frame" x="0.0" y="214" width="374" height="31"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iot-bW-aMS">
                                                 <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
@@ -162,11 +161,15 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="biy-76-woJ" firstAttribute="top" secondItem="WwT-E6-EhK" secondAttribute="top" constant="39" id="k4K-k4-Bxd"/>
+                                    <constraint firstAttribute="trailing" secondItem="S3f-yf-5XW" secondAttribute="trailing" id="5xH-FT-a8o"/>
+                                    <constraint firstItem="S3f-yf-5XW" firstAttribute="leading" secondItem="WwT-E6-EhK" secondAttribute="leading" id="8cl-Nw-oHm"/>
+                                    <constraint firstItem="4Yk-sW-c45" firstAttribute="width" secondItem="leL-a4-tZv" secondAttribute="width" id="SmX-0J-cAS"/>
+                                    <constraint firstAttribute="trailing" secondItem="biy-76-woJ" secondAttribute="trailing" id="VWm-vc-uPj"/>
+                                    <constraint firstItem="biy-76-woJ" firstAttribute="leading" secondItem="WwT-E6-EhK" secondAttribute="leading" id="zrf-Ae-dxK"/>
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F8Y-t3-PtB" customClass="RVS_CalendarInput" customModule="RVS_CalendarInput">
-                                <rect key="frame" x="47" y="306" width="320" height="556"/>
+                                <rect key="frame" x="47" y="297" width="320" height="565"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" name="AccentColor"/>
                                 <constraints>

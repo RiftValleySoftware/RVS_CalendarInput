@@ -506,6 +506,7 @@ extension RVS_CalendarInput {
     private func _setUpGrid() {
         if nil == scrollView,
            !_data.isEmpty {
+            subviews.forEach { $0.removeFromSuperview() }
             let scrollViewTemp = UIScrollView()
             addSubview(scrollViewTemp)
             scrollView = scrollViewTemp

@@ -1,5 +1,12 @@
 # RVS_CalendarInput Change Log
 
+## 1.3.0
+
+- **November 18, 2021**
+
+Added a "Read-Only Mode."
+Made a couple of internal data types public, and adjusted the delegate callback, to add the button that was selected.
+
 ## 1.2.4
 
 - **November 13, 2021**
