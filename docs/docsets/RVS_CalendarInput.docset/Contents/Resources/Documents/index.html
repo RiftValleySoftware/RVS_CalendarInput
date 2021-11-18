@@ -55,6 +55,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/RVS_CalendarInput.html">RVS_CalendarInput</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/RVS_CalendarInput/DateItem.html">– DateItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/RVS_CalendarInput/DayButton.html">– DayButton</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -69,10 +75,10 @@
             <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a>
+                <a class="nav-group-task-link" href="Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a>
+                <a class="nav-group-task-link" href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a>
               </li>
             </ul>
           </li>
@@ -163,7 +169,7 @@
 <p>Get the same file, as indicated by Carthage, and add it to your project.</p>
 <h3 id='implementation' class='heading'>IMPLEMENTATION</h3>
 
-<p>The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of date objects (conforming to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html"> <code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code></a>) to the widget, and the widget will configure itself around that array.</p>
+<p>The implementor will instantiate an instance of this class (either via storyboard, or programmatically). They will then present an array of date objects (conforming to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInputDateItemProtocol.html"> <code><a href="Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></code></a>) to the widget, and the widget will configure itself around that array.</p>
 
 <p>The minimal unit is a month. Months will always be displayed completely, from the first day of the month, to the last. The dataset&rsquo;s earliest date will determine the starting month, and the the dataset&rsquo;s latest date, the final month of the dataset. The dataset does not need to be sorted, upon presentation, but the internal dataset will always be sorted (by date). <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Extensions/Array.html">There is a useful Array Extension</a>, for filtering the dataset.</p>
 
@@ -217,23 +223,26 @@ If this is false (default is true), then the month headers will not be shown.</p
 If this is false (default is true), then the year headers will not be shown.</p></li>
 <li><p><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showWeekdayHeader"><code>showWeekdayHeader: Bool</code></a>)
 If this is false (default is true), then the weekday header will not be shown.</p></li>
+<li><p><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)readOnlyMode"><code>readOnlyMode</code></a>
+If this is true (default is false), then the control operates in &ldquo;read-only&rdquo; mode. In this mode, the dates do not toggle. The protocol callback is still made, but the state of the date item is transitory, and returns to its original value, after the callback.
+If this is false (default), then the state of each date toggles, and remains, after the callback is made.</p></li>
 <li><p><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC8delegateAA0a1_bC8Delegate_pSgvp"><code>delegate: RVS_CalendarInputDelegate?</code></a>)
 This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
 This is not IB-accessible, because we don&rsquo;t want to require delegates to conform to <a href="https://developer.apple.com/documentation/objectivec/nsobjectprotocol"><code>NSObjectProtocol</code></a></p></li>
 </ul>
 <h2 id='providing-data' class='heading'>PROVIDING DATA</h2>
 
-<p>The calendar develops its month range, dependent upon an Array of elements that conform to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html">the <code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code> protocol</a>. This protocol defines some basic characteristics that define the date, itself, whether or not it is selected, and/or enabled, and also, you can attach a &ldquo;reference context,&rdquo; which is an arbitrary entity. &ldquo;Refrence Context&rdquo; is an old pattern, and is how we can attach any type of information, in a type-blind manner, to an element of information. When you look at the date item, either in the <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp"><code>data</code></a> Array, or when presented in <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AA0a1_bc5_DateG8Protocol_ptF">the delegate callback</a>, you will be able to access and cast this item.</p>
+<p>The calendar develops its month range, dependent upon an Array of elements that conform to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html">the <code><a href="Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></code> protocol</a>. This protocol defines some basic characteristics that define the date, itself, whether or not it is selected, and/or enabled, and also, you can attach a &ldquo;reference context,&rdquo; which is an arbitrary entity. &ldquo;Refrence Context&rdquo; is an old pattern, and is how we can attach any type of information, in a type-blind manner, to an element of information. When you look at the date item, either in the <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp"><code>data</code></a> Array, or when presented in <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AA0a1_bc5_DateG8Protocol_ptF">the delegate callback</a>, you will be able to access and cast this item.</p>
 
-<p>Each element that conforms to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html">the <code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code> protocol</a>, must implement the following properties or computed properties:</p>
+<p>Each element that conforms to <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html">the <code><a href="Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></code> protocol</a>, must implement the following properties or computed properties:</p>
 
 <ul>
-<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP4yearSivp"><code>year: Int</code></a></li>
-<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP5monthSivp"><code>month: Int</code></a></li>
-<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP3daySivp"><code>day: Int</code></a></li>
-<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP9isEnabledSbvp"><code>isEnabled: Bool</code></a></li>
-<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP10isSelectedSbvp"><code>isSelected: Bool</code></a></li>
-<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInput_DateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP6refConypSgvp"><code>refCon: Any?</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP4yearSivp"><code>year: Int</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP5monthSivp"><code>month: Int</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP3daySivp"><code>day: Int</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP9isEnabledSbvp"><code>isEnabled: Bool</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP10isSelectedSbvp"><code>isSelected: Bool</code></a></li>
+<li><a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDateItemProtocol.html#/s:17RVS_CalendarInput0a1_bC17_DateItemProtocolP6refConypSgvp"><code>refCon: Any?</code></a></li>
 </ul>
 
 <p>You present the data to the control, by creating an Array that contains a series of elements that conform to this protocol, and the widget will automatically configure itself to display the dates, in the range specified by the Array.</p>
@@ -258,7 +267,7 @@ This is because the <a href="https://developer.apple.com/documentation/uikit/uic
 that can occur with this control.
 Instead, the implementor should register as a <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html">delegate (<code><a href="Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></code>)</a>, and <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Protocols/RVS_CalendarInputDelegate.html#/s:17RVS_CalendarInput0a1_bC8DelegateP08calendarC0_15dateItemChangedyA2AC_AA0a1_bc5_DateG8Protocol_ptF">receive messages, when the control is used</a>.
 The implementor can always examine the <a href="https://github.com/RiftValleySoftware/RVS_CalendarInput/blob/master/Sources/RVS_CalendarInput/RVS_CalendarInput.swift#L315"><code>data</code> array</a>, and determine the control state. That array is updated in realtime.
-The data is kept in an array of <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInput_DateItemProtocol.html"><code><a href="Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></code></a> instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.</p>
+The data is kept in an array of <a href="https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput/RVS_CalendarInputDateItemProtocol.html"><code><a href="Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></code></a> instances. The widget maintains an internal array that cannot be affected from outside the control, but can be read.</p>
 
 <p>The control is entirely executed in programmatic autolayout. All the implementor needs to do, is instantiate an instance of this class, position it in the layout, and supply it with an initial dataset. The widget, itself, uses autolayout to maintain its internal layout. All the user needs to worry about, is positioning the widget as a rectangle, in their own layout.</p>
 
@@ -378,7 +387,7 @@ SOFTWARE.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-11)</p>
+      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-18)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.7</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -56,6 +56,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/RVS_CalendarInput.html">RVS_CalendarInput</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RVS_CalendarInput/DateItem.html">– DateItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RVS_CalendarInput/DayButton.html">– DayButton</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -70,10 +76,10 @@
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a>
+                <a class="nav-group-task-link" href="../Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a>
+                <a class="nav-group-task-link" href="../Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a>
               </li>
             </ul>
           </li>
@@ -87,8 +93,7 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">@IBDesignable</span>
-<span class="kd">open</span> <span class="kd">class</span> <span class="kt">RVS_CalendarInput</span> <span class="p">:</span> <span class="kt">UIView</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">RVS_CalendarInput</span> <span class="p">:</span> <span class="kt">UIView</span></code></pre>
 
                 </div>
               </div>
@@ -118,9 +123,9 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp"></a>
+                    <a name="/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC16DateItemProtocol_pGvp"></a>
                     <a name="//apple_ref/swift/Property/data" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC17_DateItemProtocol_pGvp">data</a>
+                    <a class="token" href="#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC16DateItemProtocol_pGvp">data</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -135,7 +140,7 @@ The implementor can always examine the <code>data</code> array, and detrmine the
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">data</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">data</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -649,6 +654,35 @@ If the day is selected, this becomes the font color.</p>
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)readOnlyMode"></a>
+                    <a name="//apple_ref/swift/Property/readOnlyMode" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)readOnlyMode">readOnlyMode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If this is true (default is false), then each day button acts in a &ldquo;momentary&rdquo; fashion, and the control does not leave the day selected.
+All days will appear as unselected, when &ldquo;at rest.&rdquo;</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@IBInspectable</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">readOnlyMode</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -746,9 +780,9 @@ This is not IB-accessible, because we don&rsquo;t want to require delegates to c
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17RVS_CalendarInputAAC9setupDataSayAA0a1_bC17_DateItemProtocol_pGvp"></a>
+                    <a name="/s:17RVS_CalendarInputAAC9setupDataSayAA0a1_bC16DateItemProtocol_pGvp"></a>
                     <a name="//apple_ref/swift/Property/setupData" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17RVS_CalendarInputAAC9setupDataSayAA0a1_bC17_DateItemProtocol_pGvp">setupData</a>
+                    <a class="token" href="#/s:17RVS_CalendarInputAAC9setupDataSayAA0a1_bC16DateItemProtocol_pGvp">setupData</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -766,47 +800,7 @@ This copies the data. It does not make references to it.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">setupData</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Public%20Base%20Class%20Overrides"></a>
-                <a name="//apple_ref/swift/Section/Public Base Class Overrides" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Public%20Base%20Class%20Overrides"></a>
-                  <h3 class="section-name"><p>Public Base Class Overrides</p>
-</h3>
-                </div>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@CM@RVS_CalendarInput@objc(cs)RVS_CalendarInput(im)layoutSubviews"></a>
-                    <a name="//apple_ref/swift/Method/layoutSubviews()" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@CM@RVS_CalendarInput@objc(cs)RVS_CalendarInput(im)layoutSubviews">layoutSubviews()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Called when we will lay out our view hierarchy.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">layoutSubviews</span><span class="p">()</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">setupData</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -829,9 +823,9 @@ This copies the data. It does not make references to it.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17RVS_CalendarInputAAC5frame9setUpData8delegateABSo6CGRectV_SayAA0a1_bC17_DateItemProtocol_pGAA0a1_bC8Delegate_pSgtcfc"></a>
+                    <a name="/s:17RVS_CalendarInputAAC5frame9setUpData8delegateABSo6CGRectV_SayAA0a1_bC16DateItemProtocol_pGAA0a1_bC8Delegate_pSgtcfc"></a>
                     <a name="//apple_ref/swift/Method/init(frame:setUpData:delegate:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17RVS_CalendarInputAAC5frame9setUpData8delegateABSo6CGRectV_SayAA0a1_bC17_DateItemProtocol_pGAA0a1_bC8Delegate_pSgtcfc">init(frame:<wbr>setUpData:<wbr>delegate:<wbr>)</a>
+                    <a class="token" href="#/s:17RVS_CalendarInputAAC5frame9setUpData8delegateABSo6CGRectV_SayAA0a1_bC16DateItemProtocol_pGAA0a1_bC8Delegate_pSgtcfc">init(frame:<wbr>setUpData:<wbr>delegate:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -847,7 +841,7 @@ This copies the data. It does not make references to it.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">frame</span> <span class="nv">inFrame</span><span class="p">:</span> <span class="kt">CGRect</span> <span class="o">=</span> <span class="o">.</span><span class="n">zero</span><span class="p">,</span>
-                        <span class="n">setUpData</span> <span class="nv">inSetupData</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/RVS_CalendarInput_DateItemProtocol.html">RVS_CalendarInput_DateItemProtocol</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+                        <span class="n">setUpData</span> <span class="nv">inSetupData</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
                         <span class="n"><a href="../Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC8delegateAA0a1_bC8Delegate_pSgvp">delegate</a></span> <span class="nv">inDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/RVS_CalendarInputDelegate.html">RVS_CalendarInputDelegate</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
@@ -900,13 +894,137 @@ This copies the data. It does not make references to it.</p>
                 </li>
               </ul>
             </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Public%20Base%20Class%20Overrides"></a>
+                <a name="//apple_ref/swift/Section/Public Base Class Overrides" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Public%20Base%20Class%20Overrides"></a>
+                  <h3 class="section-name"><p>Public Base Class Overrides</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@RVS_CalendarInput@objc(cs)RVS_CalendarInput(im)layoutSubviews"></a>
+                    <a name="//apple_ref/swift/Method/layoutSubviews()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@RVS_CalendarInput@objc(cs)RVS_CalendarInput(im)layoutSubviews">layoutSubviews()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called when we will lay out our view hierarchy.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">layoutSubviews</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Public%20Date%20Item%20Class%20%28One%20element%20of%20the%20%60data%60%20array%29"></a>
+                <a name="//apple_ref/swift/Section/Public Date Item Class (One element of the `data` array)" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Public%20Date%20Item%20Class%20%28One%20element%20of%20the%20%60data%60%20array%29"></a>
+                  <h3 class="section-name"><p>Public Date Item Class (One element of the <code><a href="../Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC4dataSayAA0a1_bC16DateItemProtocol_pGvp">data</a></code> array)</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_CalendarInputAAC8DateItemC"></a>
+                    <a name="//apple_ref/swift/Class/DateItem" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_CalendarInputAAC8DateItemC">DateItem</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This is one element of the data that is provided to, and read from, the view.</p>
+
+<p>This is a class, as opposed to a struct, because we rely on reference semantics to set and get state.</p>
+
+                        <a href="../Classes/RVS_CalendarInput/DateItem.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DateItem</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RVS_CalendarInputDateItemProtocol.html">RVS_CalendarInputDateItemProtocol</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Public%20Individual%20Day%20Button%20Class"></a>
+                <a name="//apple_ref/swift/Section/Public Individual Day Button Class" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Public%20Individual%20Day%20Button%20Class"></a>
+                  <h3 class="section-name"><p>Public Individual Day Button Class</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_CalendarInputAAC9DayButtonC"></a>
+                    <a name="//apple_ref/swift/Class/DayButton" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_CalendarInputAAC9DayButtonC">DayButton</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Each day is represented by a button. This allows us to associate a DateItem with the button, and customize its display</p>
+
+                        <a href="../Classes/RVS_CalendarInput/DayButton.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DayButton</span> <span class="p">:</span> <span class="kt">UIButton</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-11)</p>
+      <p>&copy; 2021 <a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">The Great Rift Valley Software Company</a>. All rights reserved. (Last updated: 2021-11-18)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.7</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

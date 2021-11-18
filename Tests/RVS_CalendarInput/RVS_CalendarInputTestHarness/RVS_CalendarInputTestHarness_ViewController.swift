@@ -35,7 +35,7 @@ class RVS_CalendarInputTestHarness_ViewController: UIViewController {
     /**
      This is one element of the data that is provided to, and read from, the view.
      */
-    private struct _DateItem: RVS_CalendarInput_DateItemProtocol {
+    private struct _DateItem: RVS_CalendarInputDateItemProtocol {
         // MARK: Required Stored Properties
         /* ############################################################## */
         /**
@@ -394,7 +394,7 @@ extension RVS_CalendarInputTestHarness_ViewController: RVS_CalendarInputDelegate
      - parameter dateItemChanged: The date item that was changed.
      - parameter dateButton: The date item button that was actuated.
      */
-    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInput_DateItemProtocol, dateButton inDateButton: UIButton?) {
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInputDateItemProtocol, dateButton inDateButton: RVS_CalendarInput.DayButton?) {
         print("The date \(String(describing: inDateItem.date)) was selected by the user. It is currently \(inDateItem.isSelected ? "" : "not ")selected.")
     }
 }
