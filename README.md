@@ -146,20 +146,20 @@ The background color to be used for the month header.
 - [`disabledAlpha: CGFloat`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC13disabledAlpha12CoreGraphics7CGFloatVvp)
 The opacity of disabled date buttons.
 
-- [`showMonthHeaders: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showMonthHeaders))
+- [`showMonthHeaders: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc\(cs\)RVS_CalendarInput\(py\)showMonthHeaders)
 If this is false (default is true), then the month headers will not be shown.
 
-- [`showYearHeaders: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showYearHeaders))
+- [`showYearHeaders: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc\(cs\)RVS_CalendarInput\(py\)showYearHeaders)
 If this is false (default is true), then the year headers will not be shown.
 
-- [`showWeekdayHeader: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)showWeekdayHeader))
+- [`showWeekdayHeader: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc\(cs\)RVS_CalendarInput\(py\)showWeekdayHeader)
 If this is false (default is true), then the weekday header will not be shown.
 
-- [`readOnlyMode: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc(cs)RVS_CalendarInput(py)readOnlyMode)
+- [`readOnlyMode: Bool`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/c:@M@RVS_CalendarInput@objc\(cs\)RVS_CalendarInput\(py\)readOnlyMode)
 If this is true (default is false), then the control operates in "read-only" mode. In this mode, the dates do not toggle. The protocol callback is still made, but the state of the date item is transitory, and returns to its original value, after the callback.
 If this is false (default), then the state of each date toggles, and remains, after the callback is made.
 
-- [`delegate: RVS_CalendarInputDelegate?`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC8delegateAA0a1_bC8Delegate_pSgvp))
+- [`delegate: RVS_CalendarInputDelegate?`](https://riftvalleysoftware.github.io/RVS_CalendarInput/Classes/RVS_CalendarInput.html#/s:17RVS_CalendarInputAAC8delegateAA0a1_bC8Delegate_pSgvp)
 This is the delegate that is used to receive notifications of date items changing. The delegate needs to be a class, and this is a weak reference.
 This is not IB-accessible, because we don't want to require delegates to conform to [`NSObjectProtocol`](https://developer.apple.com/documentation/objectivec/nsobjectprotocol)
 
