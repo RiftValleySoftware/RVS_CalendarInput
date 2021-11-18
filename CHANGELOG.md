@@ -7,6 +7,8 @@
 Added a "Read-Only Mode."
 Made a couple of internal data types public, and adjusted the delegate callback, to add the button that was selected.
 
+***NOTE:** Breaking change! The delegate protocol has been renamed, in order to force users to reevaluate.*
+
 ## 1.2.4
 
 - **November 13, 2021**
