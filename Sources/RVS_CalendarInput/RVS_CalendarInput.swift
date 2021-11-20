@@ -662,11 +662,10 @@ extension RVS_CalendarInput {
     @objc private func _buttonHit(_ inButton: DayButton) {
         if let dateItem = inButton.dateItem as? DateItem,
            dateItem.isEnabled {
-            dateItem.isSelected = !dateItem.isSelected
-            delegate?.calendarInput(self, dateItemChanged: dateItem, dateButton: inButton)
-            if readOnlyMode {
+            if !readOnlyMode {  // We do not toggle the value, in read-only mode.
                 dateItem.isSelected = !dateItem.isSelected
             }
+            delegate?.calendarInput(self, dateItemChanged: dateItem, dateButton: inButton)
         }
     }
 }
