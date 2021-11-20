@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.3.0
+ Version 1.3.1
  */
 
 import UIKit
@@ -635,7 +635,7 @@ extension RVS_CalendarInput {
                         if let dateItemForThisDayTemp = localSeedDataCopy.first(where: { $0.day == day && $0.month == month && $0.year == year }) {
                             // Since we are copying, the date is already OK, so we duplicate the rest of the state.
                             dateItemForThisDay.isEnabled = dateItemForThisDayTemp.isEnabled
-                            dateItemForThisDay.isSelected = readOnlyMode ? false : dateItemForThisDayTemp.isSelected
+                            dateItemForThisDay.isSelected = dateItemForThisDayTemp.isSelected
                             dateItemForThisDay.refCon = dateItemForThisDayTemp.refCon
                         }
                         
