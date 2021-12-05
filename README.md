@@ -210,7 +210,7 @@ The test harness app is a simple, 1-screen iOS app that presents the widget unde
 
 ### THE BASICS
 
-"Today" is enabled and selected (note November 18, in Figure 2). Subsequent instances of the same weekday as "today," are enabled, but not highlighted (note November 25, in Figure 1 and Figure 2) The enabled days end at the end date, specified in the date picker. Even if there are more displayed days in the widget, after the end date, they will not be enabled or selected.
+"Today" is enabled and selected (note November 18, in Figure 2). Subsequent instances of the same weekday as "today," are enabled, but not highlighted (note November 25, in Figure 2) The enabled days end at the end date, specified in the date picker. Even if there are more displayed days in the widget, after the end date, they will not be enabled or selected.
 
 Past days are always disabled. Past days of the same weekday, after the start date, are also selected (note October 7, in Figure 1-November 11, in Figure 2).
 
