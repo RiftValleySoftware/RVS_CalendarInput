@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.3.2
+
+- **December 14, 2021**
+
+- Updated to the latest tools.
+
 ## 1.3.1
 
 - **November 20, 2021**
