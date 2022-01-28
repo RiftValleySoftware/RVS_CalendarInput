@@ -56,6 +56,7 @@
 		D407704F2728BCB400F218DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RVS_CalendarInput.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D468FE5C2728A5EF00C1CED3 /* RVS_CalendarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_CalendarInput.swift; sourceTree = "<group>"; };
+		D46C995C27A377270007DD37 /* RVS_CalendarInput.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = RVS_CalendarInput.docc; sourceTree = "<group>"; };
 		D49359E4272DD99C002A92C5 /* RVS_GeneralObserver */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RVS_GeneralObserver; path = "/Users/chrismarshall/Development/Developer/Xcode/DerivedData/RVS_CalendarInput-dnjyknozdwccvceiwqdkblhyipyb/SourcePackages/checkouts/RVS_GeneralObserver"; sourceTree = "<absolute>"; };
 		D4BC598A2728A6C00031211D /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		D4BC598F2728A84D0031211D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
@@ -157,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				D468FE5C2728A5EF00C1CED3 /* RVS_CalendarInput.swift */,
+				D46C995C27A377270007DD37 /* RVS_CalendarInput.docc */,
 			);
 			path = RVS_CalendarInput;
 			sourceTree = "<group>";
@@ -378,7 +380,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-CalendarInputTestHarness";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -407,7 +409,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-CalendarInputTestHarness";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -557,9 +559,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-CalendarInput";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				RUN_DOCUMENTATION_COMPILER = YES;
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -588,9 +591,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-CalendarInput";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				RUN_DOCUMENTATION_COMPILER = YES;
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;

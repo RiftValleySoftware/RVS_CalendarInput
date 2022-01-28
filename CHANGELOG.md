@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.3.3
+
+- **January 27, 2022**
+
+- Added DocC Support. No code or API changes.
+
 ## 1.3.2
 
 - **December 14, 2021**

@@ -33,6 +33,6 @@ jazzy   --readme ./README.md \
         --module RVS_CalendarInput \
         --theme fullwidth \
         -b -scheme,RVS_CalendarInput
-cp ./img/* docs/img
+cp ./Sources/RVS_CalendarInput/RVS_CalendarInput.docc/Resources/* docs/img
 
 cd "${CWD}"
