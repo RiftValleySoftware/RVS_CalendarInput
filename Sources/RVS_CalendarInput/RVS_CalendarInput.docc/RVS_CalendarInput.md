@@ -1,7 +1,5 @@
 # ``RVS_CalendarInput``
 
-![Icon](icon.png)
-
 RVS_CalendarInput is a customized [UIView](https://developer.apple.com/documentation/uikit/uiview) implementation, that will display a basic month/grid calendar, with active buttons, on selected dates.
 
 ## Overview
