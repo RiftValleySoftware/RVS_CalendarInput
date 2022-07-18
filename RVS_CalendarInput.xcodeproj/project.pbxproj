@@ -57,7 +57,6 @@
 		D468FE502728A53A00C1CED3 /* RVS_CalendarInput.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RVS_CalendarInput.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D468FE5C2728A5EF00C1CED3 /* RVS_CalendarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_CalendarInput.swift; sourceTree = "<group>"; };
 		D46C995C27A377270007DD37 /* RVS_CalendarInput.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = RVS_CalendarInput.docc; sourceTree = "<group>"; };
-		D49359E4272DD99C002A92C5 /* RVS_GeneralObserver */ = {isa = PBXFileReference; lastKnownFileType = folder; name = RVS_GeneralObserver; path = "/Users/chrismarshall/Development/Developer/Xcode/DerivedData/RVS_CalendarInput-dnjyknozdwccvceiwqdkblhyipyb/SourcePackages/checkouts/RVS_GeneralObserver"; sourceTree = "<absolute>"; };
 		D4BC598A2728A6C00031211D /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		D4BC598F2728A84D0031211D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -100,14 +99,6 @@
 			path = RVS_CalendarInputTestHarness;
 			sourceTree = "<group>";
 		};
-		D40770522728BD6C00F218DE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D49359E4272DD99C002A92C5 /* RVS_GeneralObserver */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		D40770582728BEC600F218DE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,7 +124,6 @@
 				D468FE5A2728A5BA00C1CED3 /* Sources */,
 				D40770352728BC5800F218DE /* Tests */,
 				D468FE512728A53A00C1CED3 /* Products */,
-				D40770522728BD6C00F218DE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
