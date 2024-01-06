@@ -1,5 +1,12 @@
 # RVS_CalendarInput Change Log
 
+## 1.3.5
+
+- **January 6, 2024**
+
+- Added privacy declarations.
+- Had to remove SwiftLint, as it stopped working.
+
 ## 1.3.4
 
 - **September 16, 2022**
