@@ -1,5 +1,11 @@
 # RVS_CalendarInput Change Log
 
+## 1.3.6
+
+- **February 10, 2026**
+
+- Updated documentation and libraries.
+
 ## 1.3.5
 
 - **January 6, 2024**

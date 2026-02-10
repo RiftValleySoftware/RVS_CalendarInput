@@ -1,6 +1,6 @@
 /* ###################################################################################################################################### */
 /**
- © Copyright 2021, The Great Rift Valley Software Company.
+ © Copyright 2021-2026, The Great Rift Valley Software Company.
  
  MIT License
  
@@ -18,7 +18,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version 1.3.5
+ Version 1.3.6
  */
 
 import UIKit
@@ -702,9 +702,9 @@ extension RVS_CalendarInput {
     /**
      This allows the instance to be instantiated with an initial frame and/or initial data and/or a delegate.
  
-     - parameter frame: An initial frame. OPTIONAL
-     - parameter setUpData: This is an array of initial date objects that will be used. OPTIONAL
-     - parameter delegate: A delegate for this instance. OPTIONAL
+     - parameter inFrame: An initial frame. OPTIONAL
+     - parameter inSetupData: This is an array of initial date objects that will be used. OPTIONAL
+     - parameter inDelegate: A delegate for this instance. OPTIONAL
      */
     public convenience init(frame inFrame: CGRect = .zero,
                             setUpData inSetupData: [RVS_CalendarInputDateItemProtocol] = [],
@@ -793,12 +793,12 @@ extension RVS_CalendarInput {
         /**
          Default Initializer. The calendar used, will be the current one.
          
-         - parameter day: The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
-         - parameter month: The month, as an integer (1 -> 12). REQUIRED
-         - parameter year: The year, as an integer. REQUIRED
-         - parameter isEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
-         - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
-         - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
+         - parameter inDay: The day of the month (1 -> [28|29|30|31]), as an integer. REQUIRED
+         - parameter inMonth: The month, as an integer (1 -> 12). REQUIRED
+         - parameter inYear: The year, as an integer. REQUIRED
+         - parameter inIsEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
+         - parameter inIsSelected: True, if the item is currently selected. Default is false. OPTIONAL
+         - parameter inRefCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public init(day inDay: Int,
                     month inMonth: Int,
@@ -820,10 +820,11 @@ extension RVS_CalendarInput {
         /**
          DateComponents Initializer (can return nil)
          
-         - parameter dateComponents: The day/month/year, as DateComponents. The calendar used, will be the current one. REQUIRED
-         - parameter isEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
-         - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
-         - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
+         - parameter inDateComponents: The day/month/year, as DateComponents. The calendar used, will be the current one. REQUIRED
+         - parameter inIsEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
+         - parameter inIsSelected: True, if the item is currently selected. Default is false. OPTIONAL
+         - parameter inCalendar: The calendar to use. Default is nil (default calendar). OPTIONAL
+         - parameter inRefCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public convenience init?(dateComponents inDateComponents: DateComponents,
                                  isEnabled inIsEnabled: Bool = false,
@@ -843,10 +844,11 @@ extension RVS_CalendarInput {
         /**
          Date Initializer (can return nil)
          
-         - parameter date: The day/month/year, as a Date instance. The calendar used, will be the current one. REQUIRED
-         - parameter isEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
-         - parameter isSelected: True, if the item is currently selected. Default is false. OPTIONAL
-         - parameter refCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
+         - parameter inDate: The day/month/year, as a Date instance. The calendar used, will be the current one. REQUIRED
+         - parameter inIsEnabled: True, if the item is enabled for selection. Default is false. OPTIONAL
+         - parameter inIsSelected: True, if the item is currently selected. Default is false. OPTIONAL
+         - parameter inCalendar: The calendar to use. Default is nil (default calendar). OPTIONAL
+         - parameter inRefCon: Reference context. This is how we attach arbitrary data to the item. OPTIONAL
          */
         public convenience init?(date inDate: Date,
                                  isEnabled inIsEnabled: Bool = false,
@@ -1039,7 +1041,7 @@ public protocol RVS_CalendarInputDelegate: AnyObject {
      - parameter dateItemChanged: The date item that changed selection state.
      - parameter dateButton: The actual button view that was touched.
      */
-    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged inDateItem: RVS_CalendarInputDateItemProtocol, dateButton: RVS_CalendarInput.DayButton?)
+    func calendarInput(_ inCalendarInput: RVS_CalendarInput, dateItemChanged: RVS_CalendarInputDateItemProtocol, dateButton: RVS_CalendarInput.DayButton?)
 }
 
 /* ###################################################################################################################################### */
@@ -1077,7 +1079,7 @@ public extension Array where Element: RVS_CalendarInputDateItemProtocol {
     /**
      This returns the range of months, in the given year. IT allows the user to specify a calendar to use for this.
  
-     - parameter for: The year, as an integer. This needs to be in the calendar system used by the data.
+     - parameter inYear: The year, as an integer. This needs to be in the calendar system used by the data.
      - returns: The integer range (1-based) of the months available in this year.
      */
     func monthRange(for inYear: Int) -> Range<Int> {
@@ -1092,11 +1094,11 @@ public extension Array where Element: RVS_CalendarInputDateItemProtocol {
     /**
      This returns the range of months, in the given year. It allows the user to specify a calendar to use for this.
  
-     - parameter year: The year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
-     - parameter month: The month of the year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
-     - parameter calendar: This is the calendar to use, for determining the month range.
-                           The year needs to be in this calendar system.
-                           It is optional. If not specified, the current calendar is used.
+     - parameter inYear: The year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
+     - parameter inMonth: The month of the year, as an integer. This needs to be in the calendar system described by the calendar passed in (or current).
+     - parameter inCalendar: This is the calendar to use, for determining the month range.
+                             The year needs to be in this calendar system.
+                             It is optional. If not specified, the current calendar is used.
      */
     func dayRange(year inYear: Int,
                   month inMonth: Int,
@@ -1115,11 +1117,11 @@ public extension Array where Element: RVS_CalendarInputDateItemProtocol {
      This returns a filtered array of the data, depending on the criteria provided. The criteria are all optional.
      If no criteria are provided, the entire array is returned. All responses are sorted from earliest date, to the latest date.
  
-     - parameter forThisYear: The year, as an integer. If not specified, then all years are returned.
-     - parameter forThisMonth: The month of the year, as an integer. If not specified, then all months are returned.
-     - parameter forThisDayOfTheMonth: The day of the month, as an integer. If not specified, then all days of the month are returned.
-     - parameter enabled: If true, then only items that are enabled will be returned. If false, the only items that are not enabled will be returned. Default is nil (all items returned, ignoring enabled status).
-     - parameter selected: If true, then only items that are selected will be returned. If false, the only items that are not selected will be returned. Default is nil (all items returned, ignoring selected status).
+     - parameter inYear: The year, as an integer. If not specified, then all years are returned.
+     - parameter inMonth: The month of the year, as an integer. If not specified, then all months are returned.
+     - parameter inDay: The day of the month, as an integer. If not specified, then all days of the month are returned.
+     - parameter inIsEnabled: If true, then only items that are enabled will be returned. If false, the only items that are not enabled will be returned. Default is nil (all items returned, ignoring enabled status).
+     - parameter inIsSelected: If true, then only items that are selected will be returned. If false, the only items that are not selected will be returned. Default is nil (all items returned, ignoring selected status).
      */
     func allResults(forThisYear inYear: Int = 0,
                     forThisMonth inMonth: Int = 0,
